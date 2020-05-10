@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1049231448917",
+    "firebase_url": "https://semble-attendance.firebaseio.com",
+    "project_id": "semble-attendance",
+    "storage_bucket": "semble-attendance.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049231448917:android:3de4a144699f32c1986ddc",
+        "android_client_info": {
+          "package_name": "project.mj.schuul"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049231448917-mks36i4s1s1ml3u9dijq932c8ohe63ak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-st4Akf-1ygnw32JnqAgvM7sCWOKr1IQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049231448917-mks36i4s1s1ml3u9dijq932c8ohe63ak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

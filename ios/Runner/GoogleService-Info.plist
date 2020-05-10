@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1049231448917-mbfas4oqlo9al50fmam57ll5794fp8jm.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1049231448917-mbfas4oqlo9al50fmam57ll5794fp8jm</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAdeN5LL3V_OSSwErVZjsbIsF8Heo09v_4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1049231448917</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>project.mj.schuul</string>
+	<key>PROJECT_ID</key>
+	<string>semble-attendance</string>
+	<key>STORAGE_BUCKET</key>
+	<string>semble-attendance.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1049231448917:ios:3b25bc3e038dec7a986ddc</string>
+	<key>DATABASE_URL</key>
+	<string>https://semble-attendance.firebaseio.com</string>
+</dict>
+</plist>
