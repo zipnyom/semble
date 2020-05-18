@@ -5,6 +5,7 @@ import 'package:schuul/helper/login_background.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/data/join_or_login.dart';
 import 'package:schuul/screens/forget_password.dart';
+import 'package:schuul/screens/join_page.dart';
 
 import 'main_page.dart';
 
@@ -52,7 +53,10 @@ class AuthPage extends StatelessWidget {
   Widget get _joinOrLoginButton => Consumer<JoinOrLogin>(
         builder: (context, joinOrLogin, child) => GestureDetector(
             onTap: () {
-              joinOrLogin.toggle();
+//              joinOrLogin.toggle();   mj 200517.1919
+
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => JoinPageSplit()));
             },
             child: Text(
               joinOrLogin.isJoin
@@ -134,8 +138,6 @@ class AuthPage extends StatelessWidget {
         ),
       ));
 
-
-
   Widget _inputForm(Size size) {
     return Padding(
       padding: EdgeInsets.all(size.width * .0505),
@@ -195,6 +197,7 @@ class AuthPage extends StatelessWidget {
       ),
     );
   }
+
   goToForgetPW(BuildContext context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => ForgetPw()));

@@ -5,6 +5,7 @@ import 'package:schuul/data/join_or_login.dart';
 import 'package:schuul/screens/login.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/screens/main_page.dart';
+import 'package:schuul/screens/intro_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,8 +26,7 @@ class Splash extends StatelessWidget {
         stream: FirebaseAuth.instance.onAuthStateChanged,
         builder: (context, snapshot) {
           if (snapshot.data == null) {
-            return ChangeNotifierProvider<JoinOrLogin>.value(
-                value: JoinOrLogin(), child: AuthPage());
+            return IntroBannerPage();
           } else {
             return MainPage(email: snapshot.data.email);
           }
