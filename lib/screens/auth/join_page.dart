@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../test/main_page.dart';
 
 class JoinPageSplit extends StatefulWidget {
   @override
@@ -34,8 +38,10 @@ class _JoinPageSplitState extends State<JoinPageSplit> {
               height: _buttonHeight,
               width: size.width * 0.8,
               child: RaisedButton(
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => InputEmailPw("강사"))),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => InputEmailPw("강사"))),
                 child: Text("저는 강사(관리자)입니다."),
               )),
           Container(
@@ -45,9 +51,11 @@ class _JoinPageSplitState extends State<JoinPageSplit> {
               height: _buttonHeight,
               width: size.width * 0.8,
               child: RaisedButton(
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => InputEmailPw("학생"))),
-                child: Text("저는 학(출석자)입니다."),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => InputEmailPw("학생"))),
+                child: Text("저는 학생(출석자)입니다."),
               )),
           Container(
             height: _marginHeight * 5,
@@ -60,14 +68,16 @@ class _JoinPageSplitState extends State<JoinPageSplit> {
 
 class InputEmailPw extends StatefulWidget {
   String _who;
+
   InputEmailPw(this._who);
+
   @override
   _InputEmailPwState createState() => _InputEmailPwState(_who);
 }
 
 class _InputEmailPwState extends State<InputEmailPw> {
-
   String _who;
+
   _InputEmailPwState(this._who);
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -76,8 +86,8 @@ class _InputEmailPwState extends State<InputEmailPw> {
   FocusNode pwFocusNode;
   FocusNode cpwFocusNode;
 
-  TextEditingController emailTextEditingController = TextEditingController();
-  TextEditingController pwTextEditingController = TextEditingController();
+  TextEditingController _emailTextEditingController = TextEditingController();
+  TextEditingController _pwTextEditingController = TextEditingController();
   TextEditingController cpwTextEditingController = TextEditingController();
 
   @override
@@ -105,28 +115,46 @@ class _InputEmailPwState extends State<InputEmailPw> {
                 TextFormField(
                   focusNode: emailFocusNode,
                   decoration: InputDecoration(
-                      hintText: "example@mail.com", labelText: "email"),
+                      icon: Icon(Icons.account_circle),
+                      hintText: "example@mail.com",
+                      labelText: "email"),
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (value) {
                     _fieldFocusChanged(
                         _formKey.currentContext, emailFocusNode, pwFocusNode);
                   },
-                  controller: emailTextEditingController,
+                  validator: (String value) {
+                    if (value.isEmpty || value.indexOf("@") == -1) {
+                      return "Please input valid Email.";
+                    }
+                    return null;
+                  },
+                  controller: _emailTextEditingController,
                 ),
                 TextFormField(
                   focusNode: pwFocusNode,
                   decoration: InputDecoration(
-                      hintText: "password", labelText: "password"),
+                      icon: Icon(Icons.vpn_key),
+                      hintText: "password",
+                      labelText: "password"),
                   textInputAction: TextInputAction.next,
+                  obscureText: true,
                   onFieldSubmitted: (value) {
                     _fieldFocusChanged(
                         _formKey.currentContext, pwFocusNode, cpwFocusNode);
                   },
-                  controller: pwTextEditingController,
+                  validator: (String value) {
+                    if (value.length < 6) {
+                      return "Please enter at least 6 characters";
+                    }
+                    return null;
+                  },
+                  controller: _pwTextEditingController,
                 ),
                 TextFormField(
                   focusNode: cpwFocusNode,
                   decoration: InputDecoration(
+                      icon: Icon(Icons.vpn_key),
                       hintText: "confirm password",
                       labelText: "confirm password"),
                   textInputAction: TextInputAction.done,
@@ -134,16 +162,28 @@ class _InputEmailPwState extends State<InputEmailPw> {
                   onFieldSubmitted: (value) {
                     cpwFocusNode.unfocus();
                   },
+                  validator: (String value) {
+                    if (value.length < 6) {
+                      return "Please enter at least 6 characters";
+                    }
+                    if (_pwTextEditingController.text != value) {
+                      return "Confirmation password does not match the password";
+                    }
+                    return null;
+                  },
                   controller: cpwTextEditingController,
                 ),
               ],
             )),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.done),
-        onPressed: () =>
-            FocusScope.of(_formKey.currentContext).requestFocus(pwFocusNode),
-      ),
+          child: Icon(Icons.done),
+          onPressed: () {
+//            FocusScope.of(_formKey.currentContext).requestFocus(pwFocusNode),
+            if (_formKey.currentState.validate()) {
+              _register(context);
+            }
+          }),
     );
   }
 
@@ -151,5 +191,32 @@ class _InputEmailPwState extends State<InputEmailPw> {
       FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  void _register(BuildContext context) async {
+    final AuthResult result = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+        email: _emailTextEditingController.text, password: _pwTextEditingController.text);
+    final FirebaseUser user = result.user;
+    if (user == null) {
+      final snackbar = SnackBar(
+        content: Text("Please try again later."),
+      );
+      Scaffold.of(context).showSnackBar(snackbar);
+    }
+
+    Firestore.instance.collection('users').document().setData({
+      "email": user.email, // 사용자 이메일
+      "UUID": user.uid, // 사용자 기기 고유 아이디
+      "Device": "tmp", // 사용자 기기 종류 (iOS, Android)
+      "role": "tmp" // manager, visitor
+    });
+
+    final snackbar = SnackBar(
+      content: Text("Successfully Registered"),
+    );
+    Scaffold.of(context).showSnackBar(snackbar);
+//    Navigator.push(context,
+//        MaterialPageRoute(builder: (context) => MainPage(email: user.email)));
   }
 }

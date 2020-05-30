@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/data/join_or_login.dart';
-import 'package:schuul/screens/login.dart';
+import 'package:schuul/screens/auth/login.dart';
 
 class IntroBannerPage extends StatefulWidget {
   @override
@@ -57,50 +57,68 @@ class _IntroBannerPageState extends State<IntroBannerPage> {
     return PageView.builder(
       controller: _pageController,
       itemBuilder: (BuildContext context, int index) {
-        if (_pageController.position.haveDimensions == false)
-          return Container();
-        int roundPage = _pageController.page.round();
+//        if (_pageController.position.haveDimensions == false)
+//          return Container();
+        int roundPage = 0;
+        if (_pageController != null && _pageController.position.haveDimensions)
+          roundPage = _pageController.page.round();
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Expanded(
-                child: Image.network(
-              "https://picsum.photos/200/300",
-              fit: BoxFit.cover,
-            )),
-            Container(
-              height: size.height * 0.02,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: 0.0, horizontal: size.width * 0.1),
-              child: Text(
-                _introMessages[roundPage],
-                style: TextStyle(fontSize: 15),
+//                child: Image.network(
+//              "https://picsum.photos/220/300",
+              child: FadeInImage.assetNetwork(
+                placeholder: 'assets/loading.gif',
+                image: "https://picsum.photos/220/300",
+                fit: BoxFit.cover,
               ),
             ),
-            _pageController.page < _itemCount - 1.5
-                ? Container(
-                    height: size.height * 0.1,
-                  )
-                : Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: SizedBox(
-                      height: 70,
-                      width: size.width,
-                      child: RaisedButton(
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ChangeNotifierProvider<JoinOrLogin>.value(
-                                value: JoinOrLogin(), child: AuthPage());
-                          }));
-                        },
-                        child: Text("시작하기"),
-                      ),
+            Container(
+              height: size.height * 0.2,
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    top: 20.0,
+                    left: size.width * 0.1,
+                    right: size.width * 0.1,
+                    child: Text(
+                      _introMessages[roundPage],
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 15),
                     ),
                   ),
+                  _pageController != null &&
+                          _pageController.position.haveDimensions &&
+                          _pageController.page < _itemCount - 1.5
+                      ? Container()
+                      : Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          child: SizedBox(
+                            height: 70,
+                            width: size.width,
+                            child: RaisedButton(
+                              onPressed: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return MultiProvider(providers: [
+                                    ChangeNotifierProvider<JoinOrLogin>.value(
+                                      value: JoinOrLogin(),
+                                    ),
+
+                                  ], child: AuthPage());
+                                }));
+                              },
+                              child: Text("시작하기"),
+                            ),
+                          ),
+                        ),
+                ],
+              ),
+            ),
           ],
         );
       },

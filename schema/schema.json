@@ -1,0 +1,9 @@
+
+{
+  "user" : {
+    "email" : "String", // 사용자 이메일
+    "UUID" : "String", // 사용자 기기 고유 아이디
+    "Device" : "String" // 사용자 기기 종류 (iOS, Android)
+    "role" : "String" // manager, visitor
+  }
+}

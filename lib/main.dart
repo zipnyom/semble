@@ -1,23 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:schuul/data/join_or_login.dart';
-import 'package:schuul/screens/login.dart';
+import 'package:schuul/screens/auth/login.dart';
 import 'package:provider/provider.dart';
-import 'package:schuul/screens/main_page.dart';
-import 'package:schuul/screens/intro_page.dart';
+import 'package:schuul/screens/main/main_route';
 
-void main() => runApp(MyApp());
+void main() => initializeDateFormatting().then((_) => runApp(MyApp()));
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Splash(),
     );
   }
 }
-
 
 class Splash extends StatelessWidget {
   @override
@@ -26,11 +25,14 @@ class Splash extends StatelessWidget {
         stream: FirebaseAuth.instance.onAuthStateChanged,
         builder: (context, snapshot) {
           if (snapshot.data == null) {
-            return IntroBannerPage();
+            return MultiProvider(providers: [
+              ChangeNotifierProvider<JoinOrLogin>.value(
+                value: JoinOrLogin(),
+              ),
+            ], child: AuthPage());
           } else {
-            return MainPage(email: snapshot.data.email);
+            return MainPageBottomCircle(email: snapshot.data.email);
           }
-        }
-    );
+        });
   }
 }
