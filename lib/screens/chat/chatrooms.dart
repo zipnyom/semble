@@ -5,7 +5,7 @@ import 'package:schuul/helper/constants.dart';
 import 'package:schuul/helper/preference_helper.dart';
 import 'package:schuul/helper/theme.dart';
 import 'package:schuul/screens/chat/search_page.dart';
-import 'package:schuul/services/database.dart';
+import 'package:schuul/services/chat_database.dart';
 
 import 'chat.dart';
 

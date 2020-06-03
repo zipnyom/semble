@@ -8,9 +8,10 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/data/join_or_login.dart';
 import 'package:schuul/helper/main_check_image.dart';
-import 'package:schuul/screens/main/home.dart';
-import 'package:schuul/screens/main/main_second.dart';
-import 'package:schuul/screens/main/main_third.dart';
+import 'package:schuul/screens/main/dashboard_page.dart';
+import 'package:schuul/screens/main/manage_page.dart';
+import 'package:schuul/tests/beacon/main_second.dart';
+import 'package:schuul/tests/nfc/main_third.dart';
 import 'package:schuul/screens/main/calendar.dart';
 import 'package:schuul/widgets/widget.dart';
 
@@ -36,7 +37,7 @@ class _MainPageBottomCircleState extends State<MainPageBottomCircle> {
   @override
   Widget build(BuildContext context) {
 
-    final List<Widget> _children = [MyHomePage(), MainSecond(), MainThird()];
+    final List<Widget> _children = [MyHomePage(), ManagePage(), DashBoardPage()];
     return Scaffold(
         appBar: appBarMain(context),
         drawer: myDrawer(context),

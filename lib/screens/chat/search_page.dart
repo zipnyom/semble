@@ -2,7 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:schuul/helper/constants.dart';
-import 'package:schuul/services/database.dart';
+import 'package:schuul/services/chat_database.dart';
 import 'package:schuul/widgets/widget.dart';
 
 import 'chat.dart';

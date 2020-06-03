@@ -38,6 +38,8 @@ dependencies:
   table_calendar: ^2.2.3
   intl: ^0.16.1
   flutter_beacon: ^0.3.0
+  nfc_in_flutter: ^2.0.4
+
 
 dev_dependencies:
   flutter_test:
