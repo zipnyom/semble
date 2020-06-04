@@ -16,7 +16,7 @@ class MainPage extends StatelessWidget {
 
     return Scaffold(
         appBar: appBarMain(context),
-        drawer: myDrawer(context),
+//        drawer: myDrawer(context),
         body: Stack(
           children: <Widget>[
             Padding(

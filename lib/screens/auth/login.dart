@@ -174,8 +174,8 @@ class _AuthPageState extends State<AuthPage> {
                 setState(() {
                   isLoading = true;
                 });
-//                joinOrLogin.isJoin ? _register(context) : _login(context);
-                _register(context);
+                joinOrLogin.isJoin ? _register(context) : _login(context);
+//                _register(context);
               }
             },
           ),

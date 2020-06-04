@@ -23,27 +23,25 @@ Widget myDrawer(BuildContext context) {
       padding: EdgeInsets.zero,
       children: <Widget>[
         DrawerHeader(
-          child: ListView(
+          padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 0.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("tesxt1"),
-              Row(
-                children: [
-                  IconButton(
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                IconButton(
 //                    alignment: Alignment.centerLeft,
-                    iconSize: 100,
-                    icon: Icon(Icons.account_circle),
-                    onPressed: () {
-                      print("hoho");
-                    },
-                  ),
-                 Column(
-                   children: [
-                     Text("hong"),
-                     Text("1992.11.23")
-                   ],
-                 )
-                ],
-              ),
+                  iconSize: 90,
+                  icon: Icon(Icons.account_circle),
+                  onPressed: () {
+                    print("hoho");
+                  },
+                ),
+              ]),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Text("hong"), Text("1992.11.23")],
+              )
             ],
           ),
           decoration: BoxDecoration(
@@ -51,7 +49,7 @@ Widget myDrawer(BuildContext context) {
           ),
         ),
         ListTile(
-          title: Text('Item 1'),
+          title: Text('기능 문의'),
           onTap: () {
             // Update the state of the app
             // ...
@@ -60,18 +58,7 @@ Widget myDrawer(BuildContext context) {
           },
         ),
         ListTile(
-          title: Text('Item 2'),
-          onTap: () {
-            // Update the state of the app
-            // ...
-            // Then close the drawer
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(),
-        ListTile(),
-        ListTile(
-          title: Text('Log out'),
+          title: Text('로그아웃'),
           onTap: () {
             FirebaseAuth.instance.signOut();
           },

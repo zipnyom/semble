@@ -14,15 +14,18 @@ final Map<DateTime, List> _holidays = {
   DateTime(2019, 4, 22): ['Easter Monday'],
 };
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class CalendarPage extends StatefulWidget {
+  CalendarPage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _CalendarPageState createState() => _CalendarPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+class _CalendarPageState extends State<CalendarPage>
+    with TickerProviderStateMixin {
+  bool isDisposed;
+
   Map<DateTime, List> _events = Map<DateTime, List>();
   List _selectedEvents;
   AnimationController _animationController;
@@ -43,9 +46,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       var date = f.data['start'];
       if (date != null) {
         DateTime d = DateTime.fromMillisecondsSinceEpoch(date);
-        setState(() {
-          _events.putIfAbsent(d, () => [f.data['name']]);
-        });
+        if (!isDisposed) {
+          setState(() {
+            _events.putIfAbsent(d, () => [f.data['name']]);
+          });
+        }
       }
     });
   }
@@ -55,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     getClass();
 
     super.initState();
+    isDisposed = false;
     final _selectedDay = DateTime.now();
 
 //    _events = {
@@ -126,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void dispose() {
     _animationController.dispose();
     _calendarController.dispose();
+    isDisposed = true;
     super.dispose();
   }
 

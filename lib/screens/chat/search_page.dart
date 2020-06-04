@@ -138,7 +138,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarMain(context),
-      drawer: myDrawer(context),
+//      drawer: myDrawer(context),
       body: isLoading ? Container(
         child: Center(
           child: CircularProgressIndicator(),

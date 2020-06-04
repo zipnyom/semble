@@ -67,7 +67,7 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarMain(context),
-      drawer: myDrawer(context),
+//      drawer: myDrawer(context),
       body: Container(
         child: Stack(
           children: [
