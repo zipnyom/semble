@@ -57,7 +57,7 @@ class _ClassPagerState extends State<ClassPager> {
                               DetailPage(classNotifier.classes[index])));
                     },
                     child: Hero(
-                      tag: classNotifier.classes[index].name,
+                      tag: classNotifier.classes[index].className,
                       child: Poster(
                         scale: scale,
 //                        img: classNotifier.classes[index].posterPath,

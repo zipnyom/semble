@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/screens/main/home/model/class_model.dart';
 import 'package:schuul/screens/main/home/provider/class_notifier.dart';
 import 'package:schuul/screens/main/home/provider/page_notifier.dart';
+import 'package:schuul/services/class_database.dart';
 import 'package:schuul/widgets/widget.dart';
 
 import 'class_pager.dart';
@@ -25,16 +27,23 @@ class _HomePageState extends State<HomePage> {
   static double titleTop = ratingTop + 18 + 8;
   static double genreTop = titleTop + 26 + 8;
 
+  void getClass() async {
+    List<ClassModel> list = List<ClassModel>();
+//    list.add(ClassModel(className: "test1", startDate: 1, endDate: 3));
+//    list.add(ClassModel(className: "test2", startDate: 1, endDate: 3));
+//    list.add(ClassModel(className: "test3", startDate: 1, endDate: 3));
+    QuerySnapshot snapshot = await ClassDatabaseMethods().getClass();
+    snapshot.documents.forEach((element) {
+      list.add(ClassModel.fromJson(element.data));
+    });
+    classNotifier.classes = list;
+  }
+
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
 
-    List<ClassModel> list = List<ClassModel>();
-    list.add(ClassModel(name: "test1", start: 1, end: 3));
-    list.add(ClassModel(name: "test2", start: 1, end: 3));
-    list.add(ClassModel(name: "test3", start: 1, end: 3));
-
-    classNotifier.classes = list;
+    getClass();
 
     return MultiProvider(
       providers: [

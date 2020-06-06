@@ -5,6 +5,8 @@ import 'package:schuul/services/class_database.dart';
 import 'package:schuul/widgets/widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'home/model/class_model.dart';
+
 // Example holidays
 final Map<DateTime, List> _holidays = {
   DateTime(2019, 1, 1): ['New Year\'s Day'],
@@ -31,13 +33,32 @@ class _CalendarPageState extends State<CalendarPage>
   AnimationController _animationController;
   CalendarController _calendarController;
 
-  void addClass() {
+  void addClass(ClassModel model) {
     Map<String, dynamic> classData = {
       "name": "Test Class",
       "start": DateTime.now().millisecondsSinceEpoch,
       'end': DateTime.now().millisecondsSinceEpoch
     };
     ClassDatabaseMethods().addClass(classData);
+  }
+
+  void addSampleClassToDatabase() {
+    List<ClassModel> list = List<ClassModel>();
+    for (int i = 1; i <= 5; i++) {
+      String num = i.toString();
+      list.add(new ClassModel(
+          "테스트강좌" + num,
+          "강사" + num,
+          "조교" + num,
+          "테스트강좌" + num + "의 설명",
+          "2020-06-0" + num,
+          "2020-06-" + (i + 5).toString()));
+    }
+
+    for (ClassModel model in list) {
+      print(model.toJson());
+      ClassDatabaseMethods().addClass(model.toJson());
+    }
   }
 
   void getClass() async {
@@ -57,7 +78,9 @@ class _CalendarPageState extends State<CalendarPage>
 
   @override
   void initState() {
-    getClass();
+//    getClass();
+//    addSampleClassToDatabase();
+//    ClassDatabaseMethods().deleteAll("class");
 
     super.initState();
     isDisposed = false;

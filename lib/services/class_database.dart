@@ -16,4 +16,17 @@ class ClassDatabaseMethods {
       print(e.toString());
     });
   }
+
+  Future<void> deleteAll(collectionName) async {
+    QuerySnapshot snapshot = await Firestore.instance
+        .collection(collectionName)
+        .getDocuments()
+        .catchError((e) {
+      print(e.toString());
+    });
+    snapshot.documents.forEach((f) {
+      print(f.data["class_name"]);
+      f.reference.delete();
+    });
+  }
 }

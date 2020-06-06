@@ -4,18 +4,25 @@ part 'class_model.g.dart';
 
 @JsonSerializable()
 class ClassModel {
-  @JsonKey(name: 'name')
-  String name;
+  @JsonKey(name: 'class_name')
+  String className;
+  @JsonKey(name: 'manager_id')
+  String managerId;
+  @JsonKey(name: 'sub_manager_id')
+  String subManagerId;
+  @JsonKey(name: 'description')
+  String description;
+  @JsonKey(name: 'start_date')
+  String startDate;
+  @JsonKey(name: 'end_date')
+  String endDate;
 
-  @JsonKey(name: 'start')
-  int start;
+  ClassModel(this.className, this.managerId, this.subManagerId,
+      this.description, this.startDate, this.endDate);
 
-  @JsonKey(name: 'end')
-  int end;
+  factory ClassModel.fromJson(Map<String, dynamic> json) =>
+      _$ClassModelFromJson(json);
 
-  ClassModel({String name, int start, int end}) {
-    this.name = name;
-    this.start = start;
-    this.end = end;
-  }
+  Map<String, dynamic> toJson() => _$ClassModelToJson(this);
+  
 }
