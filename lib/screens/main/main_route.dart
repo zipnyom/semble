@@ -16,6 +16,7 @@ import 'package:schuul/screens/main/calendar_page.dart';
 import 'package:schuul/widgets/widget.dart';
 
 import 'account_page.dart';
+import 'bottom_nav_bar.dart';
 
 class MainPageBottomCircle extends StatefulWidget {
   MainPageBottomCircle({this.email});
@@ -48,7 +49,13 @@ class _MainPageBottomCircleState extends State<MainPageBottomCircle> {
     return Scaffold(
         appBar: appBarMain(context),
 //        drawer: myDrawer(context),
-        bottomNavigationBar: BottomNavigationBar(
+        bottomNavigationBar: BottomNavBar(),
+        body: _children[_selectedIndex]);
+  }
+}
+
+/*
+BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
@@ -70,8 +77,23 @@ class _MainPageBottomCircleState extends State<MainPageBottomCircle> {
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Theme.of(context).accentColor,
-          onTap: _onBottomItemTapped,
-        ),
-        body: _children[_selectedIndex]);
+          // onTap: _onBottomItemTapped,
+        )
+*/
+
+class CustomBottomNavigationBar extends StatelessWidget {
+  const CustomBottomNavigationBar({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 75,
+      width: double.infinity,
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+        BoxShadow(
+            offset: Offset(0, -7), blurRadius: 33, color: Color(0xFF6DAED9))
+      ]),
+      child: Row(),
+    );
   }
 }

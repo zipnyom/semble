@@ -5,7 +5,6 @@ import 'package:schuul/screens/main/home/model/class_model.dart';
 import 'package:schuul/screens/main/home/provider/class_notifier.dart';
 import 'package:schuul/screens/main/home/provider/page_notifier.dart';
 import 'package:schuul/services/class_database.dart';
-import 'package:schuul/widgets/widget.dart';
 
 import 'class_pager.dart';
 
@@ -40,10 +39,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    getClass();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-
-    getClass();
 
     return MultiProvider(
       providers: [

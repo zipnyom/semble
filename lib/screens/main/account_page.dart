@@ -32,6 +32,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           FlatButton(
+            onPressed: () {  },
             child: Text("프로필 사진 바꾸기", style: TextStyle(color: Colors.blue),),
           ),
           Form(

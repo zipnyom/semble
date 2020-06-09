@@ -5,6 +5,7 @@ import 'package:schuul/data/join_or_login.dart';
 import 'package:schuul/screens/auth/login.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/screens/main/main_route.dart';
+import 'package:schuul/screens/welcome/welcome_screen.dart';
 
 void main() => initializeDateFormatting().then((_) => runApp(MyApp()));
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Splash(),
+      home: WelcomeScreen(),
     );
   }
 }
