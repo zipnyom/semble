@@ -33,7 +33,7 @@ class Splash extends StatelessWidget {
               ),
             ], child: AuthPage());
           } else {
-            return MainPageBottomCircle(email: snapshot.data.email);
+            return MainRoute(email: snapshot.data.email);
           }
         });
   }

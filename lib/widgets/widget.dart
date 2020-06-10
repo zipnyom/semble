@@ -1,14 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 Widget appBarMain(BuildContext context) {
-  return AppBar(title: Text("Semble"), elevation: 0.0, actions: <Widget>[
-    // action button
-    IconButton(
-      icon: Icon(Icons.notifications_none),
-      onPressed: () {},
-    ),
-  ]
+  return AppBar(
+      title: Text("Semble"),
+      backgroundColor: Colors.transparent,
+      leading: IconButton(
+        icon: SvgPicture.asset("assets/icons/menu.svg"),
+        onPressed: () {
+          print("leading...");
+        },
+      ),
+      elevation: 0.0,
+      actions: <Widget>[
+        // action button
+        Material(
+          child: InkWell(
+            child: Image.asset("assets/images/user.png"),
+            onTap: () {
+              print(" user...");
+            },
+          ),
+        ),
+      ]
 //    centerTitle: false,
       );
 }

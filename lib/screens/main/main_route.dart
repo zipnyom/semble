@@ -1,34 +1,40 @@
-import 'dart:ffi';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:provider/provider.dart';
-import 'package:schuul/data/join_or_login.dart';
-import 'package:schuul/helper/main_check_image.dart';
+import 'package:schuul/constants.dart';
+import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/dashboard_page.dart';
 import 'package:schuul/screens/main/home/home_page.dart';
-import 'package:schuul/tests/beacon/main_second.dart';
-import 'package:schuul/tests/nfc/main_third.dart';
 import 'package:schuul/screens/main/calendar_page.dart';
 import 'package:schuul/widgets/widget.dart';
 
 import 'account_page.dart';
+import 'bottom_nav/fab_bottom_app_bar.dart';
+import 'bottom_nav/fab_with_icons.dart';
+import 'bottom_nav/layout.dart';
 import 'bottom_nav_bar.dart';
 
-class MainPageBottomCircle extends StatefulWidget {
-  MainPageBottomCircle({this.email});
-
+class MainRoute extends StatefulWidget {
+  MainRoute({this.email});
   final String email;
-
   @override
-  _MainPageBottomCircleState createState() => _MainPageBottomCircleState();
+  _MainRouteState createState() => _MainRouteState();
 }
 
-class _MainPageBottomCircleState extends State<MainPageBottomCircle> {
+class _MainRouteState extends State<MainRoute> {
   static int _selectedIndex = 0;
+  String _lastSelected = 'TAB: 0';
+
+  void _selectedTab(int index) {
+    setState(() {
+      _lastSelected = 'TAB: $index';
+    });
+  }
+
+  void _selectedFab(int index) {
+    setState(() {
+      _lastSelected = 'FAB: $index';
+    });
+  }
 
   void _onBottomItemTapped(int index) {
     setState(() {
@@ -46,40 +52,73 @@ class _MainPageBottomCircleState extends State<MainPageBottomCircle> {
     ];
     final String dummyTitle = '______';
 
+    var bottomNavigationBar2 = BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          title: Text(dummyTitle),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.today),
+          title: Text(dummyTitle),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.insert_chart),
+          title: Text(dummyTitle),
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Theme.of(context).accentColor,
+      onTap: _onBottomItemTapped,
+    );
+
     return Scaffold(
         appBar: appBarMain(context),
-//        drawer: myDrawer(context),
-        bottomNavigationBar: BottomNavBar(),
+        //        drawer: myDrawer(context),
+        // bottomNavigationBar: BottomNavBar(selectedIndex: _selectedIndex),
+        // bottomNavigationBar: bottomNavigationBar2,
+        bottomNavigationBar: FABBottomAppBar(
+          // centerItemText: 'A',c
+          color: Colors.grey,
+          selectedColor: kPrimaryColor,
+          notchedShape: CircularNotchedRectangle(),
+          onTabSelected: _selectedTab,
+          items: [
+            DateBottomAppBarItem(text: 'Today'),
+            FABBottomAppBarItem(iconData: Icons.dashboard, text: '수업관리'),
+            FABBottomAppBarItem(iconData: CustomIcon.calendar, text: '캘린더'),
+            FABBottomAppBarItem(iconData: CustomIcon.cog, text: '설정'),
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: _buildFab(
+            context), // This trailing comma makes auto-formatting nicer for build methods.
         body: _children[_selectedIndex]);
   }
-}
 
-/*
-BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text(dummyTitle),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.today),
-              title: Text(dummyTitle),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.insert_chart),
-              title: Text(dummyTitle),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              title: Text(dummyTitle),
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Theme.of(context).accentColor,
-          // onTap: _onBottomItemTapped,
-        )
-*/
+  Widget _buildFab(BuildContext context) {
+    final icons = [Icons.sms, Icons.mail, Icons.phone];
+    return AnchoredOverlay(
+      showOverlay: true,
+      overlayBuilder: (context, offset) {
+        return CenterAbout(
+          position: Offset(offset.dx, offset.dy - icons.length * 35.0),
+          child: FabWithIcons(
+            icons: icons,
+            onIconTapped: _selectedFab,
+          ),
+        );
+      },
+      child: FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Increment',
+        child: Icon(Icons.check),
+        elevation: 2.0,
+      ),
+    );
+  }
+}
 
 class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({Key key}) : super(key: key);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schuul/constants.dart';
 
 class Background extends StatelessWidget {
   final Widget child;
@@ -19,17 +20,24 @@ class Background extends StatelessWidget {
           Positioned(
             top: 0,
             left: 0,
-            child: Image.asset(
-              "assets/images/main_top.png",
-              width: size.width * 0.3,
+            child: ColorFiltered(
+              colorFilter: ColorFilter.mode(kPrimaryColor, BlendMode.modulate),
+              child: Image.asset(
+                "assets/images/main_top.png",
+                width: size.width * 0.3,
+              ),
             ),
           ),
           Positioned(
             bottom: 0,
             left: 0,
-            child: Image.asset(
-              "assets/images/main_bottom.png",
-              width: size.width * 0.2,
+            child: ColorFiltered(
+              colorFilter:
+                  ColorFilter.mode(kPrimaryLightColor, BlendMode.modulate),
+              child: Image.asset(
+                "assets/images/main_bottom.png",
+                width: size.width * 0.2,
+              ),
             ),
           ),
           child,

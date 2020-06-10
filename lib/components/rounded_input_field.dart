@@ -6,20 +6,25 @@ import '../constants.dart';
 class RoundedInputField extends StatelessWidget {
   final String hintText;
   final IconData icon;
-  final ValueChanged<String> onChanged;
-  const RoundedInputField({
+  final TextEditingController emailController;
+  RoundedInputField({
     Key key,
     this.hintText,
     this.icon = Icons.person,
-    this.onChanged,
+    this.emailController,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
-      child: TextField(
-        onChanged: onChanged,
-        cursorColor: kPrimaryColor,
+      child: TextFormField(
+        controller: emailController,
+        validator: (String value) {
+          if (value.isEmpty) {
+            return "유효한 이메일 주소를 입력해주세요.";
+          }
+          return null;
+        },
         decoration: InputDecoration(
           icon: Icon(
             icon,

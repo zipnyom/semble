@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({
+class BottomNavBar extends StatefulWidget {
+  int selectedIndex;
+  BottomNavBar({
     Key key,
+    this.selectedIndex
   }) : super(key: key);
 
+  @override
+  _BottomNavBarState createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,6 +37,11 @@ class BottomNavBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          IconButton(
+            color: Colors.redAccent,
+            icon: Icon(Icons.account_circle),
+            onPressed: () {},
+          ),
           IconButton(
             icon: SvgPicture.asset("assets/icons/home.svg"),
             onPressed: () {},
