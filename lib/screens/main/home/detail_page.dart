@@ -13,7 +13,7 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
+      // appBar: appBarMain(context),
       body: Container(
           child: Center(child:Text("I am Detail Page"),)
       ),

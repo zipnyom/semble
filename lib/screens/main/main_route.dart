@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -12,7 +13,6 @@ import 'account_page.dart';
 import 'bottom_nav/fab_bottom_app_bar.dart';
 import 'bottom_nav/fab_with_icons.dart';
 import 'bottom_nav/layout.dart';
-import 'bottom_nav_bar.dart';
 
 class MainRoute extends StatefulWidget {
   MainRoute({this.email});
@@ -27,7 +27,7 @@ class _MainRouteState extends State<MainRoute> {
 
   void _selectedTab(int index) {
     setState(() {
-      _lastSelected = 'TAB: $index';
+      _selectedIndex = index;
     });
   }
 
@@ -47,36 +47,39 @@ class _MainRouteState extends State<MainRoute> {
   Widget build(BuildContext context) {
     final List<Widget> _children = [
       HomePage(),
-      CalendarPage(),
       DashBoardPage(),
-      AccountPage()
+      CalendarPage(),
+      AccountPage(),
     ];
     final String dummyTitle = '______';
 
-    var bottomNavigationBar2 = BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          title: Text(dummyTitle),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.today),
-          title: Text(dummyTitle),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.insert_chart),
-          title: Text(dummyTitle),
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Theme.of(context).accentColor,
-      onTap: _onBottomItemTapped,
-    );
+    // var bottomNavigationBar2 = BottomNavigationBar(
+    //   type: BottomNavigationBarType.fixed,
+    //   items: [
+    //     BottomNavigationBarItem(
+    //       icon: Icon(Icons.home),
+    //       title: Text(dummyTitle),
+    //     ),
+    //     BottomNavigationBarItem(
+    //       icon: Icon(Icons.today),
+    //       title: Text(dummyTitle),
+    //     ),
+    //     BottomNavigationBarItem(
+    //       icon: Icon(Icons.insert_chart),
+    //       title: Text(dummyTitle),
+    //     ),
+    //   ],
+    //   currentIndex: _selectedIndex,
+    //   selectedItemColor: Theme.of(context).accentColor,
+    //   onTap: _onBottomItemTapped,
+    // );
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
 
     return Scaffold(
-        appBar: appBarMain(context),
-        //        drawer: myDrawer(context),
+      key: _scaffoldKey,
+        appBar: appBarMain(context, _scaffoldKey),
+               drawer: myDrawer(context),
         // bottomNavigationBar: BottomNavBar(selectedIndex: _selectedIndex),
         // bottomNavigationBar: bottomNavigationBar2,
         bottomNavigationBar: FABBottomAppBar(
@@ -96,35 +99,37 @@ class _MainRouteState extends State<MainRoute> {
         floatingActionButton: SpeedDial(
           backgroundColor: kPrimaryColor,
           animatedIcon: AnimatedIcons.menu_close,
-          onOpen: () {},
+          onOpen: () {
+            // FirebaseAuth.instance.signOut();
+          },
           onClose: () {},
           curve: Curves.elasticIn,
           children: [
             SpeedDialChild(
-              child: Icon(Icons.accessibility, color: Colors.white),
+              child: Icon(Icons.notification_important, color: Colors.white),
               backgroundColor: Colors.deepOrange,
               onTap: () => print('FIRST CHILD'),
-              label: 'First Child',
+              label: '설문조사 (클리커)',
               labelStyle: TextStyle(fontWeight: FontWeight.w500),
               labelBackgroundColor: Colors.deepOrangeAccent,
             ),
             SpeedDialChild(
-              child: Icon(Icons.brush, color: Colors.white),
+              child: Icon(Icons.question_answer, color: Colors.white),
               backgroundColor: Colors.green,
               onTap: () => print('SECOND CHILD'),
-              label: 'Second Child',
+              label: 'Quiz',
               labelStyle: TextStyle(fontWeight: FontWeight.w500),
               labelBackgroundColor: Colors.green,
             ),
             SpeedDialChild(
-              child: Icon(Icons.keyboard_voice, color: Colors.white),
+              child: Icon(Icons.bluetooth, color: Colors.white),
               backgroundColor: Colors.blue,
               onTap: () => print('THIRD CHILD'),
               labelWidget: Container(
                 color: Colors.blue,
                 margin: EdgeInsets.only(right: 10),
                 padding: EdgeInsets.all(6),
-                child: Text('Custom Label Widget'),
+                child: Text('출석모드 시작하기 (블루투스)'),
               ),
             ),
           ],

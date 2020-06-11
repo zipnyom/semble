@@ -6,7 +6,6 @@ import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/home/model/class_model.dart';
 import 'package:schuul/screens/main/home/provider/class_notifier.dart';
 import 'package:schuul/screens/main/widgets/attendance_card.dart';
-import 'package:schuul/screens/main/widgets/info_card.dart';
 import 'package:schuul/services/class_database.dart';
 
 const double side_gap = 16;
@@ -53,21 +52,21 @@ class _HomePageState extends State<HomePage> {
 
     return Container(
       width: double.infinity,
-      child: Padding(
-        padding: EdgeInsets.only(left: 20, top: 20, right: 20),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 20,
-              right: 20,
-              child: SizedBox(
-                  height: size.height * .3,
-                  width: size.width * .5,
-                  child:
-                      SvgPicture.asset("assets/icons/undraw_teacher_35j2.svg")),
-            ),
-            Container(
-              decoration: BoxDecoration(color: Colors.white.withOpacity(.5)),
+      child: Stack(
+        children: [
+          Positioned(
+            top: 20,
+            right: 20,
+            child: SizedBox(
+                height: size.height * .3,
+                width: size.width * .5,
+                child:
+                    SvgPicture.asset("assets/icons/undraw_teacher_35j2.svg")),
+          ),
+          Container(
+            decoration: BoxDecoration(color: Colors.white.withOpacity(.5)),
+            child: Padding(
+              padding: EdgeInsets.only(left: 20, top: 20, right: 20),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,8 +105,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
 
@@ -217,7 +216,7 @@ class CheckStatus extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: kPrimaryColor.withOpacity(0.03),
+        // color: kPrimaryColor.withOpacity(0.03),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(50),
           bottomRight: Radius.circular(50),

@@ -8,9 +8,9 @@ import 'package:schuul/components/rounded_button.dart';
 import 'package:schuul/components/rounded_input_field.dart';
 import 'package:schuul/components/rounded_password_field.dart';
 import 'package:schuul/screens/login/login_screen.dart';
+import 'package:schuul/screens/main/main_route.dart';
 import 'package:schuul/screens/signup/components/background.dart';
 import 'package:schuul/screens/signup/components/social_icon.dart';
-import 'package:schuul/screens/test/main_page.dart';
 
 import 'or_divider.dart';
 
@@ -55,7 +55,7 @@ class _BodyState extends State<Body> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => MainPage(email: user.email)));
+                  builder: (context) => MainRoute(email: user.email)));
         }
       } catch (e) {
         setState(() {

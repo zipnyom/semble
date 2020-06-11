@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:schuul/screens/welcome/welcome_screen.dart';
 
-Widget appBarMain(BuildContext context) {
+Widget appBarMain(BuildContext context, GlobalKey<ScaffoldState> key) {
   return AppBar(
       title: Text("Semble"),
       backgroundColor: Colors.transparent,
@@ -10,6 +11,8 @@ Widget appBarMain(BuildContext context) {
         icon: SvgPicture.asset("assets/icons/menu.svg"),
         onPressed: () {
           print("leading...");
+          // FirebaseAuth.instance.signOut();
+          key.currentState.openDrawer();
         },
       ),
       elevation: 0.0,
@@ -75,10 +78,22 @@ Widget myDrawer(BuildContext context) {
         ListTile(
           title: Text('로그아웃'),
           onTap: () {
-            FirebaseAuth.instance.signOut();
+            _signOut(context);
           },
         ),
       ],
+    ),
+  );
+}
+
+void _signOut(BuildContext context) async {
+  await FirebaseAuth.instance.signOut();
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) {
+        return WelcomeScreen();
+      },
     ),
   );
 }

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:schuul/components/rounded_button.dart';
+import 'package:schuul/constants.dart';
 import 'package:schuul/screens/login/login_screen.dart';
 import 'package:schuul/screens/signup/signup_screen.dart';
 import 'package:schuul/screens/welcome/components/background.dart';
-
-import '../../../constants.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -42,6 +41,7 @@ class Body extends StatelessWidget {
                     },
                   ),
                 );
+
               },
             ),
             RoundedButton(

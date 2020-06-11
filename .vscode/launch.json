@@ -16,12 +16,29 @@
             "request": "launch",
             "program": "lib/main.dart",
             "deviceId": "AA94CAA4-6A81-4F70-B843-9C7FAF398562"
+        },
+        {
+            "name": "IOS",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "deviceId": "b41a7826434df0364b9fce82aa63200b43851823"
         }
     ],
     "compounds": [
         {
-          "name": "All Devices",
-          "configurations": ["Android", "IOSsim"]
+            "name": "All Devices",
+            "configurations": [
+                "Android",
+                "IOSsim"
+            ]
+        },
+        {
+            "name": "Real Devices",
+            "configurations": [
+                "Android",
+                "IOS"
+            ]
         }
-      ]
+    ]
 }

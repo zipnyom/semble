@@ -7,30 +7,47 @@ import 'package:schuul/components/rounded_button.dart';
 import 'package:schuul/components/rounded_input_field.dart';
 import 'package:schuul/components/rounded_password_field.dart';
 import 'package:schuul/screens/login/components/background.dart';
+import 'package:schuul/screens/main/main_route.dart';
 import 'package:schuul/screens/signup/signup_screen.dart';
-import 'package:schuul/screens/test/main_page.dart';
 
-class Body extends StatelessWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
+class Body extends StatefulWidget {
   Body({
     Key key,
   }) : super(key: key);
 
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool isLoading = false;
+
   void _login(BuildContext context) async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       final AuthResult result = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: _emailController.text, password: _passwordController.text);
-      if (result.user != null)
+      if (result.user != null) {
+        setState(() {
+          isLoading = false;
+        });
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => MainPage(email: result.user.email)));
+                // builder: (context) => MainRoute(email: result.user.email)));
+                builder: (context) => MainRoute(email: result.user.email)));
+      }
     } catch (e) {
       print(e);
+      setState(() {
+        isLoading = false;
+      });
       String message = "다시 시도해주세요";
       if (e is PlatformException) {
         switch (e.code) {
@@ -54,67 +71,73 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Background(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "로그인",
-              style: TextStyle(fontWeight: FontWeight.bold),
+    return isLoading
+        ? Container(
+            child: Center(
+              child: Image.asset('assets/loading.gif'),
             ),
-            SizedBox(height: size.height * 0.03),
-            SvgPicture.asset(
-              "assets/icons/undraw_cloud_sync_2aph.svg",
-              height: size.height * 0.35,
-            ),
-            // SvgPicture.asset(
-            //   "assets/icons/login.svg",
-            //   height: size.height * 0.35,
-            // ),
-
-            SizedBox(height: size.height * 0.03),
-
-            Form(
-              key: _formKey,
+          )
+        : Background(
+            child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  RoundedInputField(
-                    hintText: "이메일",
-                    emailController: _emailController,
+                  Text(
+                    "로그인",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  RoundedPasswordField(
-                    passwordController: _passwordController,
+                  SizedBox(height: size.height * 0.03),
+                  SvgPicture.asset(
+                    "assets/icons/undraw_cloud_sync_2aph.svg",
+                    height: size.height * 0.35,
                   ),
-                  RoundedButton(
-                    text: "로그인",
+                  // SvgPicture.asset(
+                  //   "assets/icons/login.svg",
+                  //   height: size.height * 0.35,
+                  // ),
+
+                  SizedBox(height: size.height * 0.03),
+
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        RoundedInputField(
+                          hintText: "이메일",
+                          emailController: _emailController,
+                        ),
+                        RoundedPasswordField(
+                          passwordController: _passwordController,
+                        ),
+                        RoundedButton(
+                          text: "로그인",
+                          press: () {
+                            if (_formKey.currentState.validate()) {
+                              _login(context);
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: size.height * 0.03),
+                  AlreadyHaveAnAccountCheck(
                     press: () {
-                      if (_formKey.currentState.validate()) {
-                        _login(context);
-                      }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return SignUpScreen();
+                          },
+                        ),
+                      );
                     },
                   ),
                 ],
               ),
             ),
-
-            SizedBox(height: size.height * 0.03),
-            AlreadyHaveAnAccountCheck(
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SignUpScreen();
-                    },
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }

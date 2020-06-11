@@ -10,9 +10,10 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
-        appBar: appBarMain(context),
+        appBar: appBarMain(context,_scaffoldKey),
 //        drawer: myDrawer(context),
         body: Stack(
           children: <Widget>[
