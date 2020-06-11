@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:schuul/constants.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/dashboard_page.dart';
@@ -91,9 +92,44 @@ class _MainRouteState extends State<MainRoute> {
             FABBottomAppBarItem(iconData: CustomIcon.cog, text: '설정'),
           ],
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: _buildFab(
-            context), // This trailing comma makes auto-formatting nicer for build methods.
+        // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+        floatingActionButton: SpeedDial(
+          backgroundColor: kPrimaryColor,
+          animatedIcon: AnimatedIcons.menu_close,
+          onOpen: () {},
+          onClose: () {},
+          curve: Curves.elasticIn,
+          children: [
+            SpeedDialChild(
+              child: Icon(Icons.accessibility, color: Colors.white),
+              backgroundColor: Colors.deepOrange,
+              onTap: () => print('FIRST CHILD'),
+              label: 'First Child',
+              labelStyle: TextStyle(fontWeight: FontWeight.w500),
+              labelBackgroundColor: Colors.deepOrangeAccent,
+            ),
+            SpeedDialChild(
+              child: Icon(Icons.brush, color: Colors.white),
+              backgroundColor: Colors.green,
+              onTap: () => print('SECOND CHILD'),
+              label: 'Second Child',
+              labelStyle: TextStyle(fontWeight: FontWeight.w500),
+              labelBackgroundColor: Colors.green,
+            ),
+            SpeedDialChild(
+              child: Icon(Icons.keyboard_voice, color: Colors.white),
+              backgroundColor: Colors.blue,
+              onTap: () => print('THIRD CHILD'),
+              labelWidget: Container(
+                color: Colors.blue,
+                margin: EdgeInsets.only(right: 10),
+                padding: EdgeInsets.all(6),
+                child: Text('Custom Label Widget'),
+              ),
+            ),
+          ],
+        ),
+        // floatingActionButton: _buildFab(context),
         body: _children[_selectedIndex]);
   }
 

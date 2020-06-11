@@ -1,8 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:provider/provider.dart';
-import 'package:schuul/data/join_or_login.dart';
 import 'package:schuul/widgets/widget.dart';
 
 class MainPage extends StatelessWidget {

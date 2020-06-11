@@ -41,6 +41,7 @@ dependencies:
   nfc_in_flutter: ^2.0.4
   flutter_svg: ^0.17.4
   fl_chart: ^0.9.3
+  flutter_speed_dial: ^1.2.5
 
 
 dev_dependencies:
