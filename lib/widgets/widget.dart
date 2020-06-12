@@ -50,7 +50,7 @@ Widget myDrawer(BuildContext context) {
                 IconButton(
 //                    alignment: Alignment.centerLeft,
                   iconSize: 90,
-                  icon: Icon(Icons.account_circle),
+                  icon: Icon(Icons.account_balance),
                   onPressed: () {
                     print("hoho");
                   },
