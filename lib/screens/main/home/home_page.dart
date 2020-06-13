@@ -5,7 +5,7 @@ import 'package:schuul/constants.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/home/model/class_model.dart';
 import 'package:schuul/screens/main/home/provider/class_notifier.dart';
-import 'package:schuul/screens/main/widgets/attendance_card.dart';
+import 'package:schuul/screens/main/widgets/info_card.dart';
 import 'package:schuul/services/class_database.dart';
 
 const double side_gap = 16;
@@ -54,15 +54,7 @@ class _HomePageState extends State<HomePage> {
       width: double.infinity,
       child: Stack(
         children: [
-          Positioned(
-            top: 20,
-            right: 20,
-            child: SizedBox(
-                height: size.height * .3,
-                width: size.width * .5,
-                child:
-                    SvgPicture.asset("assets/icons/undraw_teacher_35j2.svg")),
-          ),
+          Background(size: size),
           Container(
             decoration: BoxDecoration(color: Colors.white.withOpacity(.5)),
             child: Padding(
@@ -81,26 +73,15 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 20,
                     ),
-                    ClassSubTitle(
-                        icon: CustomIcon.attach, title: "$today 출석현황"),
+                    SubTitle(icon: CustomIcon.attach, title: "$today 출석현황"),
                     NarrowGap(),
                     CheckStatus(),
                     SizedBox(
                       height: 30,
                     ),
-                    ClassSubTitle(icon: CustomIcon.doc, title: "공지사항"),
+                    SubTitle(icon: CustomIcon.doc, title: "공지사항"),
                     NarrowGap(),
-
-                    InfoListItem(
-                      title: "안녕하세요 여러분 조정석입니다. 슬기로운 의사생활 때려치고 강의를 시작했어요",
-                      date: "20/06/02",
-                    ),
-                    InfoListItem(
-                        title: "다음주 토요일 수업에 퀴즈 할 예정입니다.", date: "20/06/03"),
-                    InfoListItem(
-                      title: "지각 정책 안내",
-                      date: "20/06/10",
-                    ),
+                    NoticeList()
                   ],
                 ),
               ),
@@ -109,39 +90,51 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+}
 
-//     return MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider<ClassNotifier>.value(value: classNotifier),
-//         ChangeNotifierProvider<PageNotifier>.value(value: pageNotifier),
-//       ],
-//       child: SafeArea(
-//         child: Container(
-//           constraints: BoxConstraints.expand(),
-//           child: Consumer2<ClassNotifier, PageNotifier>(
-//             builder: (context, movieNotifier, pageNotifier, child) {
-//               if (movieNotifier.classes.isEmpty) {
-//                 return Center(child: CircularProgressIndicator());
-//               }
-//               ClassModel classModel =
-//                   classNotifier.classes[pageNotifier.value.floor()];
-//               return Stack(
-//                 children: <Widget>[
-//                   Positioned(
-//                       top: 0,
-//                       left: 0,
-//                       right: 0,
-//                       height: size.width,
-// //                  child:
-// //                      PostPager(page: _page, pageController: _pageController)),
-//                       child: ClassPager()),
-//                 ],
-//               );
-//             },
-//           ),
-//         ),
-//       ),
-//     );
+class NoticeList extends StatelessWidget {
+  const NoticeList({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InfoListItem(
+          title: "안녕하세요 여러분 조정석입니다. 슬기로운 의사생활 때려치고 강의를 시작했어요",
+          date: "20/06/02",
+        ),
+        InfoListItem(
+            title: "다음주 토요일 수업에 퀴즈 할 예정입니다.", date: "20/06/03"),
+        InfoListItem(
+          title: "지각 정책 안내",
+          date: "20/06/10",
+        ),
+      ],
+    );
+  }
+}
+
+class Background extends StatelessWidget {
+  const Background({
+    Key key,
+    @required this.size,
+  }) : super(key: key);
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 20,
+      right: 20,
+      child: SizedBox(
+          height: size.height * .3,
+          width: size.width * .5,
+          child: SvgPicture.asset("assets/icons/undraw_teacher_35j2.svg")),
+    );
   }
 }
 
@@ -243,119 +236,10 @@ class CheckStatus extends StatelessWidget {
   }
 }
 
-class InfoCard extends StatelessWidget {
-  final Color iconColor;
-  final String title;
-  final int count;
-  final int total;
-  final Function press;
-
-  const InfoCard({
-    Key key,
-    this.iconColor,
-    this.title,
-    this.count,
-    this.total,
-    this.press,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: InkWell(
-        onTap: press,
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  offset: Offset(0, 10),
-                  blurRadius: 2,
-                  color: Color(0xFF6DAED9).withOpacity(0.11),
-                ),
-              ]),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    // wrapped within an expanded widget to allow for small density device
-                    Container(
-                      alignment: Alignment.center,
-                      height: 20,
-                      width: 20,
-                      decoration: BoxDecoration(
-                        color: iconColor.withOpacity(0.12),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.ac_unit,
-                        color: iconColor,
-                        size: 12,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(color: kTextColor),
-                        children: [
-                          TextSpan(
-                            text: "$count",
-                            style:
-                                Theme.of(context).textTheme.headline6.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: iconColor,
-                                    ),
-                          ),
-                          TextSpan(
-                            text: "  /$total",
-                            style: TextStyle(
-                              fontSize: 12,
-                              height: 2,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " 명",
-                            style: TextStyle(
-                                fontSize: 13,
-                                height: 2,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ClassSubTitle extends StatelessWidget {
+class SubTitle extends StatelessWidget {
   final String title;
   final IconData icon;
-  const ClassSubTitle({Key key, this.title, this.icon}) : super(key: key);
+  const SubTitle({Key key, this.title, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -378,35 +262,5 @@ class ClassSubTitle extends StatelessWidget {
         ),
       ),
     ]);
-  }
-}
-
-class ClassTitle extends StatelessWidget {
-  const ClassTitle({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: kPrimaryColor.withOpacity(.9),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: "슬기로운 영어 생활",
-              style: Theme.of(context).textTheme.headline5.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
