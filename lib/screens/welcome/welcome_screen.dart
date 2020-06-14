@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:schuul/data/pageHolder.dart';
 import 'package:schuul/screens/main/main_route.dart';
 import 'package:schuul/screens/welcome/components/body.dart';
 
@@ -21,7 +23,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             print("isLoggedIn : $isLoggedIn");
             if (isLoggedIn) {
               print("${snapshot.data.email} has logged in..");
-              return MainRoute(email: snapshot.data.email);
+              return MultiProvider(providers : [ChangeNotifierProvider(builder: (_) => PageProvider(), create: (BuildContext context) {  },)],child: MainRoute(email: snapshot.data.email));
             } else {
               return Scaffold(body: Body());
             }
@@ -39,26 +41,4 @@ Widget _buildWatingScreen() {
       alignment: Alignment.center,
     ),
   );
-}
-
-class TestScreen extends StatelessWidget {
-  const TestScreen({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Container(
-          child: Center(
-            child: FlatButton(
-              child: Text("logout"),
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
