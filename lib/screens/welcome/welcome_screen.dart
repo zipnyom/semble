@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:schuul/data/pageHolder.dart';
+import 'package:schuul/data/page_provider.dart';
 import 'package:schuul/screens/main/main_route.dart';
 import 'package:schuul/screens/welcome/components/body.dart';
 
@@ -23,7 +23,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             print("isLoggedIn : $isLoggedIn");
             if (isLoggedIn) {
               print("${snapshot.data.email} has logged in..");
-              return MultiProvider(providers : [ChangeNotifierProvider(builder: (_) => PageProvider(), create: (BuildContext context) {  },)],child: MainRoute(email: snapshot.data.email));
+              return MultiProvider(providers: [
+                ChangeNotifierProvider<PageProvider>.value(
+                    value: PageProvider())
+              ], child: MainRoute(email: snapshot.data.email));
             } else {
               return Scaffold(body: Body());
             }

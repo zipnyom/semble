@@ -21,6 +21,7 @@ class PageProvider extends ChangeNotifier {
     [CalendarPage()],
     [AccountPage()],
   ];
+  List<List<Widget>> get pages => _pages;
 
   Widget _currentBody = _pages[0][0];
   Widget get currentBody => _currentBody;
