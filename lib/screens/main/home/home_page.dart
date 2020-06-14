@@ -217,7 +217,6 @@ class AttendanceStatus extends StatelessWidget {
           iconColor: Color(0xFFFF8C00),
           count: 60,
           total: 100,
-          
         ),
         InfoCard(
           title: "결석",
