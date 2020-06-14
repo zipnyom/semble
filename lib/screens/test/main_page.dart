@@ -13,7 +13,7 @@ class MainPage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
-        appBar: appBarMain(context,_scaffoldKey),
+        appBar: appBarMain(context,_scaffoldKey,"Semble"),
 //        drawer: myDrawer(context),
         body: Stack(
           children: <Widget>[

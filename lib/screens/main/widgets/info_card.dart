@@ -1,13 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:schuul/constants.dart';
+import 'package:schuul/screens/main/home/att_detail.dart';
 
 class InfoCard extends StatelessWidget {
   final Color iconColor;
   final String title;
   final int count;
   final int total;
-  final Function press;
 
   const InfoCard({
     Key key,
@@ -15,16 +14,24 @@ class InfoCard extends StatelessWidget {
     this.title,
     this.count,
     this.total,
-    this.press,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    void press() {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AttDetailPage(
+                    title: title,
+                  )));
+    }
+
     return Material(
       child: InkWell(
         onTap: press,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal:10),
+          padding: EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
@@ -39,7 +46,9 @@ class InfoCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5,),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 5,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[

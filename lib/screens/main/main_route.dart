@@ -1,18 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:schuul/constants.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/dashboard_page.dart';
 import 'package:schuul/screens/main/home/home_page.dart';
 import 'package:schuul/screens/main/calendar_page.dart';
+import 'package:schuul/screens/main/widgets/spped_dial.dart';
 import 'package:schuul/widgets/widget.dart';
-
 import 'account_page.dart';
 import 'bottom_nav/fab_bottom_app_bar.dart';
-import 'bottom_nav/fab_with_icons.dart';
-import 'bottom_nav/layout.dart';
 
 class MainRoute extends StatefulWidget {
   MainRoute({this.email});
@@ -23,26 +18,11 @@ class MainRoute extends StatefulWidget {
 
 class _MainRouteState extends State<MainRoute> {
   static int _selectedIndex = 0;
-  String _lastSelected = 'TAB: 0';
-
   void _selectedTab(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
-  void _selectedFab(int index) {
-    setState(() {
-      _lastSelected = 'FAB: $index';
-    });
-  }
-
-  void _onBottomItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final List<Widget> _children = [
@@ -51,37 +31,9 @@ class _MainRouteState extends State<MainRoute> {
       CalendarPage(),
       AccountPage(),
     ];
-    final String dummyTitle = '______';
-
-    // var bottomNavigationBar2 = BottomNavigationBar(
-    //   type: BottomNavigationBarType.fixed,
-    //   items: [
-    //     BottomNavigationBarItem(
-    //       icon: Icon(Icons.home),
-    //       title: Text(dummyTitle),
-    //     ),
-    //     BottomNavigationBarItem(
-    //       icon: Icon(Icons.today),
-    //       title: Text(dummyTitle),
-    //     ),
-    //     BottomNavigationBarItem(
-    //       icon: Icon(Icons.insert_chart),
-    //       title: Text(dummyTitle),
-    //     ),
-    //   ],
-    //   currentIndex: _selectedIndex,
-    //   selectedItemColor: Theme.of(context).accentColor,
-    //   onTap: _onBottomItemTapped,
-    // );
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
-      key: _scaffoldKey,
-        appBar: appBarMain(context, _scaffoldKey),
-               drawer: myDrawer(context),
-        // bottomNavigationBar: BottomNavBar(selectedIndex: _selectedIndex),
-        // bottomNavigationBar: bottomNavigationBar2,
+        key: _scaffoldKey,
         bottomNavigationBar: FABBottomAppBar(
           // centerItemText: 'A',c
           color: Colors.grey,
@@ -96,84 +48,10 @@ class _MainRouteState extends State<MainRoute> {
           ],
         ),
         // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-        floatingActionButton: SpeedDial(
-          backgroundColor: kPrimaryColor,
-          animatedIcon: AnimatedIcons.menu_close,
-          onOpen: () {
-            // FirebaseAuth.instance.signOut();
-          },
-          onClose: () {},
-          curve: Curves.elasticIn,
-          children: [
-            SpeedDialChild(
-              child: Icon(Icons.notification_important, color: Colors.white),
-              backgroundColor: Colors.deepOrange,
-              onTap: () => print('FIRST CHILD'),
-              label: '설문조사 (클리커)',
-              labelStyle: TextStyle(fontWeight: FontWeight.w500),
-              labelBackgroundColor: Colors.deepOrangeAccent,
-            ),
-            SpeedDialChild(
-              child: Icon(Icons.question_answer, color: Colors.white),
-              backgroundColor: Colors.green,
-              onTap: () => print('SECOND CHILD'),
-              label: 'Quiz',
-              labelStyle: TextStyle(fontWeight: FontWeight.w500),
-              labelBackgroundColor: Colors.green,
-            ),
-            SpeedDialChild(
-              child: Icon(Icons.bluetooth, color: Colors.white),
-              backgroundColor: Colors.blue,
-              onTap: () => print('THIRD CHILD'),
-              labelWidget: Container(
-                color: Colors.blue,
-                margin: EdgeInsets.only(right: 10),
-                padding: EdgeInsets.all(6),
-                child: Text('출석모드 시작하기 (블루투스)'),
-              ),
-            ),
-          ],
-        ),
-        // floatingActionButton: _buildFab(context),
-        body: _children[_selectedIndex]);
-  }
-
-  Widget _buildFab(BuildContext context) {
-    final icons = [Icons.sms, Icons.mail, Icons.phone];
-    return AnchoredOverlay(
-      showOverlay: true,
-      overlayBuilder: (context, offset) {
-        return CenterAbout(
-          position: Offset(offset.dx, offset.dy - icons.length * 35.0),
-          child: FabWithIcons(
-            icons: icons,
-            onIconTapped: _selectedFab,
-          ),
-        );
-      },
-      child: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: Icon(Icons.check),
-        elevation: 2.0,
-      ),
-    );
-  }
-}
-
-class CustomBottomNavigationBar extends StatelessWidget {
-  const CustomBottomNavigationBar({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 75,
-      width: double.infinity,
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [
-        BoxShadow(
-            offset: Offset(0, -7), blurRadius: 33, color: Color(0xFF6DAED9))
-      ]),
-      child: Row(),
-    );
+        floatingActionButton: MainSpeedDial(),
+        body: Padding(
+          padding : EdgeInsets.only(top :40)
+          ,child : 
+          _children[_selectedIndex]));
   }
 }

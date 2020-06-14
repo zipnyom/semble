@@ -3,16 +3,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:schuul/screens/welcome/welcome_screen.dart';
 
-Widget appBarMain(BuildContext context, GlobalKey<ScaffoldState> key) {
+Widget appBarMain(
+    BuildContext context, GlobalKey<ScaffoldState> key, String title) {
   return AppBar(
-      title: Text("Semble"),
+      title: Text(title),
       backgroundColor: Colors.transparent,
       leading: IconButton(
         icon: SvgPicture.asset("assets/icons/menu.svg"),
         onPressed: () {
-          print("leading...");
-          // FirebaseAuth.instance.signOut();
           key.currentState.openDrawer();
+        },
+      ),
+      elevation: 0.0,
+      actions: <Widget>[
+        // action button
+        Material(
+          child: InkWell(
+            child: Image.asset("assets/images/user.png"),
+            onTap: () {},
+          ),
+        ),
+      ]
+//    centerTitle: false,
+      );
+}
+
+Widget appBarDetail(BuildContext context, String title) {
+  return AppBar(
+      title: Text(title),
+      backgroundColor: Colors.transparent,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+          color: Color(0xFFb5bfd0),
+        ),
+        onPressed: () {
+          Navigator.pop(context);
         },
       ),
       elevation: 0.0,

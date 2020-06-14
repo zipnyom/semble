@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:schuul/constants.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
+import 'package:schuul/screens/main/home/att_detail.dart';
 import 'package:schuul/screens/main/home/model/class_model.dart';
 import 'package:schuul/screens/main/home/provider/class_notifier.dart';
 import 'package:schuul/screens/main/widgets/info_card.dart';
@@ -75,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     SubTitle(icon: CustomIcon.attach, title: "$today 출석현황"),
                     NarrowGap(),
-                    CheckStatus(),
+                    AttendanceStatus(),
                     SizedBox(
                       height: 30,
                     ),
@@ -106,8 +107,7 @@ class NoticeList extends StatelessWidget {
           title: "안녕하세요 여러분 조정석입니다. 슬기로운 의사생활 때려치고 강의를 시작했어요",
           date: "20/06/02",
         ),
-        InfoListItem(
-            title: "다음주 토요일 수업에 퀴즈 할 예정입니다.", date: "20/06/03"),
+        InfoListItem(title: "다음주 토요일 수업에 퀴즈 할 예정입니다.", date: "20/06/03"),
         InfoListItem(
           title: "지각 정책 안내",
           date: "20/06/10",
@@ -200,13 +200,15 @@ class NarrowGap extends StatelessWidget {
   }
 }
 
-class CheckStatus extends StatelessWidget {
-  const CheckStatus({
+class AttendanceStatus extends StatelessWidget {
+  const AttendanceStatus({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -215,21 +217,19 @@ class CheckStatus extends StatelessWidget {
           iconColor: Color(0xFFFF8C00),
           count: 60,
           total: 100,
-          press: () {},
+          
         ),
         InfoCard(
           title: "결석",
           iconColor: Color(0xFFFF2D55),
           count: 12,
           total: 100,
-          press: () {},
         ),
         InfoCard(
           title: "지각",
           iconColor: Colors.blueAccent,
           count: 18,
           total: 100,
-          press: () {},
         ),
       ],
     );
