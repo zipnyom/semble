@@ -6,7 +6,6 @@ import 'package:schuul/screens/main/account_page.dart';
 import 'package:schuul/screens/main/calendar_page.dart';
 import 'package:schuul/screens/main/dashboard_page.dart';
 import 'package:schuul/screens/main/home/att_detail.dart';
-import 'package:schuul/screens/main/home/home_page.dart';
 
 enum TabItem { home, dashboard, calendar, setting }
 
