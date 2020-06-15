@@ -20,7 +20,6 @@ class AttDetailPage extends StatelessWidget {
         ],
         child: Scaffold(
           appBar: appBarDetail(context, "출석 상세화면"),
-          bottomNavigationBar: customBottomNavBar,
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:schuul/constants.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
-import 'package:schuul/screens/main/home/att_detail.dart';
 import 'package:schuul/screens/main/home/model/class_model.dart';
 import 'package:schuul/screens/main/home/provider/class_notifier.dart';
 import 'package:schuul/screens/main/widgets/info_card.dart';
@@ -51,44 +50,55 @@ class _HomePageState extends State<HomePage> {
     DateTime now = DateTime.now();
     String today = "${now.month}/${now.day}";
 
-    return Container(
-      width: double.infinity,
-      child: Stack(
-        children: [
-          Background(size: size),
-          Container(
-            decoration: BoxDecoration(color: Colors.white.withOpacity(.5)),
-            child: Padding(
-              padding: EdgeInsets.only(left: 20, top: 20, right: 20),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("조정석님,", style: kHeadingextStyle),
-                    Text("오늘도 즐거운 수업 되세요!", style: kSubheadingextStyle),
-                    Text("수업명 : 슬기로운 영어생활"),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    // ClassTitle(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SubTitle(icon: CustomIcon.attach, title: "$today 출석현황"),
-                    NarrowGap(),
-                    AttendanceStatus(),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    SubTitle(icon: CustomIcon.doc, title: "공지사항"),
-                    NarrowGap(),
-                    NoticeList()
-                  ],
+    return Scaffold(
+      appBar: AppBar(
+          title: Text(
+            "Today",
+            style: TextStyle(color: kTextColor),
+          ),
+          brightness: Brightness.light,
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          actions: <Widget>[]),
+      body: Container(
+        width: double.infinity,
+        child: Stack(
+          children: [
+            Background(size: size),
+            Container(
+              decoration: BoxDecoration(color: Colors.white.withOpacity(.5)),
+              child: Padding(
+                padding: EdgeInsets.only(left: 20, top: 20, right: 20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("조정석님,", style: kHeadingextStyle),
+                      Text("오늘도 즐거운 수업 되세요!", style: kSubheadingextStyle),
+                      Text("수업명 : 슬기로운 영어생활"),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      // ClassTitle(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      SubTitle(icon: CustomIcon.attach, title: "$today 출석현황"),
+                      NarrowGap(),
+                      AttendanceStatus(),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      SubTitle(icon: CustomIcon.doc, title: "공지사항"),
+                      NarrowGap(),
+                      NoticeList()
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -207,8 +217,6 @@ class AttendanceStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[

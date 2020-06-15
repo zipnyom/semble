@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:schuul/constants.dart';
 import 'package:schuul/screens/main/widgets/bottom_navigation.dart';
 import 'package:schuul/screens/main/widgets/tab_navigator.dart';
+import 'package:schuul/widgets/widget.dart';
 
 class MainRoute extends StatefulWidget {
   MainRoute({this.email});
@@ -10,8 +12,7 @@ class MainRoute extends StatefulWidget {
 }
 
 class _MainRouteState extends State<MainRoute> {
-
- TabItem _currentTab = TabItem.home;
+  TabItem _currentTab = TabItem.home;
   Map<TabItem, GlobalKey<NavigatorState>> _navigatorKeys = {
     TabItem.home: GlobalKey<NavigatorState>(),
     TabItem.dashboard: GlobalKey<NavigatorState>(),
@@ -19,7 +20,7 @@ class _MainRouteState extends State<MainRoute> {
     TabItem.setting: GlobalKey<NavigatorState>(),
   };
 
-void _selectTab(TabItem tabItem) {
+  void _selectTab(TabItem tabItem) {
     if (tabItem == _currentTab) {
       // pop to first route
       _navigatorKeys[tabItem].currentState.popUntil((route) => route.isFirst);
@@ -27,6 +28,7 @@ void _selectTab(TabItem tabItem) {
       setState(() => _currentTab = tabItem);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -70,4 +72,3 @@ void _selectTab(TabItem tabItem) {
     );
   }
 }
-

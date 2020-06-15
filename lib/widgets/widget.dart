@@ -32,6 +32,7 @@ Widget appBarDetail(BuildContext context, String title) {
   return AppBar(
       title: Text(title),
       backgroundColor: Colors.transparent,
+      brightness: Brightness.light,
       leading: IconButton(
         icon: Icon(
           Icons.arrow_back,

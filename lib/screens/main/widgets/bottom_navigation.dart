@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:schuul/constants.dart';
+import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/account_page.dart';
 import 'package:schuul/screens/main/calendar_page.dart';
 import 'package:schuul/screens/main/dashboard_page.dart';
@@ -18,6 +19,13 @@ Map<TabItem, Widget> activeTab = {
   TabItem.dashboard: DashBoardPage(),
   TabItem.calendar: CalendarPage(),
   TabItem.setting: AccountPage()
+};
+
+Map<TabItem, IconData> tabIcon = {
+  TabItem.home: CustomIcon.heart,
+  TabItem.dashboard: CustomIcon.params,
+  TabItem.calendar: CustomIcon.calendar,
+  TabItem.setting: CustomIcon.cog
 };
 
 class BottomNavigation extends StatelessWidget {
@@ -43,10 +51,9 @@ class BottomNavigation extends StatelessWidget {
 
   BottomNavigationBarItem _buildItem({TabItem tabItem}) {
     String text = tabName[tabItem];
-    IconData icon = Icons.layers;
     return BottomNavigationBarItem(
       icon: Icon(
-        icon,
+        tabIcon[tabItem],
         color: _colorTabMatching(item: tabItem),
       ),
       title: Text(
