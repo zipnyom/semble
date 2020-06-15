@@ -1,7 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:schuul/constants.dart';
 import 'package:schuul/screens/welcome/welcome_screen.dart';
+
+Widget customAppBar(String title, bool centerTitle) {
+  return AppBar(
+      title: Text(
+        title,
+        style: TextStyle(color: kTextColor),
+      ),
+      iconTheme: IconThemeData(
+        color: kTextColor, //change your color here
+      ),
+      centerTitle: centerTitle,
+      brightness: Brightness.light,
+      backgroundColor: Colors.transparent,
+      elevation: 0.0,
+      actions: <Widget>[]);
+}
 
 Widget appBarMain(
     BuildContext context, GlobalKey<ScaffoldState> key, String title) {

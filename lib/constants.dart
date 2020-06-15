@@ -21,12 +21,12 @@ const kInactiveChartColor = Color(0xFFEAECEF);
 
 // My Text Styles
 const kHeadingextStyle = TextStyle(
-  fontSize: 28,
+  fontSize: 22,
   color: kTextColor,
   fontWeight: FontWeight.bold,
 );
 const kSubheadingextStyle = TextStyle(
-  fontSize: 24,
+  fontSize: 20,
   color: Color(0xFF61688B),
   height: 2,
 );
@@ -42,3 +42,8 @@ const kSubtitleTextSyule = TextStyle(
   color: kTextColor,
   // fontWeight: FontWeight.bold,
 );
+
+
+const kAttendColor = Color(0xFFFF8C00);
+const kTardyColor = Color(0xFFFF2D55); 
+const kCutColor = Colors.blueAccent;

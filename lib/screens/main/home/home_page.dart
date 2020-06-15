@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:schuul/constants.dart';
+import 'package:schuul/data/enums/attend_type.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/home/model/class_model.dart';
 import 'package:schuul/screens/main/home/provider/class_notifier.dart';
 import 'package:schuul/screens/main/widgets/info_card.dart';
 import 'package:schuul/services/class_database.dart';
+import 'package:schuul/widgets/widget.dart';
 
 const double side_gap = 16;
 
@@ -51,15 +53,7 @@ class _HomePageState extends State<HomePage> {
     String today = "${now.month}/${now.day}";
 
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-            "Today",
-            style: TextStyle(color: kTextColor),
-          ),
-          brightness: Brightness.light,
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          actions: <Widget>[]),
+      appBar: customAppBar("Today", false),
       body: Container(
         width: double.infinity,
         child: Stack(
@@ -68,7 +62,7 @@ class _HomePageState extends State<HomePage> {
             Container(
               decoration: BoxDecoration(color: Colors.white.withOpacity(.5)),
               child: Padding(
-                padding: EdgeInsets.only(left: 20, top: 20, right: 20),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,20 +215,20 @@ class AttendanceStatus extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         InfoCard(
-          title: "출석",
-          iconColor: Color(0xFFFF8C00),
+          type: AttendType.attend,
+          iconColor: kAttendColor,
           count: 60,
           total: 100,
         ),
         InfoCard(
-          title: "결석",
-          iconColor: Color(0xFFFF2D55),
+          type: AttendType.tardy,
+          iconColor: kTardyColor,
           count: 12,
           total: 100,
         ),
         InfoCard(
-          title: "지각",
-          iconColor: Colors.blueAccent,
+          type: AttendType.cut,
+          iconColor: kCutColor,
           count: 18,
           total: 100,
         ),

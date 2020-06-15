@@ -1,116 +1,82 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:schuul/constants.dart';
+import 'package:schuul/data/enums/attend_type.dart';
 import 'package:schuul/data/page_provider.dart';
-import 'package:schuul/screens/main/widgets/custom_nav_bar.dart';
+import 'package:schuul/screens/main/home/model/attendance.dart';
+import 'package:schuul/screens/main/widgets/sub_tab_item.dart';
 import 'package:schuul/widgets/widget.dart';
 
 class AttDetailPage extends StatelessWidget {
-  final String title;
-
-  const AttDetailPage({Key key, this.title}) : super(key: key);
+  final AttendType type;
+  AttDetailPage({Key key, this.type}) : super(key: key);
+  List<Attendance> list;
+  void packSampleAttendance() {
+    list = List<Attendance>();
+    for (int i = 1; i <= 5; i++) {
+      String num = i.toString();
+      list.add(new Attendance("강의 " + num, "학생 " + num, "2020-06-03",
+          "테스트출석" + num + "의 설명", "컨퍼머" + num, "방법" + (i + 5).toString()));
+    }
+    for (Attendance model in list) {
+      print(model.toJson());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
     String today = "${now.year}-${now.month}-${now.day}";
 
+    packSampleAttendance();
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<PageProvider>.value(value: PageProvider())
         ],
         child: Scaffold(
-          appBar: appBarDetail(context, "출석 상세화면"),
+          appBar: customAppBar("출석현황", true),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Row(children: [Text(today)]),
-                Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      color: Colors.orangeAccent,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0, 7),
-                          blurRadius: 2,
-                          color: Color(0xFF6DAED9).withOpacity(0.21),
-                        ),
-                      ]),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 5,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            // wrapped within an expanded widget to allow for small density device
-                            // Container(
-                            //   alignment: Alignment.center,
-                            //   height: 20,
-                            //   width: 20,
-                            //   decoration: BoxDecoration(
-                            //     color: iconColor.withOpacity(0.12),
-                            //     shape: BoxShape.circle,
-                            //   ),
-                            //   child: Icon(
-                            //     Icons.ac_unit,
-                            //     color: iconColor,
-                            //     size: 12,
-                            //   ),
-                            // ),
-                            SizedBox(width: 5),
-                            Text(
-                              title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.chevron_left),
+                        onPressed: () {},
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            // RichText(
-                            //   text: TextSpan(
-                            //     style: TextStyle(color: kTextColor),
-                            //     children: [
-                            //       TextSpan(
-                            //         text: "$count",
-                            //         style:
-                            //             Theme.of(context).textTheme.headline6.copyWith(
-                            //                   fontWeight: FontWeight.bold,
-                            //                   color: iconColor,
-                            //                 ),
-                            //       ),
-                            //       TextSpan(
-                            //         text: "  /$total",
-                            //         style: TextStyle(
-                            //           fontSize: 12,
-                            //           height: 2,
-                            //         ),
-                            //       ),
-                            //       TextSpan(
-                            //         text: " 명",
-                            //         style: TextStyle(
-                            //             fontSize: 13,
-                            //             height: 2,
-                            //             fontWeight: FontWeight.bold),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                      Text(today),
+                      IconButton(
+                        icon: Icon(Icons.chevron_right),
+                        onPressed: () {},
+                      ),
+                    ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SubTabItem(
+                        iconColor: kAttendColor, title: AttendType.attend.name),
+                    SubTabItem(
+                        iconColor: kTardyColor, title: AttendType.tardy.name),
+                    SubTabItem(
+                        iconColor: kCutColor, title: AttendType.cut.name),
+                  ],
                 ),
+                ListView.builder(
+                  shrinkWrap: true,
+                    itemCount: list.length,
+                    itemBuilder: (_, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(list[index].className),
+                          ),
+                        ),
+                      );
+                    })
               ],
             ),
           ),
