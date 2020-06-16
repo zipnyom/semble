@@ -47,8 +47,14 @@ Widget appBarMain(
 
 Widget appBarDetail(BuildContext context, String title) {
   return AppBar(
-      title: Text(title),
       backgroundColor: Colors.transparent,
+      title: Text(
+        title,
+        style: TextStyle(color: kTextColor),
+      ),
+      iconTheme: IconThemeData(
+        color: kTextColor, //change your color here
+      ),
       brightness: Brightness.light,
       leading: IconButton(
         icon: Icon(
@@ -60,17 +66,7 @@ Widget appBarDetail(BuildContext context, String title) {
         },
       ),
       elevation: 0.0,
-      actions: <Widget>[
-        // action button
-        Material(
-          child: InkWell(
-            child: Image.asset("assets/images/user.png"),
-            onTap: () {
-              print(" user...");
-            },
-          ),
-        ),
-      ]
+      actions: <Widget>[]
 //    centerTitle: false,
       );
 }

@@ -14,12 +14,12 @@ import 'package:schuul/widgets/widget.dart';
 class AttDetailPage extends StatefulWidget {
   final AttendType type;
   AttDetailPage({Key key, this.type}) : super(key: key);
-
   @override
   _AttDetailPageState createState() => _AttDetailPageState();
 }
 
 class _AttDetailPageState extends State<AttDetailPage> {
+  
   List<Attendance> list;
   void packSampleAttendance() {
     list = List<Attendance>();
@@ -65,7 +65,7 @@ class _AttDetailPageState extends State<AttDetailPage> {
                 children: [
                   ChooseDate(),
                   // CustomChip(),
-                  CategoryChips(),
+                  CategoryChips(defaultType: widget.type,),
                   SortChips(),
                   SizedBox(
                     height: 10,
@@ -231,8 +231,9 @@ class SortChips extends StatelessWidget {
 }
 
 class CategoryChips extends StatelessWidget {
+  final AttendType defaultType;
   const CategoryChips({
-    Key key,
+    Key key, this.defaultType,
   }) : super(key: key);
 
   @override
@@ -249,16 +250,16 @@ class CategoryChips extends StatelessWidget {
               runSpacing: 3.0,
               children: <Widget>[
                 FilterChipWidget(
-                  chipName: '출석',
-                  isSelected: true,
+                  chipName: AttendType.attend.name,
+                  isSelected: defaultType == AttendType.attend,
                 ),
                 FilterChipWidget(
-                  chipName: '지각',
-                  isSelected: false,
+                  chipName: AttendType.tardy.name,
+                  isSelected: defaultType == AttendType.tardy,
                 ),
                 FilterChipWidget(
-                  chipName: '결석',
-                  isSelected: false,
+                  chipName: AttendType.cut.name,
+                  isSelected: defaultType == AttendType.cut,
                 ),
               ],
             ),

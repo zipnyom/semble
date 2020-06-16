@@ -6,6 +6,8 @@ import 'package:schuul/screens/main/account_page.dart';
 import 'package:schuul/screens/main/calendar_page.dart';
 import 'package:schuul/screens/main/dashboard_page.dart';
 import 'package:schuul/screens/main/home/att_detail.dart';
+import 'package:schuul/screens/main/home/home_page.dart';
+import 'package:schuul/screens/main/notice_detail.dart';
 
 enum TabItem { home, dashboard, calendar, setting }
 
@@ -16,7 +18,8 @@ Map<TabItem, String> tabName = {
   TabItem.setting: '설정',
 };
 Map<TabItem, Widget> activeTab = {
-  TabItem.home: AttDetailPage(type: AttendType.attend,),
+  TabItem.home: NoticeDetailPage(id: 1),
+  // TabItem.home: AttDetailPage(type: AttendType.attend,),
   // TabItem.home: HomePage(),
   TabItem.dashboard: DashBoardPage(),
   TabItem.calendar: CalendarPage(),
@@ -60,7 +63,9 @@ class BottomNavigation extends StatelessWidget {
       ),
       title: Text(
         text,
-        style: TextStyle(color: _colorTabMatching(item: tabItem),),
+        style: TextStyle(
+          color: _colorTabMatching(item: tabItem),
+        ),
       ),
     );
   }

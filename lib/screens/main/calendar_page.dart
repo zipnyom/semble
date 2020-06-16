@@ -178,18 +178,21 @@ class _CalendarPageState extends State<CalendarPage>
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Scaffold(
+      appBar: customAppBar("캘린더", false, []),
+      body: ListView(
 //      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
+        children: <Widget>[
 //        _buildButtons(),
-        const SizedBox(height: 8.0),
-        // Switch out 2 lines below to play with TableCalendar's settings
-        //-----------------------
-        _buildTableCalendar(),
+          const SizedBox(height: 8.0),
+          // Switch out 2 lines below to play with TableCalendar's settings
+          //-----------------------
+          _buildTableCalendar(),
 //         _buildTableCalendarWithBuilders(),
-        const SizedBox(height: 8.0),
-        _buildEventList(),
-      ],
+          const SizedBox(height: 8.0),
+          _buildEventList(),
+        ],
+      ),
     );
   }
 

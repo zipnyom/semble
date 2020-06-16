@@ -10,6 +10,8 @@ import 'package:schuul/screens/main/widgets/info_card.dart';
 import 'package:schuul/services/class_database.dart';
 import 'package:schuul/widgets/widget.dart';
 
+import '../notice_detail.dart';
+
 const double side_gap = 16;
 
 class HomePage extends StatefulWidget {
@@ -108,12 +110,14 @@ class NoticeList extends StatelessWidget {
     return Column(
       children: [
         InfoListItem(
-          title: "안녕하세요 여러분 조정석입니다. 슬기로운 의사생활 때려치고 강의를 시작했어요",
+          id: 1,
+          title: sampleTitle1,
           date: "20/06/02",
         ),
-        InfoListItem(title: "다음주 토요일 수업에 퀴즈 할 예정입니다.", date: "20/06/03"),
+        InfoListItem(id: 2, title: sampleTitle2, date: "20/06/03"),
         InfoListItem(
-          title: "지각 정책 안내",
+          id: 3,
+          title: sampleTitle3,
           date: "20/06/10",
         ),
       ],
@@ -143,51 +147,65 @@ class Background extends StatelessWidget {
 }
 
 class InfoListItem extends StatelessWidget {
+  final int id;
   final String title;
   final String date;
 
   const InfoListItem({
     Key key,
+    this.id,
     this.title,
     this.date,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Container(
-        decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(.07),
-            boxShadow: [
-              BoxShadow(
-                offset: Offset(0, -7),
-                blurRadius: 33,
-                color: Color(0xFF6DAED9).withOpacity(0.11),
+    return Material(
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => NoticeDetailPage(
+                        id: id,
+                      )));
+        },
+        child: Column(children: [
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(.07),
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(0, -7),
+                    blurRadius: 33,
+                    color: Color(0xFF6DAED9).withOpacity(0.11),
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(10)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(date)
+                ],
               ),
-            ],
-            borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  title,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(date)
-            ],
+            ),
           ),
-        ),
+          SizedBox(
+            height: 10,
+          )
+        ]),
       ),
-      SizedBox(
-        height: 10,
-      )
-    ]);
+    );
   }
 }
 
