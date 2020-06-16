@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/constants.dart';
+import 'package:schuul/data/enums/action_type.dart';
 import 'package:schuul/data/enums/attend_type.dart';
 import 'package:schuul/data/page_provider.dart';
 import 'package:schuul/screens/main/home/model/attendance.dart';
@@ -19,7 +21,6 @@ class AttDetailPage extends StatefulWidget {
 
 class _AttDetailPageState extends State<AttDetailPage> {
   List<Attendance> list;
-  var _tapPosition;
   void packSampleAttendance() {
     list = List<Attendance>();
     for (int i = 1; i <= 20; i++) {
@@ -40,33 +41,29 @@ class _AttDetailPageState extends State<AttDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-    String today = "${now.year}-${now.month}-${now.day}";
-
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<PageProvider>.value(value: PageProvider())
         ],
         child: Scaffold(
-          appBar: customAppBar("출석현황", true),
+          appBar: customAppBar("출석현황", true, [
+            Padding(
+              padding: EdgeInsets.only(right: 15),
+              child: CustomPopupMenuButton(
+                list: [
+                  ActionType.bulkAttend,
+                  ActionType.bulkTardy,
+                  ActionType.bulkCut
+                ],
+              ),
+            )
+          ]),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.chevron_left),
-                          onPressed: () {},
-                        ),
-                        Text(today),
-                        IconButton(
-                          icon: Icon(Icons.chevron_right),
-                          onPressed: () {},
-                        ),
-                      ]),
+                  ChooseDate(),
                   // CustomChip(),
                   CategoryChips(),
                   SortChips(),
@@ -91,22 +88,11 @@ class _AttDetailPageState extends State<AttDetailPage> {
                               print(list[index].checked);
                             },
                             checkColor: Colors.white,
-                            secondary: PopupMenuButton(
-                              child: Icon(Icons.more_vert),
-                              itemBuilder: (BuildContext context) =>
-                                  <PopupMenuEntry<String>>[
-                                const PopupMenuItem<String>(
-                                  value: 'Value1',
-                                  child: Text('Choose value 1'),
-                                ),
-                                const PopupMenuItem<String>(
-                                  value: 'Value2',
-                                  child: Text('Choose value 2'),
-                                ),
-                                const PopupMenuItem<String>(
-                                  value: 'Value3',
-                                  child: Text('Choose value 3'),
-                                ),
+                            secondary: CustomPopupMenuButton(
+                              list: [
+                                ActionType.attend,
+                                ActionType.tardy,
+                                ActionType.cut
                               ],
                             ));
                       })
@@ -116,36 +102,103 @@ class _AttDetailPageState extends State<AttDetailPage> {
           ),
         ));
   }
+}
 
-  void _storePosition(TapDownDetails details) {
-    print("test");
-    setState(() {
-      _tapPosition = details.globalPosition;
-    });
+class CustomPopupMenuButton extends StatelessWidget {
+  final List<ActionType> list;
+
+  const CustomPopupMenuButton({
+    Key key,
+    this.list,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+        onSelected: (value) {
+          print(value);
+        },
+        child: Icon(Icons.more_vert),
+        itemBuilder: (BuildContext context) =>
+            List<PopupMenuEntry<ActionType>>.generate(
+              list.length,
+              (index) => PopupMenuItem<ActionType>(
+                value: list[index],
+                child: Align(
+                    alignment: Alignment.center, child: Text(list[index].name)),
+              ),
+            ));
   }
+}
 
-  _showPopupMenu() async {
-    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+class ChooseDate extends StatefulWidget {
+  const ChooseDate({
+    Key key,
+  }) : super(key: key);
 
-    await showMenu(
-      context: context,
-      position: RelativeRect.fromRect(
-          _tapPosition & Size(40, 40), // smaller rect, the touch area
-          Offset.zero & overlay.size // Bigger rect, the entire screen
+  @override
+  _ChooseDateState createState() => _ChooseDateState();
+}
+
+class _ChooseDateState extends State<ChooseDate> {
+  static DateTime curDate = DateTime.now();
+  String curDateString = DateFormat('M월 d일 (E)', "ko_KO").format(curDate);
+
+  @override
+  Widget build(BuildContext context) {
+    double iconSize = 35;
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+      IconButton(
+        icon: Icon(Icons.chevron_left),
+        iconSize: iconSize,
+        onPressed: () {
+          setState(() {
+            curDate = curDate.subtract(Duration(days: 1));
+            curDateString = DateFormat('M월 d일 (E)', "ko_KO").format(curDate);
+          });
+        },
+      ),
+      Material(
+        child: InkWell(
+          onTap: () async {
+            DateTime result = await showDatePicker(
+              context: context,
+              locale: const Locale('ko', 'KO'),
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2019),
+              lastDate: DateTime(2024),
+            );
+
+            if (result != null) {
+              print(DateFormat().locale);
+              String strResult =
+                  DateFormat('M월 d일 (E)', "ko_KO").format(result);
+              setState(() {
+                curDate = result;
+                curDateString = strResult;
+              });
+            }
+          },
+          child: Text(
+            curDateString,
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 22.0,
+                fontWeight: FontWeight.bold),
           ),
-      items: [
-        PopupMenuItem(
-          child: Text("View"),
         ),
-        PopupMenuItem(
-          child: Text("Edit"),
-        ),
-        PopupMenuItem(
-          child: Text("Delete"),
-        ),
-      ],
-      elevation: 8.0,
-    );
+      ),
+      IconButton(
+        icon: Icon(Icons.chevron_right),
+        iconSize: 35,
+        onPressed: () {
+          setState(() {
+            curDate = curDate.add(Duration(days: 1));
+            curDateString = DateFormat('M월 d일 (E)', "ko_KO").format(curDate);
+          });
+        },
+      ),
+    ]);
   }
 }
 
@@ -169,7 +222,7 @@ class SortChips extends StatelessWidget {
               "이름순",
               "시간순",
               "분류순",
-            ]),
+            ], "이름순"),
           ],
         )),
       ],
@@ -195,9 +248,18 @@ class CategoryChips extends StatelessWidget {
               spacing: 5.0,
               runSpacing: 3.0,
               children: <Widget>[
-                FilterChipWidget(chipName: '출석'),
-                FilterChipWidget(chipName: '지각'),
-                FilterChipWidget(chipName: '결석'),
+                FilterChipWidget(
+                  chipName: '출석',
+                  isSelected: true,
+                ),
+                FilterChipWidget(
+                  chipName: '지각',
+                  isSelected: false,
+                ),
+                FilterChipWidget(
+                  chipName: '결석',
+                  isSelected: false,
+                ),
               ],
             ),
           ),

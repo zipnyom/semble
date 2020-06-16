@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:schuul/constants.dart';
 import 'package:schuul/screens/welcome/welcome_screen.dart';
 
-Widget customAppBar(String title, bool centerTitle) {
+Widget customAppBar(String title, bool centerTitle, List<Widget> actions) {
   return AppBar(
       title: Text(
         title,
@@ -17,7 +17,7 @@ Widget customAppBar(String title, bool centerTitle) {
       brightness: Brightness.light,
       backgroundColor: Colors.transparent,
       elevation: 0.0,
-      actions: <Widget>[]);
+      actions: actions);
 }
 
 Widget appBarMain(

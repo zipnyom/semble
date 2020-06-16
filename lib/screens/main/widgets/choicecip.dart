@@ -1,15 +1,17 @@
-
 import 'package:flutter/material.dart';
+
 class ChoiceChipWidget extends StatefulWidget {
   final List<String> reportList;
-
-  ChoiceChipWidget(this.reportList);
+  final String defaultChoice;
+  ChoiceChipWidget(this.reportList, this.defaultChoice);
 
   @override
   _ChoiceChipWidgetState createState() => new _ChoiceChipWidgetState();
 }
+
 class _ChoiceChipWidgetState extends State<ChoiceChipWidget> {
   String selectedChoice = "";
+
 
   _buildChoiceList() {
     List<Widget> choices = List();
@@ -36,7 +38,15 @@ class _ChoiceChipWidgetState extends State<ChoiceChipWidget> {
     });
     return choices;
   }
+  
 
+@override
+  void initState() {
+    if(widget.defaultChoice != null) {
+      selectedChoice = widget.defaultChoice;
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Wrap(

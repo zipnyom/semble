@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
     String today = "${now.month}/${now.day}";
 
     return Scaffold(
-      appBar: customAppBar("Today", false),
+      appBar: customAppBar("Today", false, []),
       body: Container(
         width: double.infinity,
         child: Stack(
