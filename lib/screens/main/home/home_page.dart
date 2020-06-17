@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     getClass();
     WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ShowCaseWidget.of(context).startShowCase([_one, _two, _three]));
+        (_) => ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four]));
     super.initState();
   }
 
@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
           iconData: CustomIcon.videocam,
           press: () {
             setState(() {
-              ShowCaseWidget.of(context).startShowCase([_one, _two, _three]);
+              ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four]);
             });
           },
         ),
@@ -75,6 +75,11 @@ class _HomePageState extends State<HomePage> {
         ),
         CAppBarItem(
           gKey: _three,
+          iconData: CustomIcon.lightbulb,
+          press: () {},
+        ),
+          CAppBarItem(
+          gKey: _four,
           iconData: CustomIcon.lightbulb,
           press: () {},
         ),
