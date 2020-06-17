@@ -7,8 +7,8 @@ import 'package:schuul/screens/welcome/welcome_screen.dart';
 import 'experimental/zefyrTest.dart';
 
 // void main() => initializeDateFormatting().then((_) => runApp(MyApp()));
-// void main() =>  runApp(MyApp());
-void main() =>  runApp(ZefyrApp());
+void main() =>  runApp(MyApp());
+// void main() =>  runApp(ZefyrApp());
 
 class MyApp extends StatelessWidget {
   @override

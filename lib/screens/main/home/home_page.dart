@@ -6,11 +6,10 @@ import 'package:schuul/data/enums/attend_type.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/home/model/class_model.dart';
 import 'package:schuul/screens/main/home/provider/class_notifier.dart';
+import 'package:schuul/screens/main/notice_list.dart';
 import 'package:schuul/screens/main/widgets/info_card.dart';
 import 'package:schuul/services/class_database.dart';
 import 'package:schuul/widgets/widget.dart';
-
-import '../notice_detail.dart';
 
 const double side_gap = 16;
 
@@ -166,7 +165,7 @@ class InfoListItem extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => NoticeDetailPage(
+                  builder: (context) => NoticeListPage(
                         id: id,
                       )));
         },
