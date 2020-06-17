@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:schuul/constants.dart';
-import 'package:schuul/data/enums/attend_type.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/account_page.dart';
 import 'package:schuul/screens/main/calendar_page.dart';
 import 'package:schuul/screens/main/dashboard_page.dart';
-import 'package:schuul/screens/main/home/att_detail.dart';
 import 'package:schuul/screens/main/home/home_page.dart';
-import 'package:schuul/screens/main/notice_detail.dart';
-import 'package:schuul/screens/main/notice_list.dart';
 
 enum TabItem { home, dashboard, calendar, setting }
 

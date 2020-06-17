@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:schuul/experimental/src/form.dart';
-import 'package:schuul/experimental/src/full_page.dart';
-import 'package:schuul/experimental/src/text_field_page.dart';
-import 'package:schuul/experimental/src/view.dart';
+import 'package:schuul/experimental/zefyr/src/form.dart';
+import 'package:schuul/experimental/zefyr/src/full_page.dart';
+import 'package:schuul/experimental/zefyr/src/text_field_page.dart';
+import 'package:schuul/experimental/zefyr/src/view.dart';
 
 class FakeFocusIntent extends Intent {
   const FakeFocusIntent();

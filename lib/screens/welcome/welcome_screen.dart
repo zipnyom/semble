@@ -15,33 +15,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: FirebaseAuth.instance.onAuthStateChanged,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            final isLoggedIn = snapshot.hasData;
-            print("isLoggedIn : $isLoggedIn");
-            if (isLoggedIn) {
-              print("${snapshot.data.email} has logged in..");
-              return MultiProvider(providers: [
-                ChangeNotifierProvider<PageProvider>.value(
-                    value: PageProvider())
-              ], child: MainRoute(email: snapshot.data.email));
-            } else {
-              return Scaffold(body: Body());
-            }
-          } else {
-            return _buildWatingScreen();
-          }
-        });
+    return Scaffold(body: Body(),);
   }
-}
-
-Widget _buildWatingScreen() {
-  return Scaffold(
-    body: Container(
-      child: CircularProgressIndicator(),
-      alignment: Alignment.center,
-    ),
-  );
 }

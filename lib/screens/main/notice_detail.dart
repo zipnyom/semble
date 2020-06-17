@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:schuul/constants.dart';
-import 'package:schuul/experimental/src/images.dart';
+import 'package:schuul/experimental/zefyr/src/images.dart';
 import 'package:schuul/widgets/widget.dart';
 import 'package:zefyr/zefyr.dart';
 

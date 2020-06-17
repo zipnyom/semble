@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:schuul/constants.dart';
 import 'package:schuul/screens/main/widgets/bottom_navigation.dart';
 import 'package:schuul/screens/main/widgets/tab_navigator.dart';
-import 'package:schuul/widgets/widget.dart';
 
 class MainRoute extends StatefulWidget {
   MainRoute({this.email});

@@ -44,9 +44,9 @@ const kSubtitleTextSyule = TextStyle(
 );
 
 
-const kAttendColor = Color(0xFFFF8C00);
-const kTardyColor = Color(0xFFFF2D55); 
-const kCutColor = Colors.blueAccent;
+const kAttendColor = kPrimaryColor;
+const kTardyColor = Colors.amber; 
+const kCutColor = Colors.redAccent;
 
 
 const sampleTitle1 = "안녕하세요 여러분 조정석입니다. 슬기로운 의사생활 때려치고 강의를 시작했어요";

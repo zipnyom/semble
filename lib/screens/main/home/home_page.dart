@@ -6,10 +6,15 @@ import 'package:schuul/data/enums/attend_type.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/home/model/class_model.dart';
 import 'package:schuul/screens/main/home/provider/class_notifier.dart';
+import 'package:schuul/screens/main/notice_detail.dart';
 import 'package:schuul/screens/main/notice_list.dart';
+import 'package:schuul/screens/main/widgets/custom_appbar_item.dart';
 import 'package:schuul/screens/main/widgets/info_card.dart';
+import 'package:schuul/screens/main/widgets/sub_title.dart';
 import 'package:schuul/services/class_database.dart';
 import 'package:schuul/widgets/widget.dart';
+import 'package:showcaseview/showcase_widget.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 const double side_gap = 16;
 
@@ -19,16 +24,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static int _selectedIndex = 0;
+  GlobalKey _one = GlobalKey();
+  GlobalKey _two = GlobalKey();
+  GlobalKey _three = GlobalKey();
+  GlobalKey _four = GlobalKey();
+  GlobalKey _five = GlobalKey();
+
   static Size size;
-
-  static double searchTop = side_gap;
-  static double nowPlayingTop = searchTop + 66 + side_gap;
-  static double posterTop = nowPlayingTop + 72;
-  static double ratingTop = size.width + posterTop + side_gap;
-  static double titleTop = ratingTop + 18 + 8;
-  static double genreTop = titleTop + 26 + 8;
-
   void getClass() async {
     List<ClassModel> list = List<ClassModel>();
 //    list.add(ClassModel(className: "test1", startDate: 1, endDate: 3));
@@ -44,6 +46,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     getClass();
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ShowCaseWidget.of(context).startShowCase([_one, _two, _three]));
     super.initState();
   }
 
@@ -54,7 +58,27 @@ class _HomePageState extends State<HomePage> {
     String today = "${now.month}/${now.day}";
 
     return Scaffold(
-      appBar: customAppBar("Today", false, []),
+      appBar: customAppBar("Today", false, [
+        CAppBarItem(
+          gKey: _one,
+          iconData: CustomIcon.videocam,
+          press: () {
+            setState(() {
+              ShowCaseWidget.of(context).startShowCase([_one, _two, _three]);
+            });
+          },
+        ),
+        CAppBarItem(
+          gKey: _two,
+          iconData: CustomIcon.comment,
+          press: () {},
+        ),
+        CAppBarItem(
+          gKey: _three,
+          iconData: CustomIcon.lightbulb,
+          press: () {},
+        ),
+      ]),
       body: Container(
         width: double.infinity,
         child: Stack(
@@ -78,13 +102,34 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(
                         height: 20,
                       ),
-                      SubTitle(icon: CustomIcon.attach, title: "$today 출석현황"),
+                      SubTitle(
+                          icon: CustomIcon.attach,
+                          title: "$today 출석현황",
+                          actions: []),
                       NarrowGap(),
                       AttendanceStatus(),
                       SizedBox(
                         height: 30,
                       ),
-                      SubTitle(icon: CustomIcon.doc, title: "공지사항"),
+                      SubTitle(icon: CustomIcon.doc, title: "공지사항", actions: [
+                        Material(
+                            child: InkWell(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            NoticeListPage())),
+                                child: Icon(Icons.more_horiz)))
+                        // IconButton(
+                        //   icon: Icon(Icons.more_horiz),
+                        //   onPressed: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => NoticeListPage()));
+                        //   },
+                        // )
+                      ]),
                       NarrowGap(),
                       NoticeList()
                     ],
@@ -162,12 +207,8 @@ class InfoListItem extends StatelessWidget {
     return Material(
       child: InkWell(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NoticeListPage(
-                        id: id,
-                      )));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => NoticeDetailPage()));
         },
         child: Column(children: [
           Container(
@@ -251,34 +292,5 @@ class AttendanceStatus extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class SubTitle extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  const SubTitle({Key key, this.title, this.icon}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [
-      Icon(icon),
-      SizedBox(
-        width: 10,
-      ),
-      RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: title,
-              style: Theme.of(context).textTheme.headline6.copyWith(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
-            )
-          ],
-        ),
-      ),
-    ]);
   }
 }

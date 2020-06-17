@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:schuul/constants.dart';
 import 'package:schuul/screens/welcome/welcome_screen.dart';
 
+
 Widget customAppBar(String title, bool centerTitle, List<Widget> actions) {
   return AppBar(
       title: Text(

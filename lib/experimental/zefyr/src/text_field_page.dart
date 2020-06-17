@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:schuul/experimental/src/full_page.dart';
+import 'full_page.dart';
 
 class TextFieldScreen extends StatefulWidget {
   TextFieldScreen({Key key, this.title}) : super(key: key);

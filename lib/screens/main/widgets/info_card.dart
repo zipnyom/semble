@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:schuul/constants.dart';
 import 'package:schuul/data/enums/attend_type.dart';
-import 'package:schuul/data/page_provider.dart';
 import 'package:schuul/screens/main/home/att_detail.dart';
 import 'package:schuul/screens/main/widgets/custom_box_shadow.dart';
 
@@ -31,7 +29,7 @@ class InfoCard extends StatelessWidget {
                   )));
     }
 
-    return Consumer<PageProvider>(builder: (_, pages, child) {
+    // return Consumer<PageProvider>(builder: (_, pages, child) {
       return Material(
         child: InkWell(
           onTap: press,
@@ -126,6 +124,6 @@ class InfoCard extends StatelessWidget {
           ),
         ),
       );
-    });
+    // });
   }
 }

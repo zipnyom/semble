@@ -3,8 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:schuul/experimental/src/full_page.dart';
-import 'package:schuul/experimental/src/images.dart';
+import 'package:schuul/experimental/zefyr/src/images.dart';
 import 'package:schuul/widgets/widget.dart';
 import 'package:zefyr/zefyr.dart';
 

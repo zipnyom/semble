@@ -6,8 +6,7 @@ import 'package:schuul/screens/main/notice_detail.dart';
 import 'package:schuul/widgets/widget.dart';
 
 class NoticeListPage extends StatelessWidget {
-  final int id;
-  const NoticeListPage({Key key, this.id}) : super(key: key);
+  const NoticeListPage({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
