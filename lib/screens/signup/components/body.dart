@@ -84,6 +84,7 @@ class _BodyState extends State<Body> {
 
     return isLoading
         ? Container(
+            color: Colors.white,
             child: Center(
               child: Image.asset('assets/loading.gif'),
             ),

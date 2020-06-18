@@ -4,11 +4,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:schuul/constants.dart';
 import 'package:schuul/data/enums/attend_type.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
+import 'package:schuul/screens/main/home/clicker_list.dart';
 import 'package:schuul/screens/main/home/model/class_model.dart';
 import 'package:schuul/screens/main/home/provider/class_notifier.dart';
+import 'package:schuul/screens/main/home/quiz_list.dart';
 import 'package:schuul/screens/main/notice_detail.dart';
 import 'package:schuul/screens/main/notice_list.dart';
 import 'package:schuul/screens/main/widgets/custom_appbar_item.dart';
+import 'package:schuul/screens/main/widgets/custom_box_shadow.dart';
 import 'package:schuul/screens/main/widgets/info_card.dart';
 import 'package:schuul/screens/main/widgets/sub_title.dart';
 import 'package:schuul/services/class_database.dart';
@@ -24,6 +27,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isVisible = false;
+
   GlobalKey _one = GlobalKey();
   GlobalKey _two = GlobalKey();
   GlobalKey _three = GlobalKey();
@@ -46,8 +51,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     getClass();
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four]));
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
+        ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four]));
     super.initState();
   }
 
@@ -64,7 +69,9 @@ class _HomePageState extends State<HomePage> {
           iconData: CustomIcon.videocam,
           press: () {
             setState(() {
-              ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four]);
+              isVisible = !isVisible;
+              // ShowCaseWidget.of(context)
+              //     .startShowCase([_one, _two, _three, _four]);
             });
           },
           description: "이 버튼을 눌러 강의를 시작하세요\n출석체크 기능이 활성화됩니다",
@@ -72,16 +79,21 @@ class _HomePageState extends State<HomePage> {
         CAppBarItem(
           gKey: _two,
           iconData: CustomIcon.comment,
-          press: () {},
+          press: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ClickerList()));
+          },
           description: "클리커를 통해 학생들의 생각을 물어볼 수 있습니다.",
         ),
         CAppBarItem(
           gKey: _three,
           iconData: CustomIcon.lightbulb,
-          press: () {},
-          description: "퀴즈를 작성 및 배포할 수 있습니다.",
+          press: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => QuizList()));
+          },
+          description: "퀴즈를 만들고 학생들에게 풀게 할 수 있습니다.",
         ),
-          
       ]),
       body: Container(
         width: double.infinity,
@@ -141,6 +153,68 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            AnimatedSwitcher(
+              duration: Duration(milliseconds: 700),
+              child: isVisible
+                  ? Container(
+                      child: Center(
+                        child: Image.asset("assets/ripple.gif"),
+                      ),
+                    )
+                  : SizedBox.shrink(),
+            ),
+            AnimatedSwitcher(
+              duration: Duration(milliseconds: 700),
+              child: isVisible
+                  ? Container(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                                decoration: BoxDecoration(
+                                    boxShadow: [customBoxShadow],
+                                    color: kPrimaryColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "출석이 진행중입니다...",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                )),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Material(
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    isVisible = false;
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      boxShadow: [customBoxShadow],
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 16.0),
+                                    child: Text(
+                                      "취소",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink(),
+            )
           ],
         ),
       ),

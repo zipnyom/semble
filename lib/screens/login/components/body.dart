@@ -42,13 +42,10 @@ class _BodyState extends State<Body> {
             context,
             MaterialPageRoute(
                 // builder: (context) => MainRoute(email: result.user.email)));
-                builder: (context) => 
-                ShowCaseWidget(
+                builder: (context) => ShowCaseWidget(
                       builder:
                           Builder(builder: (context) => MainRoute(email: "고정")),
-                    )
-            )
-        );
+                    )));
       }
     } catch (e) {
       print(e);
@@ -80,6 +77,7 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
     return isLoading
         ? Container(
+            color: Colors.white,
             child: Center(
               child: Image.asset('assets/loading.gif'),
             ),

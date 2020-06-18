@@ -7,6 +7,7 @@ import 'package:schuul/data/enums/attend_type.dart';
 import 'package:schuul/data/page_provider.dart';
 import 'package:schuul/screens/main/home/model/attendance.dart';
 import 'package:schuul/screens/main/widgets/choicecip.dart';
+import 'package:schuul/screens/main/widgets/custom_popup_menu.dart';
 import 'package:schuul/screens/main/widgets/filterchip.dart';
 import 'package:schuul/screens/main/widgets/sub_tab_item.dart';
 import 'package:schuul/widgets/widget.dart';
@@ -101,33 +102,6 @@ class _AttDetailPageState extends State<AttDetailPage> {
             ),
           ),
         ));
-  }
-}
-
-class CustomPopupMenuButton extends StatelessWidget {
-  final List<ActionType> list;
-
-  const CustomPopupMenuButton({
-    Key key,
-    this.list,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton(
-        onSelected: (value) {
-          print(value);
-        },
-        child: Icon(Icons.more_vert),
-        itemBuilder: (BuildContext context) =>
-            List<PopupMenuEntry<ActionType>>.generate(
-              list.length,
-              (index) => PopupMenuItem<ActionType>(
-                value: list[index],
-                child: Align(
-                    alignment: Alignment.center, child: Text(list[index].name)),
-              ),
-            ));
   }
 }
 
