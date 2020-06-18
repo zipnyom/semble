@@ -54,7 +54,9 @@ class _AccountPageState extends State<AccountPage> {
                 style: TextStyle(color: Colors.blue),
               ),
             ),
-            FlatButton(child: Text("로그아웃"), onPressed: () => _signOut)
+            FlatButton(child: Text("로그아웃"), onPressed: ()  {
+              FirebaseAuth.instance.signOut();
+            })
             // Form(
             //   key: _formKey,
             //   child: Column(

@@ -67,22 +67,21 @@ class _HomePageState extends State<HomePage> {
               ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four]);
             });
           },
+          description: "이 버튼을 눌러 강의를 시작하세요\n출석체크 기능이 활성화됩니다",
         ),
         CAppBarItem(
           gKey: _two,
           iconData: CustomIcon.comment,
           press: () {},
+          description: "클리커를 통해 학생들의 생각을 물어볼 수 있습니다.",
         ),
         CAppBarItem(
           gKey: _three,
           iconData: CustomIcon.lightbulb,
           press: () {},
+          description: "퀴즈를 작성 및 배포할 수 있습니다.",
         ),
-          CAppBarItem(
-          gKey: _four,
-          iconData: CustomIcon.lightbulb,
-          press: () {},
-        ),
+          
       ]),
       body: Container(
         width: double.infinity,

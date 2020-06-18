@@ -9,6 +9,7 @@ import 'package:schuul/components/rounded_password_field.dart';
 import 'package:schuul/screens/login/components/background.dart';
 import 'package:schuul/screens/main/main_route.dart';
 import 'package:schuul/screens/signup/signup_screen.dart';
+import 'package:showcaseview/showcase_widget.dart';
 
 class Body extends StatefulWidget {
   Body({
@@ -41,7 +42,13 @@ class _BodyState extends State<Body> {
             context,
             MaterialPageRoute(
                 // builder: (context) => MainRoute(email: result.user.email)));
-                builder: (context) => MainRoute(email: result.user.email)));
+                builder: (context) => 
+                ShowCaseWidget(
+                      builder:
+                          Builder(builder: (context) => MainRoute(email: "고정")),
+                    )
+            )
+        );
       }
     } catch (e) {
       print(e);

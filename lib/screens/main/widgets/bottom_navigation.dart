@@ -51,6 +51,8 @@ class BottomNavigation extends StatelessWidget {
     );
   }
 
+
+
   BottomNavigationBarItem _buildItem({TabItem tabItem}) {
     String text = tabName[tabItem];
     return BottomNavigationBarItem(

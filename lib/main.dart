@@ -17,6 +17,12 @@ Future<FirebaseUser> getCurrentUser() async {
 }
 
 class MyApp extends StatelessWidget {
+  Widget screenHodler = MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: Scaffold(
+      body: Container(),
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,16 +35,27 @@ class MyApp extends StatelessWidget {
           const Locale('en', 'US'),
           const Locale('ko', 'KO'),
         ],
-        home: FutureBuilder<FirebaseUser>(
-            future: getCurrentUser(),
-            builder:
-                (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
-              if (snapshot.hasData == false) return _buildWatingScreen();
-              
-              
-              return ShowCaseWidget(
-                builder: Builder(builder: (context) => MainRoute(email: "고정")),
-              );
+        home: StreamBuilder(
+            stream: FirebaseAuth.instance.onAuthStateChanged,
+            builder: (context, snapshot) {
+              try {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  final isLoggedIn = snapshot.hasData;
+                  print("isLoggedIn : $isLoggedIn");
+                  if (isLoggedIn) {
+                    print("${snapshot.data.email} has logged in..!");
+                    screenHodler = ShowCaseWidget(
+                      builder:
+                          Builder(builder: (context) => MainRoute(email: "고정")),
+                    );
+                  } else {
+                    screenHodler = WelcomeScreen();
+                  }
+                }
+                return screenHodler;
+              } catch (e) {
+                print(e);
+              }
             }));
   }
 }
@@ -46,8 +63,8 @@ class MyApp extends StatelessWidget {
 Widget _buildWatingScreen() {
   return Scaffold(
     body: Container(
-      // child: CircularProgressIndicator(),
-      // alignment: Alignment.center,
-    ),
+        // child: CircularProgressIndicator(),
+        // alignment: Alignment.center,
+        ),
   );
 }

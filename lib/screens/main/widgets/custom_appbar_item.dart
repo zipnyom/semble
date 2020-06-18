@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:schuul/constants.dart';
 import 'package:showcaseview/showcase.dart';
 
 class CAppBarItem extends StatelessWidget {
   final IconData iconData;
   final VoidCallback press;
   final GlobalKey gKey;
+  final String description;
 
   const CAppBarItem({
     Key key,
     this.iconData,
     this.press,
-    this.gKey,
+    this.gKey, this.description,
   }) : super(key: key);
 
   @override
@@ -21,7 +23,6 @@ class CAppBarItem extends StatelessWidget {
     //     child: InkWell(child: Icon(iconData), onTap: () => press),
     //   ),
     // );
-
 
     // return Showcase(
     //   key: gKey,
@@ -48,7 +49,6 @@ class CAppBarItem extends StatelessWidget {
     //   ),
     // );
 
-
     return Showcase.withWidget(
       key: gKey,
       height: 50,
@@ -57,23 +57,37 @@ class CAppBarItem extends StatelessWidget {
       container: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: 45,
-            height: 45,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.blue[200],
-            ),
-            child: Center(
-              child: Text('S'),
-            ),
-          ),
+          // Container(
+          //   width: 45,
+          //   height: 45,
+          //   decoration: BoxDecoration(
+          //     shape: BoxShape.circle,
+          //     color: Colors.blue[200],
+          //   ),
+          //   child: Center(
+          //     child: Text('S'),
+          //   ),
+          // ),
           SizedBox(
             height: 10,
           ),
-          Text(
-            'Your sender\'s profile ',
-            style: TextStyle(color: Colors.white),
+          Container(
+            width: 150,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(26),
+              color: kPrimaryColor
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: description,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ]),
+              ),
+            ),
           )
         ],
       ),
