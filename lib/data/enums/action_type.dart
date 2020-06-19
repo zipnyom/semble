@@ -1,4 +1,13 @@
-enum ActionType { attend, tardy, cut, bulkAttend, bulkTardy, bulkCut }
+enum ActionType {
+  attend,
+  tardy,
+  cut,
+  bulkAttend,
+  bulkTardy,
+  bulkCut,
+  delete,
+  add
+}
 // attend : 출석함, tardy : 지각, cut : 결석
 
 extension ActionTypeExtention on ActionType {
@@ -16,6 +25,10 @@ extension ActionTypeExtention on ActionType {
         return '일괄 지각처리';
       case ActionType.bulkCut:
         return '일괄 결석처리';
+      case ActionType.delete:
+        return '삭제';
+      case ActionType.add:
+        return '추가';
       default:
         return null;
     }

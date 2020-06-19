@@ -16,6 +16,7 @@ import 'package:schuul/screens/main/widgets/info_card.dart';
 import 'package:schuul/screens/main/widgets/sub_title.dart';
 import 'package:schuul/services/class_database.dart';
 import 'package:schuul/widgets/widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcase_widget.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -51,9 +52,24 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     getClass();
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four]));
+    WidgetsBinding.instance.addPostFrameCallback((_) => startShowcase());
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(HomePage oldWidget) {
+    print("ha. ha.");
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void startShowcase() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool hasSeen = prefs.getBool('showcase') ?? false;
+    print('hasSeen : $hasSeen');
+    if (!hasSeen) {
+      await prefs.setBool('showcase', true);
+      ShowCaseWidget.of(context).startShowCase([_one, _two, _three, _four]);
+    }
   }
 
   @override

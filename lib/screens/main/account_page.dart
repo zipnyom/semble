@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:schuul/screens/welcome/welcome_screen.dart';
 import 'package:schuul/widgets/widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountPage extends StatefulWidget {
   @override
@@ -54,9 +55,17 @@ class _AccountPageState extends State<AccountPage> {
                 style: TextStyle(color: Colors.blue),
               ),
             ),
-            FlatButton(child: Text("로그아웃"), onPressed: ()  {
-              FirebaseAuth.instance.signOut();
-            })
+
+            FlatButton(
+              child: Text("도움말 다시보기"),
+              onPressed: () => enableShowcase,
+            ),
+
+            FlatButton(
+                child: Text("로그아웃"),
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                })
             // Form(
             //   key: _formKey,
             //   child: Column(
@@ -93,4 +102,9 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+}
+
+void enableShowcase() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('showcase', false);
 }

@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:schuul/screens/login/login_screen.dart';
-import 'package:schuul/screens/main/main_route.dart';
-import 'package:schuul/screens/welcome/welcome_screen.dart';
-import 'package:showcaseview/showcase_widget.dart';
+import 'package:schuul/screens/main/widgets/auth_stream.dart';
 
 // void main() => initializeDateFormatting().then((_) => runApp(MyApp()));
 void main() => runApp(MyApp());
@@ -17,12 +15,6 @@ Future<FirebaseUser> getCurrentUser() async {
 }
 
 class MyApp extends StatelessWidget {
-  Widget screenHodler = MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Scaffold(
-      body: Container(),
-    ),
-  );
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,41 +22,13 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate
         ],
         supportedLocales: [
           const Locale('en', 'US'),
           const Locale('ko', 'KO'),
         ],
-        home: StreamBuilder(
-            stream: FirebaseAuth.instance.onAuthStateChanged,
-            builder: (context, snapshot) {
-              try {
-                if (snapshot.connectionState == ConnectionState.active) {
-                  final isLoggedIn = snapshot.hasData;
-                  print("isLoggedIn : $isLoggedIn");
-                  if (isLoggedIn) {
-                    print("${snapshot.data.email} has logged in..!");
-                    screenHodler = ShowCaseWidget(
-                      builder:
-                          Builder(builder: (context) => MainRoute(email: "고정")),
-                    );
-                  } else {
-                    screenHodler = WelcomeScreen();
-                  }
-                }
-                return screenHodler;
-              } catch (e) {
-                print(e);
-              }
-            }));
+        home: AuthStream());
   }
-}
-
-Widget _buildWatingScreen() {
-  return Scaffold(
-    body: Container(
-        // child: CircularProgressIndicator(),
-        // alignment: Alignment.center,
-        ),
-  );
 }

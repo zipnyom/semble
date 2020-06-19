@@ -8,7 +8,9 @@ import 'package:schuul/components/rounded_input_field.dart';
 import 'package:schuul/components/rounded_password_field.dart';
 import 'package:schuul/screens/login/components/background.dart';
 import 'package:schuul/screens/main/main_route.dart';
+import 'package:schuul/screens/main/widgets/auth_stream.dart';
 import 'package:schuul/screens/signup/signup_screen.dart';
+import 'package:schuul/screens/welcome/welcome_screen.dart';
 import 'package:showcaseview/showcase_widget.dart';
 
 class Body extends StatefulWidget {
@@ -30,6 +32,7 @@ class _BodyState extends State<Body> {
     setState(() {
       isLoading = true;
     });
+
     try {
       final AuthResult result = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
@@ -42,10 +45,7 @@ class _BodyState extends State<Body> {
             context,
             MaterialPageRoute(
                 // builder: (context) => MainRoute(email: result.user.email)));
-                builder: (context) => ShowCaseWidget(
-                      builder:
-                          Builder(builder: (context) => MainRoute(email: "고정")),
-                    )));
+                builder: (context) => AuthStream()));
       }
     } catch (e) {
       print(e);
@@ -146,3 +146,4 @@ class _BodyState extends State<Body> {
           );
   }
 }
+

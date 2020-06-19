@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:schuul/constants.dart';
 import 'package:schuul/screens/welcome/welcome_screen.dart';
 
-
 Widget customAppBar(String title, bool centerTitle, List<Widget> actions) {
   return AppBar(
       title: Text(
@@ -46,9 +45,11 @@ Widget appBarMain(
       );
 }
 
-Widget appBarDetail(BuildContext context, String title) {
+Widget customAppBarLeading(
+    BuildContext context, String title, Icon icon, List<Widget> actions) {
   return AppBar(
       backgroundColor: Colors.transparent,
+      centerTitle: true,
       title: Text(
         title,
         style: TextStyle(color: kTextColor),
@@ -58,16 +59,17 @@ Widget appBarDetail(BuildContext context, String title) {
       ),
       brightness: Brightness.light,
       leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back,
-          color: Color(0xFFb5bfd0),
-        ),
+        icon: icon ??
+            Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xFFb5bfd0),
+            ),
         onPressed: () {
           Navigator.pop(context);
         },
       ),
       elevation: 0.0,
-      actions: <Widget>[]
+      actions: actions
 //    centerTitle: false,
       );
 }
