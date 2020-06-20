@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:schuul/components/rounded_button.dart';
-import 'package:schuul/components/rounded_input_field.dart';
-import 'package:schuul/components/rounded_password_field.dart';
-import 'package:schuul/components/text_field_container.dart';
+import 'package:schuul/constants.dart';
 import 'package:schuul/data/enums/clicker_type.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/widgets/right_top_text_button.dart';
 import 'package:schuul/widgets/widget.dart';
 
-import '../../../constants.dart';
 
 class NewClicker extends StatefulWidget {
   const NewClicker({Key key}) : super(key: key);

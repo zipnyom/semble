@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:schuul/constants.dart';
 import 'package:schuul/data/enums/action_type.dart';
 import 'package:schuul/data/enums/clicker_type.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/home/clicker_detail.dart';
 import 'package:schuul/screens/main/home/model/clicker.dart';
 import 'package:schuul/screens/main/home/new_clicker.dart';
+import 'package:schuul/screens/main/widgets/custom_box_shadow.dart';
 import 'package:schuul/screens/main/widgets/custom_popup_menu.dart';
 import 'package:schuul/screens/main/widgets/filterchip.dart';
 import 'package:schuul/widgets/widget.dart';
@@ -21,7 +23,8 @@ class _ClickerListState extends State<ClickerList> {
     list = List<Clicker>();
     for (int i = 1; i <= 20; i++) {
       String num = i.toString();
-      list.add(new Clicker("클리커" + num, "2020-06-04"));
+      list.add(new Clicker(
+          "클리커클리커클리커클리커클리커클리커클리커클리커클리커클리커클리커클리커클리커" + num, "2020-06-04"));
     }
     // for (Clicker model in list) {
     //   print(model.toJson());
@@ -70,13 +73,28 @@ class _ClickerListState extends State<ClickerList> {
               SizedBox(
                 height: 10,
               ),
-              ListView.builder(
+              ListView.separated(
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
                   itemCount: list.length,
+                  separatorBuilder: (context, index) => Divider(),
                   itemBuilder: (_, index) {
                     return CheckboxListTile(
-                        title: Text(list[index].clickerName),
+                        title: Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Wrap(
+                            runSpacing: 10,
+                            spacing: 10,
+                            children: [
+                              Text(
+                                list[index].clickerName,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              CustomChip(color: Colors.blueAccent, title: "다중선택",),
+                              CustomChip(color: Colors.amberAccent, title: "익명",),
+                            ],
+                          ),
+                        ),
                         subtitle: Text(list[index].timeStamp),
                         controlAffinity: ListTileControlAffinity.leading,
                         value: list[index].checked,
@@ -102,6 +120,34 @@ class _ClickerListState extends State<ClickerList> {
                   })
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomChip extends StatelessWidget {
+
+  final Color color;
+  final String title;
+
+  const CustomChip({
+    Key key, this.color, this.title,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(28),
+        // boxShadow: [customBoxShadow]
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+        child: Text(
+          title,
+          style: TextStyle(color: Colors.white, fontSize: 13),
         ),
       ),
     );
