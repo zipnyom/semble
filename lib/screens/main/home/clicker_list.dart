@@ -56,9 +56,7 @@ class _ClickerListState extends State<ClickerList> {
           padding: EdgeInsets.only(left: 10, right: 15),
           child: CustomPopupMenuButton(
             list: [
-              ActionType.bulkAttend,
-              ActionType.bulkTardy,
-              ActionType.bulkCut
+              ActionType.bulkDelete
             ],
           ),
         )

@@ -5,14 +5,13 @@ import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/widgets/right_top_text_button.dart';
 import 'package:schuul/widgets/widget.dart';
 
-
-class NewClicker extends StatefulWidget {
-  const NewClicker({Key key}) : super(key: key);
+class QuizItemDetail extends StatefulWidget {
+  const QuizItemDetail({Key key}) : super(key: key);
   @override
-  _NewClickerState createState() => _NewClickerState();
+  _QuizItemDetailState createState() => _QuizItemDetailState();
 }
 
-class _NewClickerState extends State<NewClicker> {
+class _QuizItemDetailState extends State<QuizItemDetail> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final List<TextEditingController> txtControllerList =
       List<TextEditingController>();
@@ -54,7 +53,7 @@ class _NewClickerState extends State<NewClicker> {
     }
 
     return Scaffold(
-        appBar: customAppBarLeading(context, "클리커 생성", Icon(Icons.close), [
+        appBar: customAppBarLeading(context, "문제 편집", Icon(Icons.close), [
           RightTopTextButton(
             title: "완료",
             press: () {
@@ -86,7 +85,7 @@ class _NewClickerState extends State<NewClicker> {
                               setSelectedRadio(val);
                             },
                           ),
-                          Text("텍스트"),
+                          Text("객관식"),
                           SizedBox(
                             width: 10,
                           ),
@@ -99,7 +98,7 @@ class _NewClickerState extends State<NewClicker> {
                               setSelectedRadio(val);
                             },
                           ),
-                          Text("날짜"),
+                          Text("주관식"),
                         ],
                       ),
                       Column(
@@ -110,20 +109,8 @@ class _NewClickerState extends State<NewClicker> {
                       ),
                       Divider(),
                       ConditionTile(
-                          iconData: Icons.access_time,
-                          title: "마감시간 설정",
-                          press: () {}),
-                      ConditionTile(
                           iconData: Icons.done_all,
                           title: "복수 선택",
-                          press: () {}),
-                      ConditionTile(
-                          iconData: CustomIcon.user_secret,
-                          title: "익명",
-                          press: () {}),
-                      ConditionTile(
-                          iconData: Icons.playlist_add,
-                          title: "선택항목 추가 허용",
                           press: () {}),
                       SizedBox(
                         height: 20,
@@ -245,6 +232,18 @@ class _ItemInputFiledState extends State<ItemInputFiled> {
         ),
         child: Row(
           children: [
+            Material(
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    widget.controller.clear();
+                  });
+                },
+                child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text("정답", style: TextStyle(color: kPrimaryColor),)),
+              ),
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -295,7 +294,7 @@ class TitleFiled extends StatelessWidget {
       controller: _controller,
       validator: (String value) {
         if (value.isEmpty) {
-          return "클리커 제목을 입력해주세요.";
+          return "문제 제목을 입력해주세요.";
         }
         return null;
       },
@@ -304,7 +303,7 @@ class TitleFiled extends StatelessWidget {
         //   Icons.title,
         //   color: kPrimaryColor,
         // ),
-        hintText: "클리커 제목",
+        hintText: "문제 제목",
         // border: InputBorder.none,
       ),
     );

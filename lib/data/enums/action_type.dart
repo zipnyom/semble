@@ -5,6 +5,7 @@ enum ActionType {
   bulkAttend,
   bulkTardy,
   bulkCut,
+  bulkDelete,
   delete,
   add
 }
@@ -25,6 +26,8 @@ extension ActionTypeExtention on ActionType {
         return '일괄 지각처리';
       case ActionType.bulkCut:
         return '일괄 결석처리';
+      case ActionType.bulkDelete:
+        return '일괄삭제';
       case ActionType.delete:
         return '삭제';
       case ActionType.add:

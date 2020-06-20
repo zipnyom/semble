@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:schuul/constants.dart';
 import 'package:schuul/screens/main/new_notice.dart';
@@ -22,8 +21,8 @@ class NoticeListPage extends StatelessWidget {
         //   itemCount: data.length,
         // ),
         body: ListView.builder(
-          itemBuilder: (_, index) => NoticeListItem(title: list[index]),
-          itemCount: list.length,
+          itemBuilder: (_, index) => NoticeListItem(title: noticeList[index]),
+          itemCount: noticeList.length,
         ));
   }
 }
@@ -91,7 +90,7 @@ class Entry {
   final List<Entry> children;
 }
 
-final List<String> list = <String>[sampleTitle1, sampleTitle2, sampleTitle3];
+final List<String> noticeList = <String>[sampleTitle1, sampleTitle2, sampleTitle3];
 
 // The entire multilevel list displayed by this app.
 final List<Entry> data = <Entry>[
@@ -125,7 +124,7 @@ final List<Entry> data = <Entry>[
 // with an ExpansionTile.
 class EntryItem extends StatelessWidget {
   const EntryItem(this.entry);
-
+  
   final Entry entry;
 
   Widget _buildTiles(Entry root) {
