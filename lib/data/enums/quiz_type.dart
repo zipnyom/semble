@@ -1,4 +1,4 @@
-enum QuizType { complete, ing, canceled, text, date }
+enum QuizType { complete, ing, canceled, text, date, shortAnswer, multiChoice }
 // attend : 출석함, tardy : 지각, cut : 결석
 
 extension QuizTypeExtention on QuizType {
@@ -14,6 +14,10 @@ extension QuizTypeExtention on QuizType {
         return '텍스트';
       case QuizType.date:
         return '날짜';
+        case QuizType.shortAnswer:
+        return '주관식';
+      case QuizType.multiChoice:
+        return '객관식';
       default:
         return null;
     }

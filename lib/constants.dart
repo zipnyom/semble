@@ -52,3 +52,7 @@ const kCutColor = Colors.redAccent;
 const sampleTitle1 = "안녕하세요 여러분 조정석입니다. 슬기로운 의사생활 때려치고 강의를 시작했어요";
 const sampleTitle2 = "다음주 토요일 수업에 퀴즈 할 예정입니다.";
 const sampleTitle3 = "휴강 안내";
+
+
+String tShortAnswer = "주관식";
+String tMultipleChoice = "객관식";

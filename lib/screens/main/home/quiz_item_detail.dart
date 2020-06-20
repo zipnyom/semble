@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:schuul/constants.dart';
 import 'package:schuul/data/enums/clicker_type.dart';
+import 'package:schuul/data/enums/quiz_type.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/widgets/right_top_text_button.dart';
 import 'package:schuul/widgets/widget.dart';
@@ -16,11 +18,17 @@ class _QuizItemDetailState extends State<QuizItemDetail> {
   final List<TextEditingController> txtControllerList =
       List<TextEditingController>();
   final TextEditingController titleController = TextEditingController();
-  ClickerType selectedRadio = ClickerType.text;
+  QuizType selectedRadio = QuizType.multiChoice;
   bool isLoading = false;
+  bool isShortAnswer = false;
 
-  setSelectedRadio(ClickerType val) {
+  setSelectedRadio(QuizType val) {
     setState(() {
+      if (val == QuizType.shortAnswer) {
+        isShortAnswer = true;
+      } else {
+        isShortAnswer = false;
+      }
       selectedRadio = val;
     });
   }
@@ -77,7 +85,7 @@ class _QuizItemDetailState extends State<QuizItemDetail> {
                         alignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Radio(
-                            value: ClickerType.text,
+                            value: QuizType.multiChoice,
                             groupValue: selectedRadio,
                             activeColor: Colors.green,
                             onChanged: (val) {
@@ -85,12 +93,12 @@ class _QuizItemDetailState extends State<QuizItemDetail> {
                               setSelectedRadio(val);
                             },
                           ),
-                          Text("객관식"),
+                          Text(tMultipleChoice),
                           SizedBox(
                             width: 10,
                           ),
                           Radio(
-                            value: ClickerType.date,
+                            value: QuizType.shortAnswer,
                             groupValue: selectedRadio,
                             activeColor: Colors.blue,
                             onChanged: (val) {
@@ -98,20 +106,39 @@ class _QuizItemDetailState extends State<QuizItemDetail> {
                               setSelectedRadio(val);
                             },
                           ),
-                          Text("주관식"),
+                          Text(tShortAnswer),
                         ],
                       ),
-                      Column(
-                        children: itemList,
-                      ),
-                      ItemAddButton(
-                        press: addInputItem,
-                      ),
-                      Divider(),
-                      ConditionTile(
-                          iconData: Icons.done_all,
-                          title: "복수 선택",
-                          press: () {}),
+                      isShortAnswer
+                          ? Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(border: Border.all()),
+                              child: TextFormField(
+                                keyboardType: TextInputType.multiline,
+                                maxLines: null,
+                                controller: TextEditingController(),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "정답 입력",
+                                  // border: InputBorder.none,
+                                ),
+                              ),
+                            )
+                          : Column(
+                              children: [
+                                Column(
+                                  children: itemList,
+                                ),
+                                ItemAddButton(
+                                  press: addInputItem,
+                                ),
+                                Divider(),
+                                ConditionTile(
+                                    iconData: Icons.done_all,
+                                    title: "복수 선택",
+                                    press: () {}),
+                              ],
+                            ),
                       SizedBox(
                         height: 20,
                       )
@@ -219,6 +246,7 @@ class ItemInputFiled extends StatefulWidget {
 }
 
 class _ItemInputFiledState extends State<ItemInputFiled> {
+  bool isAnswer = false;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -236,12 +264,16 @@ class _ItemInputFiledState extends State<ItemInputFiled> {
               child: InkWell(
                 onTap: () {
                   setState(() {
-                    widget.controller.clear();
+                    isAnswer = !isAnswer;
                   });
                 },
                 child: Padding(
                     padding: EdgeInsets.all(10),
-                    child: Text("정답", style: TextStyle(color: kPrimaryColor),)),
+                    child: Text(
+                      isAnswer ? "정답" : "오답",
+                      style: TextStyle(
+                          color: isAnswer ? kPrimaryColor : kTextLightColor),
+                    )),
               ),
             ),
             Expanded(
@@ -290,21 +322,31 @@ class TitleFiled extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: _controller,
-      validator: (String value) {
-        if (value.isEmpty) {
-          return "문제 제목을 입력해주세요.";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        // icon: Icon(
-        //   Icons.title,
-        //   color: kPrimaryColor,
-        // ),
-        hintText: "문제 제목",
-        // border: InputBorder.none,
+
+    return Container(
+      decoration: BoxDecoration(border: Border.all()),
+      padding: EdgeInsets.symmetric(horizontal:16),
+      child: SizedBox(
+        height: 100,
+        child: TextFormField(
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          controller: _controller,
+          validator: (String value) {
+            if (value.isEmpty) {
+              return "문제 지문을 입력해주세요.";
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+            // icon: Icon(
+            //   Icons.title,
+            //   color: kPrimaryColor,
+            // ),
+            hintText: "문제 지문",
+            border: InputBorder.none,
+          ),
+        ),
       ),
     );
   }
