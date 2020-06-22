@@ -4,8 +4,6 @@ import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/account_page.dart';
 import 'package:schuul/screens/main/calendar_page.dart';
 import 'package:schuul/screens/main/dashboard_page.dart';
-import 'package:schuul/screens/main/home/clicker_list.dart';
-import 'package:schuul/screens/main/home/new_quiz.dart';
 import 'package:schuul/screens/main/home/quiz_list.dart';
 
 enum TabItem { home, dashboard, calendar, setting }

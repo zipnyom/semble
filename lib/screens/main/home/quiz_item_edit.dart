@@ -7,17 +7,18 @@ import 'package:schuul/presentation/custom_icon_icons.dart';
 import 'package:schuul/screens/main/widgets/right_top_text_button.dart';
 import 'package:schuul/widgets/widget.dart';
 
-class QuizItemDetail extends StatefulWidget {
-  const QuizItemDetail({Key key}) : super(key: key);
+class QuizItemEdit extends StatefulWidget {
+  const QuizItemEdit({Key key}) : super(key: key);
   @override
-  _QuizItemDetailState createState() => _QuizItemDetailState();
+  _QuizItemEditState createState() => _QuizItemEditState();
 }
 
-class _QuizItemDetailState extends State<QuizItemDetail> {
+class _QuizItemEditState extends State<QuizItemEdit> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final List<TextEditingController> txtControllerList =
       List<TextEditingController>();
   final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
   QuizType selectedRadio = QuizType.multiChoice;
   bool isLoading = false;
   bool isShortAnswer = false;
@@ -142,9 +143,12 @@ class _QuizItemDetailState extends State<QuizItemDetail> {
                       SizedBox(
                         height: 20,
                       )
+                      ,DescriptionField(controller: descriptionController,)
                     ],
                   ),
                 ),
+
+
               ]),
             )));
   }
@@ -344,6 +348,37 @@ class TitleFiled extends StatelessWidget {
             //   color: kPrimaryColor,
             // ),
             hintText: "문제 지문",
+            border: InputBorder.none,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DescriptionField extends StatelessWidget {
+  const DescriptionField({
+    Key key,
+    @required TextEditingController controller,
+  })  : _controller = controller,
+        super(key: key);
+
+  final TextEditingController _controller;
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+      decoration: BoxDecoration(border: Border.all()),
+      padding: EdgeInsets.symmetric(horizontal:16),
+      child: SizedBox(
+        height: 100,
+        child: TextFormField(
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          controller: _controller,
+          decoration: InputDecoration(
+            hintText: "정답 해설",
             border: InputBorder.none,
           ),
         ),

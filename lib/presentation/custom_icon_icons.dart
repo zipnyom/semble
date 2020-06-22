@@ -83,6 +83,10 @@ class CustomIcon {
   static const IconData t_shirt = IconData(0xe82f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData wallet = IconData(0xe830, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData cancel_circle = IconData(0xe831, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData angle_double_up = IconData(0xf102, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData angle_double_down = IconData(0xf103, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData angle_up = IconData(0xf106, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData angle_down = IconData(0xf107, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData user_secret = IconData(0xf21b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData check_double = IconData(0xf560, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

@@ -3,13 +3,12 @@ import 'package:schuul/constants.dart';
 import 'package:schuul/data/enums/action_type.dart';
 import 'package:schuul/data/enums/quiz_type.dart';
 import 'package:schuul/presentation/custom_icon_icons.dart';
-import 'package:schuul/screens/main/home/quiz_detail.dart';
+import 'package:schuul/screens/main/home/quiz_edit.dart';
 import 'package:schuul/screens/main/widgets/custom_popup_menu.dart';
 import 'package:schuul/screens/main/widgets/filterchip.dart';
 import 'package:schuul/widgets/widget.dart';
 
 import 'model/quiz.dart';
-import 'new_quiz.dart';
 
 class QuizList extends StatefulWidget {
   QuizList({Key key}) : super(key: key);
@@ -48,7 +47,7 @@ class _QuizListState extends State<QuizList> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NewQuiz(),
+                  builder: (context) => EditQuiz(),
                 ));
           },
         ),
@@ -133,11 +132,7 @@ class _QuizListState extends State<QuizList> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => QuizDetail(
-                                    id: 1,
-                                    title: "한국에서 튤립을 재배할 수 있을까?",
-                                  ),
-                                ));
+                                    builder: (context) => EditQuiz()));
                           },
                         ));
                   })
