@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:schuul/components/text_field_container.dart';
-
-import '../constants.dart';
+import 'package:schuul/constants.dart';
+import 'package:schuul/screens/main/widgets/text_field_container.dart';
 
 class RoundedPasswordField extends StatefulWidget {
   final TextEditingController passwordController;

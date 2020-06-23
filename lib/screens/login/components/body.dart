@@ -2,16 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:schuul/components/already_have_an_account_acheck.dart';
-import 'package:schuul/components/rounded_button.dart';
-import 'package:schuul/components/rounded_input_field.dart';
-import 'package:schuul/components/rounded_password_field.dart';
 import 'package:schuul/screens/login/components/background.dart';
-import 'package:schuul/screens/main/main_route.dart';
+import 'package:schuul/screens/main/widgets/already_have_an_account_acheck.dart';
 import 'package:schuul/screens/main/widgets/auth_stream.dart';
+import 'package:schuul/screens/main/widgets/rounded_button.dart';
+import 'package:schuul/screens/main/widgets/rounded_input_field.dart';
+import 'package:schuul/screens/main/widgets/rounded_password_field.dart';
 import 'package:schuul/screens/signup/signup_screen.dart';
-import 'package:schuul/screens/welcome/welcome_screen.dart';
-import 'package:showcaseview/showcase_widget.dart';
 
 class Body extends StatefulWidget {
   Body({
@@ -146,4 +143,3 @@ class _BodyState extends State<Body> {
           );
   }
 }
-
