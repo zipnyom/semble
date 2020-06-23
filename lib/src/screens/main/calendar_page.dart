@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:schuul/src/obj/class_model.dart';
-import 'package:schuul/src/services/class_database.dart';
+import 'package:schuul/src/services/database.dart';
 import 'package:schuul/src/widgets/widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -38,7 +37,7 @@ class _CalendarPageState extends State<CalendarPage>
       "start": DateTime.now().millisecondsSinceEpoch,
       'end': DateTime.now().millisecondsSinceEpoch
     };
-    ClassDatabaseMethods().addClass(classData);
+    DatabaseService().addClass(classData);
   }
 
   void addSampleClassToDatabase() {
@@ -56,12 +55,12 @@ class _CalendarPageState extends State<CalendarPage>
 
     for (ClassModel model in list) {
       print(model.toJson());
-      ClassDatabaseMethods().addClass(model.toJson());
+      DatabaseService().addClass(model.toJson());
     }
   }
 
   void getClass() async {
-    QuerySnapshot snapshot = await ClassDatabaseMethods().getClass();
+    QuerySnapshot snapshot = await DatabaseService().getClass();
     snapshot.documents.forEach((f) {
       var date = f.data['start'];
       if (date != null) {

@@ -57,3 +57,7 @@ const sampleTitle3 = "휴강 안내";
 
 String tShortAnswer = "주관식";
 String tMultipleChoice = "객관식";
+
+const double modalMaxWidth = 400;
+
+const Color modalBackgroundColor = Color.fromRGBO(241, 241, 241, 1);

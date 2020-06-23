@@ -29,6 +29,11 @@ class MyApp extends StatelessWidget {
           const Locale('en', 'US'),
           const Locale('ko', 'KO'),
         ],
+        theme: ThemeData(
+          bottomSheetTheme: BottomSheetThemeData(
+            backgroundColor: Colors.transparent
+          )
+        ),
         home: AuthStream());
   }
 }

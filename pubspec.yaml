@@ -46,7 +46,7 @@ dependencies:
   zefyr: ^0.11.0
   badges: ^1.1.1
   showcaseview: ^0.1.5
-  
+  numberpicker: ^1.2.0
 
 dev_dependencies:
   flutter_test:

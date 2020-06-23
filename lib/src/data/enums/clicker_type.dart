@@ -1,4 +1,4 @@
-enum ClickerType { complete, ing , canceled, text, date }
+enum ClickerType { complete, ing , canceled, text, limited, date , multiple, ananymous, addable}
 // attend : 출석함, tardy : 지각, cut : 결석
 
 extension ClickerTypeExtention on ClickerType {
@@ -14,6 +14,15 @@ extension ClickerTypeExtention on ClickerType {
         return '텍스트';
         case ClickerType.date:
         return '날짜';
+        case ClickerType.limited:
+        return '마감시간 설정';
+        case ClickerType.multiple:
+        return '복수 선택';
+        case ClickerType.ananymous:
+        return '익명';
+        case ClickerType.addable:
+        return '선택항목 추가 허용';
+
       default:
         return null;
     }

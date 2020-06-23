@@ -13,7 +13,7 @@ import 'package:schuul/src/widgets/custom_appbar_item.dart';
 import 'package:schuul/src/widgets/custom_box_shadow.dart';
 import 'package:schuul/src/widgets/info_card.dart';
 import 'package:schuul/src/widgets/sub_title.dart';
-import 'package:schuul/src/services/class_database.dart';
+import 'package:schuul/src/services/database.dart';
 import 'package:schuul/src/widgets/widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcase_widget.dart';
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
 //    list.add(ClassModel(className: "test1", startDate: 1, endDate: 3));
 //    list.add(ClassModel(className: "test2", startDate: 1, endDate: 3));
 //    list.add(ClassModel(className: "test3", startDate: 1, endDate: 3));
-    QuerySnapshot snapshot = await ClassDatabaseMethods().getClass();
+    QuerySnapshot snapshot = await DatabaseService().getClass();
     snapshot.documents.forEach((element) {
       list.add(ClassModel.fromJson(element.data));
     });
