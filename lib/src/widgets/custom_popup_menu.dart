@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:schuul/src/data/enums/action_type.dart';
+import 'package:schuul/src/obj/action_model.dart';
 
 class CustomPopupMenuButton extends StatelessWidget {
-  final List<ActionType> list;
+  final List<ActionModel> list;
 
   const CustomPopupMenuButton({
     Key key,
@@ -14,16 +14,19 @@ class CustomPopupMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton(
         onSelected: (value) {
-          print(value);
+          List<ActionModel> filtered =
+              list.where((element) => element.type == value).toList();
+          filtered.first.press();
         },
         child: Icon(Icons.more_vert),
         itemBuilder: (BuildContext context) =>
             List<PopupMenuEntry<ActionType>>.generate(
               list.length,
               (index) => PopupMenuItem<ActionType>(
-                value: list[index],
+                value: list[index].type,
                 child: Align(
-                    alignment: Alignment.center, child: Text(list[index].name)),
+                    alignment: Alignment.center,
+                    child: Text(list[index].type.name)),
               ),
             ));
   }

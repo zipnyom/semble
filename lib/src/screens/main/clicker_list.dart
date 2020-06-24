@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/action_type.dart';
 import 'package:schuul/src/data/enums/clicker_type.dart';
+import 'package:schuul/src/obj/action_model.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/clicker_detail.dart';
 import 'package:schuul/src/obj/clicker.dart';
@@ -22,23 +23,23 @@ class _ClickerListState extends State<ClickerList> {
   List<Clicker> clickerList = [];
 
   void packSampleClickers() async {
-    List<Clicker> bufferList = List<Clicker>();
+    // List<Clicker> bufferList = List<Clicker>();
 
-    QuerySnapshot snapshot = await Firestore.instance
-        .collection("clicker")
-        .getDocuments()
-        .catchError((e) {
-      print(e.toString());
-    });
+    // QuerySnapshot snapshot = await Firestore.instance
+    //     .collection("clicker")
+    //     .getDocuments()
+    //     .catchError((e) {
+    //   print(e.toString());
+    // });
 
-    snapshot.documents.forEach((element) {
-      bufferList.add(Clicker.fromJson(element.data));
-    });
-    print(bufferList);
+    // snapshot.documents.forEach((element) {
+    //   bufferList.add(Clicker.fromJson(element.data));
+    // });
+    // print(bufferList);
 
-    setState(() {
-      clickerList = bufferList;
-    });
+    // setState(() {
+    //   clickerList = bufferList;
+    // });
 
     // for (int i = 1; i <= 20; i++) {
     //   String num = i.toString();
@@ -48,12 +49,36 @@ class _ClickerListState extends State<ClickerList> {
     // for (Clicker model in list) {
     //   print(model.toJson());
     // }
+
+    List<Clicker> bufferList = List<Clicker>();
+    Firestore.instance
+        .collection("clicker")
+        .snapshots()
+        .listen((QuerySnapshot snapshot) {
+      bufferList.clear();
+      snapshot.documents.forEach((element) {
+        bufferList
+            .add(Clicker.fromJson(element.data)..documentSnapshot = element);
+      });
+      print(bufferList);
+      setState(() {
+        clickerList = bufferList;
+      });
+    });
   }
 
   @override
   void initState() {
     packSampleClickers();
     super.initState();
+  }
+
+  bulkDeletePress() {
+    for (Clicker clicker in clickerList) {
+      if (clicker.checked) {
+        clicker.documentSnapshot.reference.delete();
+      }
+    }
   }
 
   @override
@@ -74,7 +99,7 @@ class _ClickerListState extends State<ClickerList> {
         Padding(
           padding: EdgeInsets.only(left: 10, right: 15),
           child: CustomPopupMenuButton(
-            list: [ActionType.bulkDelete],
+            list: [ActionModel(ActionType.bulkDelete, bulkDeletePress)],
           ),
         )
       ]),

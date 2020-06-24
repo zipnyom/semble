@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:schuul/src/data/enums/action_type.dart';
+import 'package:schuul/src/obj/action_model.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/obj/response.dart';
 import 'package:schuul/src/widgets/custom_popup_menu.dart';
@@ -39,6 +40,8 @@ class _ClickerDetailState extends State<ClickerDetail> {
     super.initState();
   }
 
+  deletePress() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +49,7 @@ class _ClickerDetailState extends State<ClickerDetail> {
           Padding(
             padding: EdgeInsets.only(right: 15),
             child: CustomPopupMenuButton(
-              list: [ActionType.delete],
+              list: [ActionModel(ActionType.delete, deletePress)],
             ),
           )
         ]),

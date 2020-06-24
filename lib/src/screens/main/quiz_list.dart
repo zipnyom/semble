@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/action_type.dart';
 import 'package:schuul/src/data/enums/quiz_type.dart';
+import 'package:schuul/src/obj/action_model.dart';
 import 'package:schuul/src/obj/quiz.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/quiz_edit.dart';
 import 'package:schuul/src/widgets/custom_popup_menu.dart';
 import 'package:schuul/src/widgets/filterchip.dart';
 import 'package:schuul/src/widgets/widget.dart';
-
 
 class QuizList extends StatefulWidget {
   QuizList({Key key}) : super(key: key);
@@ -36,6 +36,7 @@ class _QuizListState extends State<QuizList> {
     super.initState();
   }
 
+  bulkDeletePress() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +55,7 @@ class _QuizListState extends State<QuizList> {
         Padding(
           padding: EdgeInsets.only(left: 10, right: 15),
           child: CustomPopupMenuButton(
-            list: [ActionType.bulkDelete],
+            list: [ActionModel(ActionType.bulkDelete, bulkDeletePress)],
           ),
         )
       ]),

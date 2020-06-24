@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:schuul/src/data/enums/clicker_type.dart';
 
@@ -11,6 +12,10 @@ class Clicker {
   List<String> choices;
   List<ClickerType> options;
 
+  @JsonKey(ignore: true)
+  DocumentSnapshot documentSnapshot;
+
+  @JsonKey(ignore: true)
   bool _checked = false;
 
   bool get checked => _checked;

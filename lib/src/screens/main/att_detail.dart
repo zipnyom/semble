@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/action_type.dart';
 import 'package:schuul/src/data/enums/attend_type.dart';
+import 'package:schuul/src/obj/action_model.dart';
 import 'package:schuul/src/obj/attendance.dart';
 import 'package:schuul/src/widgets/choicecip.dart';
 import 'package:schuul/src/widgets/custom_popup_menu.dart';
@@ -38,6 +39,12 @@ class _AttDetailPageState extends State<AttDetailPage> {
     super.initState();
   }
 
+  attendPress() {}
+  tardyPress() {}
+  cutPress() {}
+  bulkAttendPress() {}
+  bulkTardyPress() {}
+  bulkCutPress() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,9 +53,9 @@ class _AttDetailPageState extends State<AttDetailPage> {
           padding: EdgeInsets.only(right: 15),
           child: CustomPopupMenuButton(
             list: [
-              ActionType.bulkAttend,
-              ActionType.bulkTardy,
-              ActionType.bulkCut
+              ActionModel(ActionType.bulkAttend, bulkAttendPress),
+              ActionModel(ActionType.bulkTardy, bulkTardyPress),
+              ActionModel(ActionType.bulkCut, bulkCutPress),
             ],
           ),
         )
@@ -87,9 +94,9 @@ class _AttDetailPageState extends State<AttDetailPage> {
                         checkColor: Colors.white,
                         secondary: CustomPopupMenuButton(
                           list: [
-                            ActionType.attend,
-                            ActionType.tardy,
-                            ActionType.cut
+                            ActionModel(ActionType.attend, attendPress),
+                            ActionModel(ActionType.tardy, tardyPress),
+                            ActionModel(ActionType.cut, cutPress),
                           ],
                         ));
                   })
