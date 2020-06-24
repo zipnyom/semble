@@ -1,13 +1,15 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:schuul/src/data/enums/clicker_type.dart';
 
 part 'clicker.g.dart';
 
 @JsonSerializable()
 class Clicker {
-  @JsonKey(name: 'clicker_title')
-  String clickerName;
-  @JsonKey(name: 'time_stamp')
-  String timeStamp;
+  String title;
+  DateTime created;
+  bool isDate;
+  List<String> choices;
+  List<ClickerType> options;
 
   bool _checked = false;
 
@@ -17,10 +19,13 @@ class Clicker {
     _checked = checked;
   }
 
-  Clicker(
-    this.clickerName,
-    this.timeStamp,
-  );
+  Clicker([
+    this.title,
+    this.created,
+    this.isDate,
+    this.choices,
+    this.options,
+  ]);
 
   factory Clicker.fromJson(Map<String, dynamic> json) =>
       _$ClickerFromJson(json);

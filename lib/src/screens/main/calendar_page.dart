@@ -37,7 +37,7 @@ class _CalendarPageState extends State<CalendarPage>
       "start": DateTime.now().millisecondsSinceEpoch,
       'end': DateTime.now().millisecondsSinceEpoch
     };
-    DatabaseService().addClass(classData);
+    DatabaseService().addItem("class", classData);
   }
 
   void addSampleClassToDatabase() {
@@ -55,12 +55,12 @@ class _CalendarPageState extends State<CalendarPage>
 
     for (ClassModel model in list) {
       print(model.toJson());
-      DatabaseService().addClass(model.toJson());
+      DatabaseService().addItem("class", model.toJson());
     }
   }
 
   void getClass() async {
-    QuerySnapshot snapshot = await DatabaseService().getClass();
+    QuerySnapshot snapshot = await databaseService.selectAll("class");
     snapshot.documents.forEach((f) {
       var date = f.data['start'];
       if (date != null) {

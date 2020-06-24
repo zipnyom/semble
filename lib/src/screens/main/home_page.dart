@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
 //    list.add(ClassModel(className: "test1", startDate: 1, endDate: 3));
 //    list.add(ClassModel(className: "test2", startDate: 1, endDate: 3));
 //    list.add(ClassModel(className: "test3", startDate: 1, endDate: 3));
-    QuerySnapshot snapshot = await DatabaseService().getClass();
+    QuerySnapshot snapshot = await databaseService.selectAll("class");
     snapshot.documents.forEach((element) {
       list.add(ClassModel.fromJson(element.data));
     });

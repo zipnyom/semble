@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/action_type.dart';
@@ -18,14 +19,32 @@ class ClickerList extends StatefulWidget {
 }
 
 class _ClickerListState extends State<ClickerList> {
-  List<Clicker> list;
-  void packSampleClickers() {
-    list = List<Clicker>();
-    for (int i = 1; i <= 20; i++) {
-      String num = i.toString();
-      list.add(new Clicker(
-          "클리커클리커클리커클리커클리커클리커클리커클리커클리커클리커클리커클리커클리커" + num, "2020-06-04"));
-    }
+  List<Clicker> clickerList = [];
+
+  void packSampleClickers() async {
+    List<Clicker> bufferList = List<Clicker>();
+
+    QuerySnapshot snapshot = await Firestore.instance
+        .collection("clicker")
+        .getDocuments()
+        .catchError((e) {
+      print(e.toString());
+    });
+
+    snapshot.documents.forEach((element) {
+      bufferList.add(Clicker.fromJson(element.data));
+    });
+    print(bufferList);
+
+    setState(() {
+      clickerList = bufferList;
+    });
+
+    // for (int i = 1; i <= 20; i++) {
+    //   String num = i.toString();
+    //   list.add(Clicker(
+    //       "클리커$num", DateTime.now(), false, ["사과", "배"], [ClickerType.text]));
+    // }
     // for (Clicker model in list) {
     //   print(model.toJson());
     // }
@@ -55,9 +74,7 @@ class _ClickerListState extends State<ClickerList> {
         Padding(
           padding: EdgeInsets.only(left: 10, right: 15),
           child: CustomPopupMenuButton(
-            list: [
-              ActionType.bulkDelete
-            ],
+            list: [ActionType.bulkDelete],
           ),
         )
       ]),
@@ -67,38 +84,51 @@ class _ClickerListState extends State<ClickerList> {
           child: Column(
             children: [
               // CustomChip(),
-              CategoryChips(),
+              // CategoryChips(),
               SizedBox(
                 height: 10,
               ),
               ListView.separated(
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
-                  itemCount: list.length,
+                  itemCount: clickerList.length,
                   separatorBuilder: (context, index) => Divider(),
                   itemBuilder: (_, index) {
                     return CheckboxListTile(
                         title: Padding(
                           padding: EdgeInsets.only(bottom: 10),
-                          child: Wrap(
-                            runSpacing: 10,
-                            spacing: 10,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                list[index].clickerName,
+                                clickerList[index].title,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              CustomChip(color: Colors.blueAccent, title: "다중선택",),
-                              CustomChip(color: Colors.amberAccent, title: "익명",),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Wrap(
+                                runSpacing: 10,
+                                spacing: 10,
+                                children: List<CustomChip>.generate(
+                                    clickerList[index].options.length,
+                                    (index2) => CustomChip(
+                                          color: Colors.blueAccent,
+                                          title: clickerList[index]
+                                              .options[index2]
+                                              .name,
+                                        )),
+                              ),
                             ],
                           ),
                         ),
-                        subtitle: Text(list[index].timeStamp),
+                        subtitle:
+                            Text(clickerList[index].created.toIso8601String()),
                         controlAffinity: ListTileControlAffinity.leading,
-                        value: list[index].checked,
+                        value: clickerList[index].checked,
                         onChanged: (bool value) {
                           setState(() {
-                            list[index].checked = value;
+                            clickerList[index].checked = value;
                           });
                         },
                         checkColor: Colors.white,
@@ -108,11 +138,9 @@ class _ClickerListState extends State<ClickerList> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ClickerDetail(
-                                    id: 1,
-                                    title: "한국에서 튤립을 재배할 수 있을까?",
-                                  ),
-                                ));
+                                    builder: (context) => NewClicker(
+                                          clicker: clickerList[index],
+                                        )));
                           },
                         ));
                   })
@@ -125,12 +153,13 @@ class _ClickerListState extends State<ClickerList> {
 }
 
 class CustomChip extends StatelessWidget {
-
   final Color color;
   final String title;
 
   const CustomChip({
-    Key key, this.color, this.title,
+    Key key,
+    this.color,
+    this.title,
   }) : super(key: key);
 
   @override

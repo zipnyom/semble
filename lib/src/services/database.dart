@@ -1,26 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
-
-  Future<void> addClass(classData) async {
-    Firestore.instance.collection("class").add(classData).catchError((e) {
+  Future<void> addItem(String collection, dynamic item) async {
+    Firestore.instance.collection(collection).add(item).catchError((e) {
       print(e.toString());
     });
   }
 
-  getClass() async {
+  selectAll(String collection) async {
     return Firestore.instance
-        .collection("class")
-//        .where("userEmail", isEqualTo: email)
+        .collection(collection)
         .getDocuments()
         .catchError((e) {
       print(e.toString());
     });
   }
 
-  Future<void> deleteAll(collectionName) async {
+  Future<void> deleteAll(collection) async {
     QuerySnapshot snapshot = await Firestore.instance
-        .collection(collectionName)
+        .collection(collection)
         .getDocuments()
         .catchError((e) {
       print(e.toString());
@@ -31,3 +29,5 @@ class DatabaseService {
     });
   }
 }
+
+DatabaseService databaseService = DatabaseService();

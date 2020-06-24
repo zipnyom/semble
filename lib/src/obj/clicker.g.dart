@@ -8,13 +8,66 @@ part of 'clicker.dart';
 
 Clicker _$ClickerFromJson(Map<String, dynamic> json) {
   return Clicker(
-    json['clicker_title'] as String,
-    json['time_stamp'] as String,
+    json['title'] as String,
+    json['created'] == null ? null : DateTime.parse(json['created'] as String),
+    json['isDate'] as bool,
+    (json['choices'] as List)?.map((e) => e as String)?.toList(),
+    (json['options'] as List)
+        ?.map((e) => _$enumDecodeNullable(_$ClickerTypeEnumMap, e))
+        ?.toList(),
   )..checked = json['checked'] as bool;
 }
 
 Map<String, dynamic> _$ClickerToJson(Clicker instance) => <String, dynamic>{
-      'clicker_title': instance.clickerName,
-      'time_stamp': instance.timeStamp,
+      'title': instance.title,
+      'created': instance.created?.toIso8601String(),
+      'isDate': instance.isDate,
+      'choices': instance.choices,
+      'options':
+          instance.options?.map((e) => _$ClickerTypeEnumMap[e])?.toList(),
       'checked': instance.checked,
     };
+
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$ClickerTypeEnumMap = {
+  ClickerType.complete: 'complete',
+  ClickerType.ing: 'ing',
+  ClickerType.canceled: 'canceled',
+  ClickerType.text: 'text',
+  ClickerType.limited: 'limited',
+  ClickerType.date: 'date',
+  ClickerType.multiple: 'multiple',
+  ClickerType.ananymous: 'ananymous',
+  ClickerType.addable: 'addable',
+};
