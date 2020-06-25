@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ClickerList()));
           },
-          description: "클리커를 통해 학생들의 생각을 물어볼 수 있습니다.",
+          description: "투표를 통해 학생들의 생각을 물어볼 수 있습니다.",
         ),
         CAppBarItem(
           gKey: _three,

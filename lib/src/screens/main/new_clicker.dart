@@ -23,6 +23,7 @@ class _NewClickerState extends State<NewClicker> {
   final TextEditingController titleController = TextEditingController();
   ClickerType selectedRadio = ClickerType.text;
   bool isLoading = false;
+  bool edit;
   Clicker _clicker;
 
   setSelectedRadio(ClickerType val) {
@@ -42,7 +43,8 @@ class _NewClickerState extends State<NewClicker> {
 
   @override
   void initState() {
-    if (widget.clicker != null) {
+    edit= widget.clicker != null;
+    if (edit) {
       _clicker = widget.clicker;
       titleController.text = _clicker.title;
       itemList =
@@ -98,7 +100,7 @@ class _NewClickerState extends State<NewClicker> {
         Clicker clicker =
             Clicker(title, DateTime.now(), false, choiceList, _clicker.options);
         databaseService.addItem("clicker", clicker.toJson());
-        // Navigator.pop(context);
+        Navigator.pop(context);
       }
     }
 
@@ -112,8 +114,11 @@ class _NewClickerState extends State<NewClicker> {
     }
 
     return Scaffold(
-        appBar: customAppBarLeading(context, "클리커 생성", Icon(Icons.close),
-            [RightTopTextButton(title: "완료", press: onSubmit)]),
+        appBar: customAppBarLeading(context,
+            edit ? "투표 정보" : "투표 생성", Icon(Icons.close), [
+          RightTopTextButton(
+              title: edit ? "수정" : "완료", press: onSubmit)
+        ]),
         body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: SingleChildScrollView(
@@ -207,7 +212,7 @@ class TitleFiled extends StatelessWidget {
       controller: _controller,
       validator: (String value) {
         if (value.isEmpty) {
-          return "클리커 제목을 입력해주세요.";
+          return "투표 제목을 입력해주세요.";
         }
         return null;
       },
@@ -216,7 +221,7 @@ class TitleFiled extends StatelessWidget {
         //   Icons.title,
         //   color: kPrimaryColor,
         // ),
-        hintText: "클리커 제목",
+        hintText: "투표 제목",
         // border: InputBorder.none,
       ),
     );

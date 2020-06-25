@@ -27,7 +27,7 @@ class _ClickerDetailState extends State<ClickerDetail> {
     list = List<Response>();
     for (int i = 1; i <= 20; i++) {
       String num = i.toString();
-      list.add(new Response("클리커N", "학생$num", "yes"));
+      list.add(new Response("투표N", "학생$num", "yes"));
     }
     // for (Response model in list) {
     //   print(model.toJson());
@@ -45,7 +45,7 @@ class _ClickerDetailState extends State<ClickerDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: customAppBar("클리커 정보", true, [
+        appBar: customAppBar("투표 정보", true, [
           Padding(
             padding: EdgeInsets.only(right: 15),
             child: CustomPopupMenuButton(

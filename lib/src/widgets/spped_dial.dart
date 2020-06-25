@@ -19,7 +19,7 @@ class MainSpeedDial extends StatelessWidget {
           child: Icon(Icons.notification_important, color: Colors.white),
           backgroundColor: Colors.deepOrange,
           onTap: () => print('FIRST CHILD'),
-          label: '설문조사 (클리커)',
+          label: '설문조사 (투표)',
           labelStyle: TextStyle(fontWeight: FontWeight.w500),
           labelBackgroundColor: Colors.deepOrangeAccent,
         ),

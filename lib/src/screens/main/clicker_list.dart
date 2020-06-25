@@ -44,7 +44,7 @@ class _ClickerListState extends State<ClickerList> {
     // for (int i = 1; i <= 20; i++) {
     //   String num = i.toString();
     //   list.add(Clicker(
-    //       "클리커$num", DateTime.now(), false, ["사과", "배"], [ClickerType.text]));
+    //       "투표$num", DateTime.now(), false, ["사과", "배"], [ClickerType.text]));
     // }
     // for (Clicker model in list) {
     //   print(model.toJson());
@@ -61,9 +61,11 @@ class _ClickerListState extends State<ClickerList> {
             .add(Clicker.fromJson(element.data)..documentSnapshot = element);
       });
       print(bufferList);
-      setState(() {
-        clickerList = bufferList;
-      });
+      if (this.mounted) {
+        setState(() {
+          clickerList = bufferList;
+        });
+      }
     });
   }
 
@@ -84,7 +86,7 @@ class _ClickerListState extends State<ClickerList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBarLeading(context, "클리커", Icon(Icons.close), [
+      appBar: customAppBarLeading(context, "투표", Icon(Icons.close), [
         IconButton(
           iconSize: 20,
           icon: Icon(CustomIcon.pencil),
