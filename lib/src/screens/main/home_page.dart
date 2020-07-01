@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/attend_type.dart';
+import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/clicker_list.dart';
 import 'package:schuul/src/obj/class_model.dart';
@@ -117,53 +119,55 @@ class _HomePageState extends State<HomePage> {
             Background(size: size),
             Container(
               decoration: BoxDecoration(color: Colors.white.withOpacity(.5)),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("조정석님,", style: kHeadingextStyle),
-                      Text("오늘도 즐거운 수업 되세요!", style: kSubheadingextStyle),
-                      Text("수업명 : 슬기로운 영어생활"),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      // ClassTitle(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      SubTitle(
-                          icon: CustomIcon.attach,
-                          title: "$today 출석현황",
-                          actions: []),
-                      NarrowGap(),
-                      AttendanceStatus(),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      SubTitle(icon: CustomIcon.doc, title: "공지사항", actions: [
-                        Material(
-                            child: InkWell(
-                                onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            NoticeListPage())),
-                                child: Icon(Icons.more_horiz)))
-                        // IconButton(
-                        //   icon: Icon(Icons.more_horiz),
-                        //   onPressed: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => NoticeListPage()));
-                        //   },
-                        // )
-                      ]),
-                      NarrowGap(),
-                      NoticeList()
-                    ],
+              child: Consumer<Mode>(
+                builder: (context, pMode, child) => Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("조정석님 \(${pMode.mode.name}\),", style: kHeadingextStyle),
+                        Text("오늘도 즐거운 수업 되세요!", style: kSubheadingextStyle),
+                        Text("수업명 : 슬기로운 영어생활"),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        // ClassTitle(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        SubTitle(
+                            icon: CustomIcon.attach,
+                            title: "$today 출석현황",
+                            actions: []),
+                        NarrowGap(),
+                        AttendanceStatus(),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        SubTitle(icon: CustomIcon.doc, title: "공지사항", actions: [
+                          Material(
+                              child: InkWell(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              NoticeListPage())),
+                                  child: Icon(Icons.more_horiz)))
+                          // IconButton(
+                          //   icon: Icon(Icons.more_horiz),
+                          //   onPressed: () {
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => NoticeListPage()));
+                          //   },
+                          // )
+                        ]),
+                        NarrowGap(),
+                        NoticeList()
+                      ],
+                    ),
                   ),
                 ),
               ),

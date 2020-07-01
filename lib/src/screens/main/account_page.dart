@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/screens/welcome/welcome_screen.dart';
 import 'package:schuul/src/widgets/widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,48 +57,19 @@ class _AccountPageState extends State<AccountPage> {
                 style: TextStyle(color: Colors.blue),
               ),
             ),
-
             FlatButton(
               child: Text("도움말 다시보기"),
               onPressed: () => enableShowcase,
             ),
-
+            FlatButton(
+              child: Text("학생모드로 변경"),
+              onPressed: () => changeMode(context),
+            ),
             FlatButton(
                 child: Text("로그아웃"),
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
                 })
-            // Form(
-            //   key: _formKey,
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: <Widget>[
-            //       TextFormField(
-            //         controller: _emailController,
-            //         decoration: InputDecoration(
-            //             icon: Icon(Icons.account_circle), labelText: "Email"),
-            //         validator: (String value) {
-            //           if (value.isEmpty) {
-            //             return "Please input correct Email.";
-            //           }
-            //           return null;
-            //         },
-            //       ),
-            //       TextFormField(
-            //         obscureText: true,
-            //         controller: _passwordController,
-            //         decoration: InputDecoration(
-            //             icon: Icon(Icons.vpn_key), labelText: "Password"),
-            //         validator: (String value) {
-            //           if (value.isEmpty) {
-            //             return "Please input correct password.";
-            //           }
-            //           return null;
-            //         },
-            //       ),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       ),
@@ -107,4 +80,9 @@ class _AccountPageState extends State<AccountPage> {
 void enableShowcase() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setBool('showcase', false);
+}
+
+void changeMode(BuildContext context) {
+  Mode pMode = Provider.of<Mode>(context);
+  pMode.toggle();
 }
