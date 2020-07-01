@@ -1,11 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:schuul/src/constants.dart';
 
 class ItemAddButton extends StatelessWidget {
   final VoidCallback press;
 
-  const ItemAddButton({Key key, this.press}) : super(key: key);
+  final String title;
+  const ItemAddButton({Key key, this.press, this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class ItemAddButton extends StatelessWidget {
                       width: 5,
                     ),
                     Text(
-                      "항목추가",
+                      title,
                       style: TextStyle(fontSize: 16),
                     )
                   ],
