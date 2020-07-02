@@ -20,8 +20,8 @@ Map<TabItem, String> tabName = {
 Map<TabItem, Widget> activeTab = {
   // TabItem.home: NoticeDetailPage(),
   // TabItem.home: AttDetailPage(type: AttendType.attend,),
-  TabItem.home: HomePage(),
-  // TabItem.home: ClickerList(),
+  // TabItem.home: HomePage(),
+  TabItem.home: ClickerList(),
   // TabItem.home: NewClicker(),
   // TabItem.home: QuizList(),
   // TabItem.home: NewQuiz(),
@@ -57,8 +57,6 @@ class BottomNavigation extends StatelessWidget {
       ),
     );
   }
-
-
 
   BottomNavigationBarItem _buildItem({TabItem tabItem}) {
     String text = tabName[tabItem];

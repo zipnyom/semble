@@ -24,8 +24,6 @@ class _NewClickerState extends State<NewClicker> {
   final List<TextEditingController> txtControllerList =
       List<TextEditingController>();
   final TextEditingController titleController = TextEditingController();
-  final RoundedLoadingButtonController _btnController =
-      RoundedLoadingButtonController();
   ClickerType selectedRadio = ClickerType.text;
   bool edit;
   Clicker _clicker;
@@ -89,8 +87,6 @@ class _NewClickerState extends State<NewClicker> {
     void onSubmit() {
       if (_formKey.currentState.validate()) {
         String title = titleController.text;
-        print(title);
-        print(selectedRadio);
         int choiceCount = 0;
         List<String> choiceList = [];
         for (TextEditingController tec in txtControllerList) {
@@ -104,10 +100,13 @@ class _NewClickerState extends State<NewClicker> {
           print("nono..");
           return;
         }
-
         Clicker clicker =
             Clicker(title, DateTime.now(), false, choiceList, _clicker.options);
-        databaseService.addItem("clicker", clicker.toJson());
+        if (edit) {
+          _clicker.documentSnapshot.reference.updateData(clicker.toJson());
+        } else {
+          databaseService.addItem("clicker", clicker.toJson());
+        }
         Navigator.pop(context);
       }
     }
