@@ -11,7 +11,6 @@ Clicker _$ClickerFromJson(Map<String, dynamic> json) {
     json['title'] as String,
     json['created'] == null ? null : DateTime.parse(json['created'] as String),
     json['isDate'] as bool,
-    (json['choices'] as List)?.map((e) => e as String)?.toList(),
     (json['options'] as List)
         ?.map((e) => _$enumDecodeNullable(_$ClickerTypeEnumMap, e))
         ?.toList(),
@@ -22,7 +21,6 @@ Map<String, dynamic> _$ClickerToJson(Clicker instance) => <String, dynamic>{
       'title': instance.title,
       'created': instance.created?.toIso8601String(),
       'isDate': instance.isDate,
-      'choices': instance.choices,
       'options':
           instance.options?.map((e) => _$ClickerTypeEnumMap[e])?.toList(),
       'checked': instance.checked,

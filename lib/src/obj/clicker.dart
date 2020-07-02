@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:schuul/src/data/enums/clicker_type.dart';
+import 'package:schuul/src/obj/clicker_item.dart';
 
 part 'clicker.g.dart';
 
@@ -9,7 +10,7 @@ class Clicker {
   String title;
   DateTime created;
   bool isDate;
-  List<String> choices;
+  // List<ClickerItem> choices;
   List<ClickerType> options;
 
   @JsonKey(ignore: true)
@@ -28,7 +29,6 @@ class Clicker {
     this.title,
     this.created,
     this.isDate,
-    this.choices,
     this.options,
   ]);
 

@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:schuul/src/data/enums/clicker_type.dart';
 import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/obj/clicker.dart';
+import 'package:schuul/src/obj/clicker_item.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/services/database.dart';
 import 'package:schuul/src/widgets/condition_tile.dart';
@@ -41,7 +43,7 @@ class _NewClickerState extends State<NewClicker> {
     print(_clicker.options);
   }
 
-  List<Widget> itemList; //항목 리스트
+  List<Widget> itemList = []; //항목 리스트
 
   @override
   void initState() {
@@ -49,12 +51,27 @@ class _NewClickerState extends State<NewClicker> {
     if (edit) {
       _clicker = widget.clicker;
       titleController.text = _clicker.title;
-      itemList =
-          List<ItemInputFiled>.generate(_clicker.choices.length, (index) {
-        TextEditingController controller = TextEditingController();
-        controller.text = _clicker.choices[index];
-        txtControllerList.add(controller);
-        return ItemInputFiled(controller: controller);
+
+      //sub collection 도입
+      _clicker.documentSnapshot.reference
+          .collection("choices")
+          .snapshots()
+          .listen((QuerySnapshot snapshot) {
+        itemList.clear();
+        snapshot.documents.forEach((element) {
+          TextEditingController controller = TextEditingController();
+          ClickerItem item = ClickerItem.fromJson(element.data);
+          controller.text = item.title;
+          txtControllerList.add(controller);
+          itemList.add(ItemInputFiled(controller: controller));
+        });
+
+        // itemList =
+        //     List<ItemInputFiled>.generate(_clicker.choices.length, (index) {
+        //   TextEditingController controller = TextEditingController();
+        //   controller.text = _clicker.choices[index].title;
+        //   txtControllerList.add(controller);
+        //   return ItemInputFiled(controller: controller);
       });
     } else {
       _clicker = Clicker()..options = [ClickerType.text];
@@ -84,16 +101,16 @@ class _NewClickerState extends State<NewClicker> {
       print("pick me pick me !!!");
     }
 
-    void onSubmit() {
+    void onSubmit() async {
       if (_formKey.currentState.validate()) {
         String title = titleController.text;
         int choiceCount = 0;
-        List<String> choiceList = [];
+        List<ClickerItem> choiceList = [];
         for (TextEditingController tec in txtControllerList) {
           if (tec.text.isNotEmpty) {
             choiceCount++;
             print(tec.text);
-            choiceList.add(tec.text);
+            choiceList.add(ClickerItem(tec.text, 0, []));
           }
         }
         if (choiceCount < 2) {
@@ -101,12 +118,18 @@ class _NewClickerState extends State<NewClicker> {
           return;
         }
         Clicker clicker =
-            Clicker(title, DateTime.now(), false, choiceList, _clicker.options);
+            Clicker(title, DateTime.now(), false, _clicker.options);
         if (edit) {
           _clicker.documentSnapshot.reference.updateData(clicker.toJson());
         } else {
-          databaseService.addItem("clicker", clicker.toJson());
+          DocumentReference ref =
+              await databaseService.addItem("clicker", clicker.toJson());
+
+          for (ClickerItem choice in choiceList) {
+            ref.collection("choices").add(choice.toJson());
+          }
         }
+
         Navigator.pop(context);
       }
     }
