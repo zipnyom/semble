@@ -6,9 +6,10 @@ part 'clicker_item.g.dart';
 class ClickerItem {
   String title;
   int count;
+  int order;
   List<String> voters;
 
-  ClickerItem(this.title, this.count, this.voters);
+  ClickerItem(this.title, this.order, this.count, this.voters);
 
   factory ClickerItem.fromJson(Map<String, dynamic> json) =>
       _$ClickerItemFromJson(json);

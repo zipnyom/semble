@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/clicker_type.dart';
 import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/obj/clicker.dart';
@@ -11,6 +12,8 @@ import 'package:schuul/src/services/database.dart';
 import 'package:schuul/src/widgets/condition_tile.dart';
 import 'package:schuul/src/widgets/item_add_button.dart';
 import 'package:schuul/src/widgets/item_input_field.dart';
+import 'package:schuul/src/widgets/item_result_field.dart';
+import 'package:schuul/src/widgets/item_select_field.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
@@ -54,7 +57,8 @@ class _NewClickerState extends State<NewClicker> {
 
       //sub collection 도입
       _clicker.documentSnapshot.reference
-          .collection("choices")
+          .collection(db_col_choice)
+          .orderBy("order")
           .snapshots()
           .listen((QuerySnapshot snapshot) {
         itemList.clear();
@@ -63,7 +67,18 @@ class _NewClickerState extends State<NewClicker> {
           ClickerItem item = ClickerItem.fromJson(element.data);
           controller.text = item.title;
           txtControllerList.add(controller);
-          itemList.add(ItemInputFiled(controller: controller));
+          if (this.mounted) {
+            setState(() {
+              // itemList.add(ItemInputFiled(controller: controller));
+              // itemList.add(ItemResultField(
+              //   order: item.order,
+              // ));
+              itemList.add(ItemSelectField(
+                controller: controller,
+                order: item.order,
+              ));
+            });
+          }
         });
 
         // itemList =
@@ -78,8 +93,8 @@ class _NewClickerState extends State<NewClicker> {
       txtControllerList.add(TextEditingController());
       txtControllerList.add(TextEditingController());
       itemList = [
-        ItemInputFiled(controller: txtControllerList[0]),
-        ItemInputFiled(controller: txtControllerList[1])
+        ItemInputField(controller: txtControllerList[0]),
+        ItemInputField(controller: txtControllerList[1])
       ];
     }
     super.initState();
@@ -91,7 +106,7 @@ class _NewClickerState extends State<NewClicker> {
       setState(() {
         TextEditingController controller = TextEditingController();
         txtControllerList.add(controller);
-        itemList.add(ItemInputFiled(
+        itemList.add(ItemInputField(
           controller: controller,
         ));
       });
@@ -106,11 +121,12 @@ class _NewClickerState extends State<NewClicker> {
         String title = titleController.text;
         int choiceCount = 0;
         List<ClickerItem> choiceList = [];
+        int order = 0;
         for (TextEditingController tec in txtControllerList) {
           if (tec.text.isNotEmpty) {
+            choiceList.add(ClickerItem(tec.text, order, 0, []));
             choiceCount++;
-            print(tec.text);
-            choiceList.add(ClickerItem(tec.text, 0, []));
+            order++;
           }
         }
         if (choiceCount < 2) {
@@ -119,17 +135,21 @@ class _NewClickerState extends State<NewClicker> {
         }
         Clicker clicker =
             Clicker(title, DateTime.now(), false, _clicker.options);
+        DocumentReference ref;
         if (edit) {
-          _clicker.documentSnapshot.reference.updateData(clicker.toJson());
+          ref = _clicker.documentSnapshot.reference;
+          ref.updateData(clicker.toJson());
+          QuerySnapshot snapshot =
+              await ref.collection(db_col_choice).getDocuments();
+          snapshot.documents.forEach((f) async {
+            await f.reference.delete();
+          });
         } else {
-          DocumentReference ref =
-              await databaseService.addItem("clicker", clicker.toJson());
-
-          for (ClickerItem choice in choiceList) {
-            ref.collection("choices").add(choice.toJson());
-          }
+          ref = await databaseService.addItem("clicker", clicker.toJson());
         }
-
+        for (ClickerItem choice in choiceList) {
+          ref.collection(db_col_choice).add(choice.toJson());
+        }
         Navigator.pop(context);
       }
     }
@@ -145,98 +165,105 @@ class _NewClickerState extends State<NewClicker> {
 
     return Consumer<Mode>(builder: (context, pMode, child) {
       bool isTeacher = pMode.mode == Modes.teacher;
-      return Scaffold(
-          appBar: customAppBarLeading(
-              context,
-              edit ? "투표 정보" : "투표 생성",
-              Icon(Icons.close),
-              [RightTopTextButton(title: edit ? "수정" : "완료", press: onSubmit)]),
-          body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: SingleChildScrollView(
-                child: Column(children: [
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        isTeacher ? ClickerControl() : SizedBox.shrink(),
-                        TitleFiled(controller: titleController),
-                        ButtonBar(
-                          alignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Radio(
-                              value: ClickerType.text,
-                              groupValue: selectedRadio,
-                              activeColor: Colors.green,
-                              onChanged: (val) {
-                                print("Radio $val");
-                                if (isTeacher) setSelectedRadio(val);
-                              },
-                            ),
-                            Text("텍스트"),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Radio(
-                              value: ClickerType.date,
-                              groupValue: selectedRadio,
-                              activeColor: Colors.blue,
-                              onChanged: (val) {
-                                print("Radio $val");
-                                if (isTeacher) setSelectedRadio(val);
-                              },
-                            ),
-                            Text("날짜"),
-                          ],
-                        ),
-                        Column(children: itemList),
-                        if (isTeacher)
-                          ItemAddButton(
-                            title: "항목추가",
-                            press: addInputItem,
-                          )
-                        else
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: RaisedButton(
-                                      onPressed: pick, child: Text("결정"))),
+      return MultiProvider(
+        providers: [
+          StreamProvider<QuerySnapshot>.value(
+              value: _clicker.documentSnapshot.reference
+                  .collection(db_col_choice)
+                  .snapshots()),
+        ],
+        child: Scaffold(
+            appBar: customAppBarLeading(
+                context, edit ? "투표 정보" : "투표 생성", Icon(Icons.close), [
+              RightTopTextButton(title: edit ? "수정" : "완료", press: onSubmit)
+            ]),
+            body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          isTeacher ? ClickerControl() : SizedBox.shrink(),
+                          TitleFiled(controller: titleController),
+                          ButtonBar(
+                            alignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Radio(
+                                value: ClickerType.text,
+                                groupValue: selectedRadio,
+                                activeColor: Colors.green,
+                                onChanged: (val) {
+                                  print("Radio $val");
+                                  if (isTeacher) setSelectedRadio(val);
+                                },
+                              ),
+                              Text("텍스트"),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Radio(
+                                value: ClickerType.date,
+                                groupValue: selectedRadio,
+                                activeColor: Colors.blue,
+                                onChanged: (val) {
+                                  print("Radio $val");
+                                  if (isTeacher) setSelectedRadio(val);
+                                },
+                              ),
+                              Text("날짜"),
                             ],
                           ),
-                        Divider(),
-                        // ConditionTile(
-                        //     iconData: Icons.access_time,
-                        //     type: ClickerType.limited,
-                        //     initialValue:
-                        //         _clicker.options.contains(ClickerType.limited),
-                        //     press: onChecked),
-                        ConditionTile(
-                            iconData: Icons.done_all,
-                            type: ClickerType.multiple,
-                            initialValue:
-                                _clicker.options.contains(ClickerType.multiple),
-                            press: onChecked),
-                        ConditionTile(
-                            iconData: CustomIcon.user_secret,
-                            type: ClickerType.ananymous,
-                            initialValue: _clicker.options
-                                .contains(ClickerType.ananymous),
-                            press: onChecked),
-                        ConditionTile(
-                            iconData: Icons.playlist_add,
-                            type: ClickerType.addable,
-                            initialValue:
-                                _clicker.options.contains(ClickerType.addable),
-                            press: onChecked),
-                        SizedBox(
-                          height: 20,
-                        )
-                      ],
+                          Column(children: itemList),
+                          if (isTeacher)
+                            ItemAddButton(
+                              title: "항목추가",
+                              press: addInputItem,
+                            )
+                          else
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: RaisedButton(
+                                        onPressed: pick, child: Text("결정"))),
+                              ],
+                            ),
+                          Divider(),
+                          // ConditionTile(
+                          //     iconData: Icons.access_time,
+                          //     type: ClickerType.limited,
+                          //     initialValue:
+                          //         _clicker.options.contains(ClickerType.limited),
+                          //     press: onChecked),
+                          ConditionTile(
+                              iconData: Icons.done_all,
+                              type: ClickerType.multiple,
+                              initialValue: _clicker.options
+                                  .contains(ClickerType.multiple),
+                              press: onChecked),
+                          ConditionTile(
+                              iconData: CustomIcon.user_secret,
+                              type: ClickerType.ananymous,
+                              initialValue: _clicker.options
+                                  .contains(ClickerType.ananymous),
+                              press: onChecked),
+                          ConditionTile(
+                              iconData: Icons.playlist_add,
+                              type: ClickerType.addable,
+                              initialValue: _clicker.options
+                                  .contains(ClickerType.addable),
+                              press: onChecked),
+                          SizedBox(
+                            height: 20,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ]),
-              )));
+                  ]),
+                ))),
+      );
     });
   }
 }

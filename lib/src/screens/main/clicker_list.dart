@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/action_type.dart';
 import 'package:schuul/src/data/enums/clicker_type.dart';
+import 'package:schuul/src/data/provider/select_provider.dart';
 import 'package:schuul/src/obj/action_model.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/clicker_detail.dart';
@@ -165,8 +167,12 @@ class _ClickerListState extends State<ClickerList> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => NewClicker(
-                                          clicker: clickerList[index],
+                                    builder: (context) =>
+                                        ChangeNotifierProvider.value(
+                                          value: Select(),
+                                          child: NewClicker(
+                                            clicker: clickerList[index],
+                                          ),
                                         )));
                           },
                         ));

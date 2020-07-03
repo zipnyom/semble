@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 
-class ItemInputFiled extends StatefulWidget {
-  const ItemInputFiled({
+class ItemInputField extends StatefulWidget {
+  const ItemInputField({
     Key key,
     @required TextEditingController controller,
   })  : controller = controller,
@@ -12,10 +12,10 @@ class ItemInputFiled extends StatefulWidget {
   final TextEditingController controller;
 
   @override
-  _ItemInputFiledState createState() => _ItemInputFiledState();
+  _ItemInputFieldState createState() => _ItemInputFieldState();
 }
 
-class _ItemInputFiledState extends State<ItemInputFiled> {
+class _ItemInputFieldState extends State<ItemInputField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
