@@ -16,10 +16,12 @@ import 'package:schuul/src/widgets/item_result_field.dart';
 import 'package:schuul/src/widgets/item_select_field.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
 import 'package:schuul/src/widgets/widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewClicker extends StatefulWidget {
   final Clicker clicker;
-  const NewClicker({Key key, this.clicker}) : super(key: key);
+  final bool respond;
+  const NewClicker({Key key, this.clicker, this.respond}) : super(key: key);
   @override
   _NewClickerState createState() => _NewClickerState();
 }
@@ -30,7 +32,8 @@ class _NewClickerState extends State<NewClicker> {
       List<TextEditingController>();
   final TextEditingController titleController = TextEditingController();
   ClickerType selectedRadio = ClickerType.text;
-  bool edit;
+  bool _edit;
+  bool _respond;
   Clicker _clicker;
 
   setSelectedRadio(ClickerType val) {
@@ -50,11 +53,11 @@ class _NewClickerState extends State<NewClicker> {
 
   @override
   void initState() {
-    edit = widget.clicker != null;
-    if (edit) {
+    _edit = widget.clicker != null;
+    print("respond : ${widget.respond}");
+    if (_edit) {
       _clicker = widget.clicker;
       titleController.text = _clicker.title;
-
       //sub collection 도입
       _clicker.documentSnapshot.reference
           .collection(db_col_choice)
@@ -136,7 +139,7 @@ class _NewClickerState extends State<NewClicker> {
         Clicker clicker =
             Clicker(title, DateTime.now(), false, _clicker.options);
         DocumentReference ref;
-        if (edit) {
+        if (_edit) {
           ref = _clicker.documentSnapshot.reference;
           ref.updateData(clicker.toJson());
           QuerySnapshot snapshot =
@@ -174,8 +177,8 @@ class _NewClickerState extends State<NewClicker> {
         ],
         child: Scaffold(
             appBar: customAppBarLeading(
-                context, edit ? "투표 정보" : "투표 생성", Icon(Icons.close), [
-              RightTopTextButton(title: edit ? "수정" : "완료", press: onSubmit)
+                context, _edit ? "투표 정보" : "투표 생성", Icon(Icons.close), [
+              RightTopTextButton(title: _edit ? "수정" : "완료", press: onSubmit)
             ]),
             body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),

@@ -10,12 +10,12 @@ class Clicker {
   String title;
   DateTime created;
   bool isDate;
+  bool isRunning;
   // List<ClickerItem> choices;
   List<ClickerType> options;
 
   @JsonKey(ignore: true)
   DocumentSnapshot documentSnapshot;
-
   @JsonKey(ignore: true)
   bool _checked = false;
 

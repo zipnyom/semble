@@ -14,13 +14,16 @@ Clicker _$ClickerFromJson(Map<String, dynamic> json) {
     (json['options'] as List)
         ?.map((e) => _$enumDecodeNullable(_$ClickerTypeEnumMap, e))
         ?.toList(),
-  )..checked = json['checked'] as bool;
+  )
+    ..isRunning = json['isRunning'] as bool
+    ..checked = json['checked'] as bool;
 }
 
 Map<String, dynamic> _$ClickerToJson(Clicker instance) => <String, dynamic>{
       'title': instance.title,
       'created': instance.created?.toIso8601String(),
       'isDate': instance.isDate,
+      'isRunning': instance.isRunning,
       'options':
           instance.options?.map((e) => _$ClickerTypeEnumMap[e])?.toList(),
       'checked': instance.checked,

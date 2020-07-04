@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/provider/select_provider.dart';
-import 'package:schuul/src/presentation/custom_icon_icons.dart';
 
 class ItemSelectField extends StatefulWidget {
   const ItemSelectField({
@@ -26,7 +25,6 @@ class _ItemSelectFieldState extends State<ItemSelectField> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Consumer<Select>(builder: (context, pSelect, child) {
-      print(widget.order);
       bool select = pSelect.select == widget.order;
       return Padding(
         padding: EdgeInsets.only(bottom: 10),

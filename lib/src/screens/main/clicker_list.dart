@@ -14,6 +14,7 @@ import 'package:schuul/src/widgets/custom_box_shadow.dart';
 import 'package:schuul/src/widgets/custom_popup_menu.dart';
 import 'package:schuul/src/widgets/filterchip.dart';
 import 'package:schuul/src/widgets/widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ClickerList extends StatefulWidget {
   ClickerList({Key key}) : super(key: key);
@@ -23,6 +24,14 @@ class ClickerList extends StatefulWidget {
 
 class _ClickerListState extends State<ClickerList> {
   List<Clicker> clickerList = [];
+
+  Future<bool> didRespond(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> list = prefs.getStringList("clicker") ?? [];
+    if (list.contains(id)) return true;
+    // await prefs.setStringList("clicker", list..add(id));
+    return false;
+  }
 
   void packSampleClickers() async {
     // List<Clicker> bufferList = List<Clicker>();
@@ -62,7 +71,7 @@ class _ClickerListState extends State<ClickerList> {
         bufferList
             .add(Clicker.fromJson(element.data)..documentSnapshot = element);
       });
-      print(bufferList);
+      // print(bufferList);
       if (this.mounted) {
         setState(() {
           clickerList = bufferList;
@@ -163,7 +172,10 @@ class _ClickerListState extends State<ClickerList> {
                         checkColor: Colors.white,
                         secondary: IconButton(
                           icon: Icon(Icons.arrow_forward_ios),
-                          onPressed: () {
+                          onPressed: () async {
+                            bool respond = await didRespond(
+                                clickerList[index].documentSnapshot.documentID);
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -171,8 +183,8 @@ class _ClickerListState extends State<ClickerList> {
                                         ChangeNotifierProvider.value(
                                           value: Select(),
                                           child: NewClicker(
-                                            clicker: clickerList[index],
-                                          ),
+                                              clicker: clickerList[index],
+                                              respond: respond),
                                         )));
                           },
                         ));

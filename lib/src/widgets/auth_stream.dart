@@ -26,7 +26,7 @@ class _AuthStreamState extends State<AuthStream> {
     FirebaseUser user = Provider.of<FirebaseUser>(context);
     bool loggedIn = user != null;
     if (loggedIn) {
-      print("${user.email} has logged in..!");
+      // print("${user.email} has logged in..!");
       screenHodler = ShowCaseWidget(
         builder: Builder(builder: (context) => MainRoute(email: "고정")),
       );
