@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
+import 'package:schuul/src/screens/main/vote/detail_voters_screen.dart';
 
 class ItemResultField extends StatefulWidget {
   const ItemResultField({
@@ -36,51 +37,62 @@ class _ItemResultFieldState extends State<ItemResultField> {
       controller.text = doc["title"];
       return Padding(
         padding: EdgeInsets.only(bottom: 10),
-        child: Container(
-          width: size.width * .9,
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 2,
-              color: kTextLightColor,
-            ),
-          ),
-          child: Stack(
-            children: [
-              Positioned(
-                top: 0,
-                bottom: 0,
-                left: 0,
-                child: AnimatedContainer(
-                  duration: Duration(seconds: 1),
-                  width: totalCount == 0
-                      ? 0
-                      : size.width * .9 * (doc["count"] / totalCount),
-                  height: double.infinity,
-                  color: kPrimaryColor.withOpacity(.5),
+        child: Material(
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => DetailVoterScreen(
+                  doc: doc,
+                ),
+              ));
+            },
+            child: Container(
+              width: size.width * .9,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 2,
+                  color: kTextLightColor,
                 ),
               ),
-              Row(
+              child: Stack(
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: TextFormField(
-                        enabled: false,
-                        controller: controller,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          // border: InputBorder.none,
-                        ),
-                      ),
+                  Positioned(
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    child: AnimatedContainer(
+                      duration: Duration(seconds: 1),
+                      width: totalCount == 0
+                          ? 0
+                          : size.width * .9 * (doc["count"] / totalCount),
+                      height: double.infinity,
+                      color: kPrimaryColor.withOpacity(.5),
                     ),
                   ),
-                  Text("${doc["count"]}표"),
-                  SizedBox(
-                    width: 10,
-                  )
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: TextFormField(
+                            enabled: false,
+                            controller: controller,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              // border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text("${doc["count"]}표"),
+                      SizedBox(
+                        width: 10,
+                      )
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       );

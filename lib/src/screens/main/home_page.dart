@@ -6,7 +6,7 @@ import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/attend_type.dart';
 import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
-import 'package:schuul/src/screens/main/vote_list_screen.dart';
+import 'package:schuul/src/screens/main/vote/vote_list_screen.dart';
 import 'package:schuul/src/obj/class_model.dart';
 import 'package:schuul/src/screens/main/quiz_list.dart';
 import 'package:schuul/src/screens/main/notice_detail.dart';
