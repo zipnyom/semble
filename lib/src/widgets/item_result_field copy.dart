@@ -52,9 +52,7 @@ class _ItemResultFieldState extends State<ItemResultField> {
                 left: 0,
                 child: AnimatedContainer(
                   duration: Duration(seconds: 1),
-                  width: totalCount == 0
-                      ? 0
-                      : size.width * .9 * (doc["count"] / totalCount),
+                  width: totalCount == 0 ? size.width * .9 * (doc["count"] / totalCount),
                   height: double.infinity,
                   color: kPrimaryColor.withOpacity(.5),
                 ),
@@ -74,10 +72,17 @@ class _ItemResultFieldState extends State<ItemResultField> {
                       ),
                     ),
                   ),
-                  Text("${doc["count"]}표"),
-                  SizedBox(
-                    width: 10,
-                  )
+                  // Material(
+                  //   child: InkWell(
+                  //     onTap: () {},
+                  //     child: Padding(
+                  //         padding: EdgeInsets.all(10),
+                  //         child: Icon(
+                  //           Icons.arrow_forward_ios,
+                  //           color: kTextLightColor,
+                  //         )),
+                  //   ),
+                  // )
                 ],
               ),
             ],

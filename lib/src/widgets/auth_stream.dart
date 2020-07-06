@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/screens/main/main_route.dart';
 import 'package:schuul/src/screens/welcome/welcome_screen.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -27,6 +28,7 @@ class _AuthStreamState extends State<AuthStream> {
     bool loggedIn = user != null;
     if (loggedIn) {
       // print("${user.email} has logged in..!");
+      gEmail = user.email;
       screenHodler = ShowCaseWidget(
         builder: Builder(builder: (context) => MainRoute(email: "고정")),
       );
@@ -35,8 +37,8 @@ class _AuthStreamState extends State<AuthStream> {
     }
     return screenHodler;
     // return StreamBuilder(
-    //     stream: FirebaseAuth.instance.onAuthStateChanged,
-    //     builder: (context, snapshot) {
+    // stream: FirebaseAuth.instance.onAuthStateChanged,
+    // builder: (context, snapshot) {
     //       print(snapshot);
     //       try {
     //         if (snapshot.connectionState == ConnectionState.active) {

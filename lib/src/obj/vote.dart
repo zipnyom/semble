@@ -1,23 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:schuul/src/data/enums/clicker_type.dart';
-import 'package:schuul/src/obj/clicker_item.dart';
+import 'package:schuul/src/obj/vote_item.dart';
 
-part 'clicker.g.dart';
+part 'vote.g.dart';
 
 @JsonSerializable()
-class Clicker {
+class Vote {
   String title;
   DateTime created;
-  bool isDate;
-  bool isRunning;
-  // List<ClickerItem> choices;
   List<ClickerType> options;
+  bool isRunning = false;
 
   @JsonKey(ignore: true)
   DocumentSnapshot documentSnapshot;
   @JsonKey(ignore: true)
   bool _checked = false;
+  @JsonKey(ignore: true)
+  List<VoteItem> items = List<VoteItem>();
+  @JsonKey(ignore: true)
+  TextEditingController titleController = TextEditingController();
 
   bool get checked => _checked;
 
@@ -25,15 +28,13 @@ class Clicker {
     _checked = checked;
   }
 
-  Clicker([
+  Vote([
     this.title,
     this.created,
-    this.isDate,
     this.options,
   ]);
 
-  factory Clicker.fromJson(Map<String, dynamic> json) =>
-      _$ClickerFromJson(json);
+  factory Vote.fromJson(Map<String, dynamic> json) => _$VoteFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ClickerToJson(this);
+  Map<String, dynamic> toJson() => _$VoteToJson(this);
 }

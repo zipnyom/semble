@@ -1,16 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'clicker.dart';
+part of 'vote.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Clicker _$ClickerFromJson(Map<String, dynamic> json) {
-  return Clicker(
+Vote _$VoteFromJson(Map<String, dynamic> json) {
+  return Vote(
     json['title'] as String,
     json['created'] == null ? null : DateTime.parse(json['created'] as String),
-    json['isDate'] as bool,
     (json['options'] as List)
         ?.map((e) => _$enumDecodeNullable(_$ClickerTypeEnumMap, e))
         ?.toList(),
@@ -19,13 +18,12 @@ Clicker _$ClickerFromJson(Map<String, dynamic> json) {
     ..checked = json['checked'] as bool;
 }
 
-Map<String, dynamic> _$ClickerToJson(Clicker instance) => <String, dynamic>{
+Map<String, dynamic> _$VoteToJson(Vote instance) => <String, dynamic>{
       'title': instance.title,
       'created': instance.created?.toIso8601String(),
-      'isDate': instance.isDate,
-      'isRunning': instance.isRunning,
       'options':
           instance.options?.map((e) => _$ClickerTypeEnumMap[e])?.toList(),
+      'isRunning': instance.isRunning,
       'checked': instance.checked,
     };
 

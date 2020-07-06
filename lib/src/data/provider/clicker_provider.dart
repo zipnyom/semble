@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:schuul/src/obj/clicker.dart';
+import 'package:schuul/src/obj/vote.dart';
 
 class MyClicker with ChangeNotifier {
-  List<Clicker> _clickerList = [];
+  List<Vote> _clickerList = [];
 
-  List<Clicker> get clickerList => _clickerList;
+  List<Vote> get clickerList => _clickerList;
 
-  set clickerList(List<Clicker> clickerList) {
+  set clickerList(List<Vote> clickerList) {
     _clickerList = clickerList;
     notifyListeners();
   }

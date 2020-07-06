@@ -1,32 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/clicker_type.dart';
 import 'package:schuul/src/data/provider/mode_provider.dart';
-import 'package:schuul/src/obj/clicker.dart';
-import 'package:schuul/src/obj/clicker_item.dart';
+import 'package:schuul/src/obj/vote.dart';
+import 'package:schuul/src/obj/vote_item.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/services/database.dart';
 import 'package:schuul/src/widgets/condition_tile.dart';
 import 'package:schuul/src/widgets/item_add_button.dart';
 import 'package:schuul/src/widgets/item_input_field.dart';
-import 'package:schuul/src/widgets/item_result_field.dart';
 import 'package:schuul/src/widgets/item_select_field.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
 import 'package:schuul/src/widgets/widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class NewClicker extends StatefulWidget {
-  final Clicker clicker;
+class EditVoteScreen extends StatefulWidget {
+  final Vote clicker;
   final bool respond;
-  const NewClicker({Key key, this.clicker, this.respond}) : super(key: key);
+  const EditVoteScreen({Key key, this.clicker, this.respond}) : super(key: key);
   @override
-  _NewClickerState createState() => _NewClickerState();
+  _EditVoteScreenState createState() => _EditVoteScreenState();
 }
 
-class _NewClickerState extends State<NewClicker> {
+class _EditVoteScreenState extends State<EditVoteScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final List<TextEditingController> txtControllerList =
       List<TextEditingController>();
@@ -34,7 +31,7 @@ class _NewClickerState extends State<NewClicker> {
   ClickerType selectedRadio = ClickerType.text;
   bool _edit;
   bool _respond;
-  Clicker _clicker;
+  Vote _clicker;
 
   setSelectedRadio(ClickerType val) {
     setState(() {
@@ -67,7 +64,7 @@ class _NewClickerState extends State<NewClicker> {
         itemList.clear();
         snapshot.documents.forEach((element) {
           TextEditingController controller = TextEditingController();
-          ClickerItem item = ClickerItem.fromJson(element.data);
+          VoteItem item = VoteItem.fromJson(element.data);
           controller.text = item.title;
           txtControllerList.add(controller);
           if (this.mounted) {
@@ -78,7 +75,7 @@ class _NewClickerState extends State<NewClicker> {
               // ));
               itemList.add(ItemSelectField(
                 controller: controller,
-                order: item.order,
+                // order: item.order,
               ));
             });
           }
@@ -92,7 +89,7 @@ class _NewClickerState extends State<NewClicker> {
         //   return ItemInputFiled(controller: controller);
       });
     } else {
-      _clicker = Clicker()..options = [ClickerType.text];
+      _clicker = Vote()..options = [ClickerType.text];
       txtControllerList.add(TextEditingController());
       txtControllerList.add(TextEditingController());
       itemList = [
@@ -123,11 +120,12 @@ class _NewClickerState extends State<NewClicker> {
       if (_formKey.currentState.validate()) {
         String title = titleController.text;
         int choiceCount = 0;
-        List<ClickerItem> choiceList = [];
+        List<VoteItem> choiceList = [];
         int order = 0;
         for (TextEditingController tec in txtControllerList) {
           if (tec.text.isNotEmpty) {
-            choiceList.add(ClickerItem(tec.text, order, 0, []));
+            choiceList.add(
+                VoteItem(title: tec.text, order: order, count: 0, voters: []));
             choiceCount++;
             order++;
           }
@@ -136,8 +134,7 @@ class _NewClickerState extends State<NewClicker> {
           print("nono..");
           return;
         }
-        Clicker clicker =
-            Clicker(title, DateTime.now(), false, _clicker.options);
+        Vote clicker = Vote(title, DateTime.now(), _clicker.options);
         DocumentReference ref;
         if (_edit) {
           ref = _clicker.documentSnapshot.reference;
@@ -150,7 +147,7 @@ class _NewClickerState extends State<NewClicker> {
         } else {
           ref = await databaseService.addItem("clicker", clicker.toJson());
         }
-        for (ClickerItem choice in choiceList) {
+        for (VoteItem choice in choiceList) {
           ref.collection(db_col_choice).add(choice.toJson());
         }
         Navigator.pop(context);

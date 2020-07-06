@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:schuul/src/obj/clicker.dart';
+import 'package:schuul/src/obj/vote.dart';
 
 enum Modes { teacher, student }
 
@@ -17,7 +17,7 @@ extension ModesExtention on Modes {
 }
 
 class Mode with ChangeNotifier {
-  Modes _mode = Modes.teacher;
+  Modes _mode = Modes.student;
 
   Modes get mode => _mode;
 

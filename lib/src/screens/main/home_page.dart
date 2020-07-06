@@ -6,7 +6,7 @@ import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/attend_type.dart';
 import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
-import 'package:schuul/src/screens/main/clicker_list.dart';
+import 'package:schuul/src/screens/main/vote_list_screen.dart';
 import 'package:schuul/src/obj/class_model.dart';
 import 'package:schuul/src/screens/main/quiz_list.dart';
 import 'package:schuul/src/screens/main/notice_detail.dart';
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
           iconData: CustomIcon.comment,
           press: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ClickerList()));
+                MaterialPageRoute(builder: (context) => VoteListScreen()));
           },
           description: "투표를 통해 학생들의 생각을 물어볼 수 있습니다.",
         ),
@@ -126,7 +126,8 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("조정석님 \(${pMode.mode.name}\),", style: kHeadingextStyle),
+                        Text("조정석님 \(${pMode.mode.name}\),",
+                            style: kHeadingextStyle),
                         Text("오늘도 즐거운 수업 되세요!", style: kSubheadingextStyle),
                         Text("수업명 : 슬기로운 영어생활"),
                         SizedBox(

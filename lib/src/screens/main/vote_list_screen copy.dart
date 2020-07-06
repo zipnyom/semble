@@ -1,16 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/action_type.dart';
 import 'package:schuul/src/data/enums/clicker_type.dart';
-import 'package:schuul/src/data/provider/select_provider.dart';
 import 'package:schuul/src/obj/action_model.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
-import 'package:schuul/src/screens/main/clicker_detail.dart';
-import 'package:schuul/src/obj/clicker.dart';
-import 'package:schuul/src/screens/main/new_clicker.dart';
-import 'package:schuul/src/widgets/custom_box_shadow.dart';
+import 'package:schuul/src/obj/vote.dart';
+import 'package:schuul/src/screens/main/edit_vote_screen.dart';
+import 'package:schuul/src/screens/main/new_vote_screen.dart';
 import 'package:schuul/src/widgets/custom_popup_menu.dart';
 import 'package:schuul/src/widgets/filterchip.dart';
 import 'package:schuul/src/widgets/widget.dart';
@@ -23,7 +19,7 @@ class ClickerList extends StatefulWidget {
 }
 
 class _ClickerListState extends State<ClickerList> {
-  List<Clicker> clickerList = [];
+  List<Vote> clickerList = [];
 
   Future<bool> didRespond(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -61,15 +57,14 @@ class _ClickerListState extends State<ClickerList> {
     //   print(model.toJson());
     // }
 
-    List<Clicker> bufferList = List<Clicker>();
+    List<Vote> bufferList = List<Vote>();
     Firestore.instance
         .collection("clicker")
         .snapshots()
         .listen((QuerySnapshot snapshot) {
       bufferList.clear();
       snapshot.documents.forEach((element) {
-        bufferList
-            .add(Clicker.fromJson(element.data)..documentSnapshot = element);
+        bufferList.add(Vote.fromJson(element.data)..documentSnapshot = element);
       });
       // print(bufferList);
       if (this.mounted) {
@@ -87,7 +82,7 @@ class _ClickerListState extends State<ClickerList> {
   }
 
   bulkDeletePress() {
-    for (Clicker clicker in clickerList) {
+    for (Vote clicker in clickerList) {
       if (clicker.checked) {
         clicker.documentSnapshot.reference.delete();
       }
@@ -105,7 +100,7 @@ class _ClickerListState extends State<ClickerList> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NewClicker(),
+                  builder: (context) => NewVoteScreen(),
                 ));
           },
         ),
@@ -179,13 +174,7 @@ class _ClickerListState extends State<ClickerList> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        ChangeNotifierProvider.value(
-                                          value: Select(),
-                                          child: NewClicker(
-                                              clicker: clickerList[index],
-                                              respond: respond),
-                                        )));
+                                    builder: (context) => EditVoteScreen()));
                           },
                         ));
                   })
