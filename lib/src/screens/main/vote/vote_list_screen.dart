@@ -68,19 +68,22 @@ class _VoteListScreenState extends State<VoteListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Mode pMode = Provider.of<Mode>(context);
     return Scaffold(
       appBar: customAppBarLeading(context, "투표", Icon(Icons.close), [
-        IconButton(
-          iconSize: 20,
-          icon: Icon(CustomIcon.pencil),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NewVoteScreen(),
-                ));
-          },
-        ),
+        pMode.mode == Modes.teacher
+            ? IconButton(
+                iconSize: 20,
+                icon: Icon(CustomIcon.pencil),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NewVoteScreen(),
+                      ));
+                },
+              )
+            : SizedBox.shrink(),
         Padding(
           padding: EdgeInsets.only(left: 10, right: 15),
           child: CustomPopupMenuButton(

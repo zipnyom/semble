@@ -57,7 +57,7 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
 
     void onSubmit() async {
       if (_formKey.currentState.validate()) {
-        _vote.title = _vote.titleController.text;
+        _vote.title = _vote.titleController.text.trim();
         _vote.created = DateTime.now();
         List<VoteItem> choiceList = [];
         int choiceCount = 0;
@@ -95,8 +95,39 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
       print("onChecked => ${_vote.options}");
     }
 
+    void onExit(BuildContext context) async {
+      int res = await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("닫기"),
+              content: Text("변경사항이 있습니다. 저장하지 않고 나가시겠습니까?"),
+              actions: [
+                FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(1);
+                  },
+                  child: Text("예"),
+                ),
+                FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(2);
+                  },
+                  child: Text("아니오"),
+                ),
+              ],
+            );
+          });
+      print(res);
+    }
+
     return Scaffold(
-        appBar: customAppBarLeading(context, "투표 생성", Icon(Icons.close),
+        appBar: customAppBarLeadingWithDialog(
+            context,
+            "새로운 투표",
+            Icon(Icons.close),
+            onExit,
             [RightTopTextButton(title: "완료", press: onSubmit)]),
         body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),

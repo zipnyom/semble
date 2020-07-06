@@ -45,6 +45,35 @@ Widget appBarMain(
       );
 }
 
+Widget customAppBarLeadingWithDialog(BuildContext context, String title,
+    Icon icon, Function leadingPress, List<Widget> actions) {
+  return AppBar(
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
+      title: Text(
+        title,
+        style: TextStyle(color: kTextColor),
+      ),
+      iconTheme: IconThemeData(
+        color: kTextColor, //change your color here
+      ),
+      brightness: Brightness.light,
+      leading: IconButton(
+        icon: icon ??
+            Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xFFb5bfd0),
+            ),
+        onPressed: () {
+          leadingPress(context);
+        },
+      ),
+      elevation: 0.0,
+      actions: actions
+//    centerTitle: false,
+      );
+}
+
 Widget customAppBarLeading(
     BuildContext context, String title, Icon icon, List<Widget> actions) {
   return AppBar(

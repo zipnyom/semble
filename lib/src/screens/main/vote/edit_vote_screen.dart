@@ -5,7 +5,6 @@ import 'package:schuul/src/data/enums/clicker_type.dart';
 import 'package:schuul/src/obj/vote.dart';
 import 'package:schuul/src/obj/vote_item.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
-import 'package:schuul/src/services/database.dart';
 import 'package:schuul/src/widgets/condition_tile.dart';
 import 'package:schuul/src/widgets/item_add_button.dart';
 import 'package:schuul/src/widgets/item_input_field.dart';
@@ -84,7 +83,7 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
         for (VoteItem item in _vote.items) {
           if (item.controller.text.isNotEmpty) {
             choiceList.add(VoteItem(
-                title: item.controller.text,
+                title: item.controller.text.trim(),
                 order: order,
                 count: 0,
                 voters: []));
@@ -122,7 +121,7 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
     }
 
     return Scaffold(
-        appBar: customAppBarLeading(context, "투표 생성", Icon(Icons.close),
+        appBar: customAppBarLeading(context, "투표", Icon(Icons.close),
             [RightTopTextButton(title: "완료", press: onSubmit)]),
         body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
