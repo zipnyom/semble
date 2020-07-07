@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
-import 'package:schuul/src/data/enums/clicker_type.dart';
+import 'package:schuul/src/data/enums/vote_type.dart';
 import 'package:schuul/src/data/provider/select_provider.dart';
 import 'package:schuul/src/obj/vote.dart';
 import 'package:schuul/src/obj/vote_item.dart';
@@ -22,7 +22,7 @@ class ViewVoteScreen extends StatefulWidget {
 
 class _ViewVoteScreenState extends State<ViewVoteScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  ClickerType selectedRadio = ClickerType.text;
+  VoteType selectedRadio = VoteType.text;
   Vote _vote;
   StreamProvider streamProvider;
   @override
@@ -35,13 +35,15 @@ class _ViewVoteScreenState extends State<ViewVoteScreen> {
   @override
   Widget build(BuildContext context) {
     print("build...");
-
-    void pick(VoteItem item) {
-      Firestore.instance.runTransaction((transaction) async {
-        DocumentSnapshot freshSnap = await transaction.get(item.doc.reference);
-        await transaction.update(freshSnap.reference, {
-          'count': FieldValue.increment(1),
-          'voters': FieldValue.arrayUnion([gEmail])
+    void pick(List<VoteItem> items) {
+      items.forEach((item) {
+        Firestore.instance.runTransaction((transaction) async {
+          DocumentSnapshot freshSnap =
+              await transaction.get(item.doc.reference);
+          await transaction.update(freshSnap.reference, {
+            'count': FieldValue.increment(1),
+            'voters': FieldValue.arrayUnion([gEmail])
+          });
         });
       });
     }
@@ -98,7 +100,7 @@ class _ViewVoteScreenState extends State<ViewVoteScreen> {
                             total += item.count;
                             if (item.voters.contains(gEmail)) {
                               WidgetsBinding.instance.addPostFrameCallback((_) {
-                                select.order = item.order;
+                                select.addOrder(item.order);
                                 select.already = true;
                               });
                             }
@@ -111,6 +113,7 @@ class _ViewVoteScreenState extends State<ViewVoteScreen> {
                                   physics: ClampingScrollPhysics(),
                                   itemCount: _vote.items.length,
                                   itemBuilder: (_, index) => ItemSelectField(
+                                      typeList: _vote.options,
                                       controller: _vote.items[index].controller,
                                       item: _vote.items[index])),
                               Row(
@@ -120,7 +123,7 @@ class _ViewVoteScreenState extends State<ViewVoteScreen> {
                                           onPressed: select.already
                                               ? null
                                               : () {
-                                                  pick(select.item);
+                                                  pick(select.getItemList());
                                                 },
                                           child: Text("결정"))),
                                 ],
@@ -149,6 +152,7 @@ class _ViewVoteScreenState extends State<ViewVoteScreen> {
                                             itemCount: _vote.items.length,
                                             itemBuilder: (_, index) =>
                                                 ItemResultField(
+                                                  vote: _vote,
                                                   order: index,
                                                 )),
                                         SizedBox(

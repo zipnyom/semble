@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
-import 'package:schuul/src/data/enums/clicker_type.dart';
+import 'package:schuul/src/data/enums/vote_type.dart';
 import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/obj/vote.dart';
 import 'package:schuul/src/obj/vote_item.dart';
@@ -10,7 +10,7 @@ import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/services/database.dart';
 import 'package:schuul/src/widgets/condition_tile.dart';
 import 'package:schuul/src/widgets/item_add_button.dart';
-import 'package:schuul/src/widgets/item_input_field.dart';
+import 'package:schuul/src/widgets/item_input_text.dart';
 import 'package:schuul/src/widgets/item_select_field.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
 import 'package:schuul/src/widgets/widget.dart';
@@ -28,19 +28,19 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
   final List<TextEditingController> txtControllerList =
       List<TextEditingController>();
   final TextEditingController titleController = TextEditingController();
-  ClickerType selectedRadio = ClickerType.text;
+  VoteType selectedRadio = VoteType.text;
   bool _edit;
   bool _respond;
   Vote _clicker;
 
-  setSelectedRadio(ClickerType val) {
+  setSelectedRadio(VoteType val) {
     setState(() {
       selectedRadio = val;
     });
-    if (val == ClickerType.text) {
-      _clicker.options.remove(ClickerType.date);
+    if (val == VoteType.text) {
+      _clicker.options.remove(VoteType.date);
     } else {
-      _clicker.options.remove(ClickerType.text);
+      _clicker.options.remove(VoteType.text);
     }
     _clicker.options.add(val);
     print(_clicker.options);
@@ -89,12 +89,12 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
         //   return ItemInputFiled(controller: controller);
       });
     } else {
-      _clicker = Vote()..options = [ClickerType.text];
+      _clicker = Vote()..options = [VoteType.text];
       txtControllerList.add(TextEditingController());
       txtControllerList.add(TextEditingController());
       itemList = [
-        ItemInputField(controller: txtControllerList[0]),
-        ItemInputField(controller: txtControllerList[1])
+        ItemInputText(controller: txtControllerList[0]),
+        ItemInputText(controller: txtControllerList[1])
       ];
     }
     super.initState();
@@ -106,7 +106,7 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
       setState(() {
         TextEditingController controller = TextEditingController();
         txtControllerList.add(controller);
-        itemList.add(ItemInputField(
+        itemList.add(ItemInputText(
           controller: controller,
         ));
       });
@@ -154,7 +154,7 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
       }
     }
 
-    void onChecked(bool checked, ClickerType type) {
+    void onChecked(bool checked, VoteType type) {
       if (checked) {
         _clicker.options.add(type);
       } else {
@@ -192,7 +192,7 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
                             alignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Radio(
-                                value: ClickerType.text,
+                                value: VoteType.text,
                                 groupValue: selectedRadio,
                                 activeColor: Colors.green,
                                 onChanged: (val) {
@@ -205,7 +205,7 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
                                 width: 10,
                               ),
                               Radio(
-                                value: ClickerType.date,
+                                value: VoteType.date,
                                 groupValue: selectedRadio,
                                 activeColor: Colors.blue,
                                 onChanged: (val) {
@@ -239,21 +239,21 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
                           //     press: onChecked),
                           ConditionTile(
                               iconData: Icons.done_all,
-                              type: ClickerType.multiple,
-                              initialValue: _clicker.options
-                                  .contains(ClickerType.multiple),
+                              type: VoteType.multiple,
+                              initialValue:
+                                  _clicker.options.contains(VoteType.multiple),
                               press: onChecked),
                           ConditionTile(
                               iconData: CustomIcon.user_secret,
-                              type: ClickerType.ananymous,
-                              initialValue: _clicker.options
-                                  .contains(ClickerType.ananymous),
+                              type: VoteType.ananymous,
+                              initialValue:
+                                  _clicker.options.contains(VoteType.ananymous),
                               press: onChecked),
                           ConditionTile(
                               iconData: Icons.playlist_add,
-                              type: ClickerType.addable,
-                              initialValue: _clicker.options
-                                  .contains(ClickerType.addable),
+                              type: VoteType.addable,
+                              initialValue:
+                                  _clicker.options.contains(VoteType.addable),
                               press: onChecked),
                           SizedBox(
                             height: 20,

@@ -11,19 +11,18 @@ Vote _$VoteFromJson(Map<String, dynamic> json) {
     json['title'] as String,
     json['created'] == null ? null : DateTime.parse(json['created'] as String),
     (json['options'] as List)
-        ?.map((e) => _$enumDecodeNullable(_$ClickerTypeEnumMap, e))
+        ?.map((e) => _$enumDecodeNullable(_$VoteTypeEnumMap, e))
         ?.toList(),
   )
-    ..isRunning = json['isRunning'] as bool
+    ..status = _$enumDecodeNullable(_$VoteTypeEnumMap, json['status'])
     ..checked = json['checked'] as bool;
 }
 
 Map<String, dynamic> _$VoteToJson(Vote instance) => <String, dynamic>{
       'title': instance.title,
       'created': instance.created?.toIso8601String(),
-      'options':
-          instance.options?.map((e) => _$ClickerTypeEnumMap[e])?.toList(),
-      'isRunning': instance.isRunning,
+      'options': instance.options?.map((e) => _$VoteTypeEnumMap[e])?.toList(),
+      'status': _$VoteTypeEnumMap[instance.status],
       'checked': instance.checked,
     };
 
@@ -59,14 +58,15 @@ T _$enumDecodeNullable<T>(
   return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$ClickerTypeEnumMap = {
-  ClickerType.complete: 'complete',
-  ClickerType.ing: 'ing',
-  ClickerType.canceled: 'canceled',
-  ClickerType.text: 'text',
-  ClickerType.limited: 'limited',
-  ClickerType.date: 'date',
-  ClickerType.multiple: 'multiple',
-  ClickerType.ananymous: 'ananymous',
-  ClickerType.addable: 'addable',
+const _$VoteTypeEnumMap = {
+  VoteType.done: 'done',
+  VoteType.running: 'running',
+  VoteType.yet: 'yet',
+  VoteType.canceled: 'canceled',
+  VoteType.text: 'text',
+  VoteType.limited: 'limited',
+  VoteType.date: 'date',
+  VoteType.multiple: 'multiple',
+  VoteType.ananymous: 'ananymous',
+  VoteType.addable: 'addable',
 };

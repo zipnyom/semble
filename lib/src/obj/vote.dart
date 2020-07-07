@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:schuul/src/data/enums/clicker_type.dart';
+import 'package:schuul/src/data/enums/vote_type.dart';
 import 'package:schuul/src/obj/vote_item.dart';
 
 part 'vote.g.dart';
@@ -10,8 +10,8 @@ part 'vote.g.dart';
 class Vote {
   String title;
   DateTime created;
-  List<ClickerType> options;
-  bool isRunning = false;
+  List<VoteType> options = [];
+  VoteType status = VoteType.yet;
 
   @JsonKey(ignore: true)
   DocumentSnapshot documentSnapshot;

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/action_type.dart';
-import 'package:schuul/src/data/enums/clicker_type.dart';
+import 'package:schuul/src/data/enums/vote_type.dart';
 import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/obj/action_model.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
@@ -25,6 +25,12 @@ class VoteListScreen extends StatefulWidget {
 
 class _VoteListScreenState extends State<VoteListScreen> {
   List<Vote> voteList = [];
+  List<String> filterList = [
+    "preventEmptyString",
+    VoteType.yet.code,
+    VoteType.running.code,
+    VoteType.done.code
+  ];
 
   Future<bool> didRespond(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -35,35 +41,49 @@ class _VoteListScreenState extends State<VoteListScreen> {
   }
 
   bulkDeletePress() async {
-    for (Vote clicker in voteList) {
-      if (clicker.checked) {
-        QuerySnapshot snapshot = await clicker.documentSnapshot.reference
+    List<Vote> deleteList = List<Vote>();
+    for (Vote vote in voteList) {
+      deleteList.add(vote);
+    }
+    for (Vote vote in deleteList) {
+      if (vote.checked) {
+        QuerySnapshot snapshot = await vote.documentSnapshot.reference
             .collection(db_col_choice)
             .getDocuments();
-        snapshot.documents.forEach((element) {
-          element.reference.delete();
+        snapshot.documents.forEach((element) async {
+          await element.reference.delete();
         });
-        clicker.documentSnapshot.reference.delete();
+        await vote.documentSnapshot.reference.delete();
       }
     }
   }
 
-  packVoteList() {
+  packVoteList() async {
+    print("packVoteList .. $filterList");
     List<Vote> bufferList = List<Vote>();
-    Firestore.instance
+    QuerySnapshot snapshot = await Firestore.instance
         .collection(db_col_vote)
-        .snapshots()
-        .listen((QuerySnapshot snapshot) {
-      bufferList.clear();
-      snapshot.documents.forEach((element) {
-        bufferList.add(Vote.fromJson(element.data)..documentSnapshot = element);
+        .where("status", whereIn: filterList)
+        .getDocuments();
+    snapshot.documents.forEach((element) {
+      bufferList.add(Vote.fromJson(element.data)..documentSnapshot = element);
+    });
+    if (this.mounted) {
+      setState(() {
+        voteList = bufferList;
       });
-      if (this.mounted) {
-        setState(() {
-          voteList = bufferList;
-        });
+    }
+  }
+
+  onFilterClicked(VoteType v) {
+    setState(() {
+      if (filterList.contains(v.code)) {
+        filterList.remove(v.code);
+      } else {
+        filterList.add(v.code);
       }
     });
+    packVoteList();
   }
 
   @override
@@ -81,12 +101,13 @@ class _VoteListScreenState extends State<VoteListScreen> {
             ? IconButton(
                 iconSize: 20,
                 icon: Icon(CustomIcon.pencil),
-                onPressed: () {
-                  Navigator.push(
+                onPressed: () async {
+                  await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => NewVoteScreen(),
                       ));
+                  packVoteList();
                 },
               )
             : SizedBox.shrink(),
@@ -103,7 +124,37 @@ class _VoteListScreenState extends State<VoteListScreen> {
           child: Column(
             children: [
               // CustomChip(),
-              // CategoryChips(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // TitleContainer(myTitle: "분류 필터"),
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Wrap(
+                        spacing: 20.0,
+                        runSpacing: 3.0,
+                        children: <Widget>[
+                          FilterChipWidget(
+                              voteType: VoteType.yet,
+                              filterList: filterList,
+                              press: onFilterClicked),
+                          FilterChipWidget(
+                            voteType: VoteType.running,
+                            filterList: filterList,
+                            press: onFilterClicked,
+                          ),
+                          FilterChipWidget(
+                            voteType: VoteType.done,
+                            filterList: filterList,
+                            press: onFilterClicked,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(
                 height: 10,
               ),
@@ -158,12 +209,13 @@ class _VoteListScreenState extends State<VoteListScreen> {
                             bool respond = await didRespond(
                                 voteList[index].documentSnapshot.documentID);
 
-                            Navigator.push(
+                            await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Consumer<Mode>(
                                             builder: (context, pMode, child) {
-                                          if (voteList[index].isRunning)
+                                          if (voteList[index].status ==
+                                              VoteType.running)
                                             return ViewVoteScreen(
                                               vote: voteList[index],
                                               respond: respond,
@@ -179,6 +231,7 @@ class _VoteListScreenState extends State<VoteListScreen> {
                                               respond: respond,
                                             );
                                         })));
+                            packVoteList();
                           },
                         ));
                   }),
@@ -215,43 +268,6 @@ class CustomChip extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontSize: 13),
         ),
       ),
-    );
-  }
-}
-
-class CategoryChips extends StatelessWidget {
-  const CategoryChips({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        TitleContainer(myTitle: "분류 필터"),
-        Flexible(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Wrap(
-              spacing: 5.0,
-              runSpacing: 3.0,
-              children: <Widget>[
-                FilterChipWidget(
-                  chipName: ClickerType.complete.name,
-                  isSelected: false,
-                ),
-                FilterChipWidget(
-                  chipName: ClickerType.ing.name,
-                  isSelected: false,
-                ),
-                FilterChipWidget(
-                  chipName: ClickerType.canceled.name,
-                  isSelected: false,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

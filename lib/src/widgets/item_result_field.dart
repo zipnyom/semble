@@ -2,15 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
-import 'package:schuul/src/presentation/custom_icon_icons.dart';
+import 'package:schuul/src/data/enums/vote_type.dart';
+import 'package:schuul/src/obj/vote.dart';
 import 'package:schuul/src/screens/main/vote/detail_voters_screen.dart';
 
 class ItemResultField extends StatefulWidget {
   const ItemResultField({
     Key key,
     @required this.order,
+    this.vote,
   }) : super(key: key);
 
+  final Vote vote;
   final int order;
   @override
   _ItemResultFieldState createState() => _ItemResultFieldState();
@@ -40,6 +43,13 @@ class _ItemResultFieldState extends State<ItemResultField> {
         child: Material(
           child: InkWell(
             onTap: () {
+              if (widget.vote.options.contains(VoteType.ananymous)) {
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text("익명 투표는 투표자 목록을 확인할 수 없습니다"),
+                  duration: Duration(milliseconds: 500),
+                ));
+                return;
+              }
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => DetailVoterScreen(
                   doc: doc,

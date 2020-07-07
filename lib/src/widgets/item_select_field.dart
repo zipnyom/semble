@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
+import 'package:schuul/src/data/enums/vote_type.dart';
 import 'package:schuul/src/data/provider/select_provider.dart';
 import 'package:schuul/src/obj/vote_item.dart';
 
@@ -9,8 +10,10 @@ class ItemSelectField extends StatefulWidget {
     Key key,
     this.item,
     this.controller,
+    this.typeList,
   }) : super(key: key);
 
+  final List<VoteType> typeList;
   final VoteItem item;
   final TextEditingController controller;
 
@@ -23,18 +26,21 @@ class _ItemSelectFieldState extends State<ItemSelectField> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Consumer<Select>(builder: (context, pSelect, child) {
-      bool select = pSelect.order == widget.item.order;
+      bool select = pSelect.containOrder(widget.item.order);
       return Padding(
         padding: EdgeInsets.only(bottom: 10),
         child: Material(
           child: InkWell(
             onTap: () {
-              if (pSelect.order == widget.item.order) {
-                pSelect.order = -1;
-                pSelect.item = null;
+              if (pSelect.containOrder(widget.item.order)) {
+                pSelect.removeOrder(widget.item.order);
+                pSelect.removeItem(widget.item);
               } else {
-                pSelect.order = widget.item.order;
-                pSelect.item = widget.item;
+                if (widget.typeList.contains(VoteType.multiple) == false) {
+                  pSelect.clear();
+                }
+                pSelect.addOrder(widget.item.order);
+                pSelect.addItem(widget.item);
               }
             },
             child: Container(

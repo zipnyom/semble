@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:schuul/src/constants.dart';
-import 'package:schuul/src/data/enums/clicker_type.dart';
+import 'package:schuul/src/data/enums/vote_type.dart';
 import 'package:schuul/src/data/enums/quiz_type.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
@@ -142,13 +142,13 @@ class _QuizItemEditState extends State<QuizItemEdit> {
                             ),
                       SizedBox(
                         height: 20,
+                      ),
+                      DescriptionField(
+                        controller: descriptionController,
                       )
-                      ,DescriptionField(controller: descriptionController,)
                     ],
                   ),
                 ),
-
-
               ]),
             )));
   }
@@ -326,10 +326,9 @@ class TitleFiled extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(border: Border.all()),
-      padding: EdgeInsets.symmetric(horizontal:16),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: SizedBox(
         height: 100,
         child: TextFormField(
@@ -367,10 +366,9 @@ class DescriptionField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(border: Border.all()),
-      padding: EdgeInsets.symmetric(horizontal:16),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: SizedBox(
         height: 100,
         child: TextFormField(

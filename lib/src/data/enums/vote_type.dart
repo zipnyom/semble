@@ -1,28 +1,54 @@
-enum ClickerType { complete, ing , canceled, text, limited, date , multiple, ananymous, addable}
+enum VoteType {
+  done,
+  running,
+  yet,
+  canceled,
+  text,
+  limited,
+  date,
+  multiple,
+  ananymous,
+  addable
+}
 // attend : 출석함, tardy : 지각, cut : 결석
 
-extension ClickerTypeExtention on ClickerType {
+extension VoteTypeExtention on VoteType {
   String get name {
     switch (this) {
-      case ClickerType.complete:
-        return '응답완료';
-      case ClickerType.ing:
+      case VoteType.done:
+        return '마감됨';
+      case VoteType.running:
         return '진행중';
-      case ClickerType.canceled:
+      case VoteType.yet:
+        return '실행 전';
+      case VoteType.canceled:
         return '취소됨';
-        case ClickerType.text:
+      case VoteType.text:
         return '텍스트';
-        case ClickerType.date:
+      case VoteType.date:
         return '날짜';
-        case ClickerType.limited:
+      case VoteType.limited:
         return '마감시간 설정';
-        case ClickerType.multiple:
+      case VoteType.multiple:
         return '복수 선택';
-        case ClickerType.ananymous:
+      case VoteType.ananymous:
         return '익명';
-        case ClickerType.addable:
+      case VoteType.addable:
         return '선택항목 추가 허용';
 
+      default:
+        return null;
+    }
+  }
+
+  String get code {
+    switch (this) {
+      case VoteType.done:
+        return 'done';
+      case VoteType.running:
+        return 'running';
+      case VoteType.yet:
+        return 'yet';
       default:
         return null;
     }

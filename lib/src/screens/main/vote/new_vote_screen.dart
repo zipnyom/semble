@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:schuul/src/constants.dart';
-import 'package:schuul/src/data/enums/clicker_type.dart';
+import 'package:schuul/src/data/enums/vote_type.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
 import 'package:schuul/src/obj/vote.dart';
 import 'package:schuul/src/obj/vote_item.dart';
@@ -9,7 +9,8 @@ import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/services/database.dart';
 import 'package:schuul/src/widgets/condition_tile.dart';
 import 'package:schuul/src/widgets/item_add_button.dart';
-import 'package:schuul/src/widgets/item_input_field.dart';
+import 'package:schuul/src/widgets/item_input_date.dart';
+import 'package:schuul/src/widgets/item_input_text.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
 import 'package:schuul/src/widgets/vote_title_field.dart';
 import 'package:schuul/src/widgets/widget.dart';
@@ -24,27 +25,25 @@ class NewVoteScreen extends StatefulWidget {
 
 class _NewVoteScreenState extends State<NewVoteScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  ClickerType selectedRadio = ClickerType.text;
+  VoteType selectedRadio = VoteType.text;
   Vote _vote;
-  Vote _initial_vote;
 
-  setSelectedRadio(ClickerType val) {
+  setSelectedRadio(VoteType val) {
     setState(() {
       selectedRadio = val;
     });
-    if (val == ClickerType.text) {
-      _vote.options.remove(ClickerType.date);
-    } else {
-      _vote.options.remove(ClickerType.text);
-    }
-    _vote.options.add(val);
+    // if (val == VoteType.text) {
+    //   _vote.options.remove(VoteType.date);
+    // } else {
+    //   _vote.options.remove(VoteType.text);
+    // }
+    // _vote.options.add(val);
     print("setSelectedRadio => ${_vote.options}");
   }
 
   @override
   void initState() {
-    _vote = Vote()..options = [ClickerType.text];
-    _initial_vote = Vote()..options = [ClickerType.text];
+    _vote = Vote()..options = [];
     _vote.items.add(VoteItem());
     _vote.items.add(VoteItem());
     super.initState();
@@ -62,7 +61,7 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
       if (_formKey.currentState.validate()) {
         RespondType res =
             await customShowDialog(context, "바로 실행", "클리커를 바로 실행하시겠습니까?");
-        if (res == RespondType.yes) _vote.isRunning = true;
+        if (res == RespondType.yes) _vote.status = VoteType.running;
 
         _vote.title = _vote.titleController.text.trim();
         _vote.created = DateTime.now();
@@ -93,7 +92,7 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
       }
     }
 
-    void onChecked(bool checked, ClickerType type) {
+    void onChecked(bool checked, VoteType type) {
       if (checked) {
         _vote.options.add(type);
       } else {
@@ -129,7 +128,7 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
                         alignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Radio(
-                            value: ClickerType.text,
+                            value: VoteType.text,
                             groupValue: selectedRadio,
                             activeColor: Colors.green,
                             onChanged: (val) {
@@ -141,7 +140,7 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
                             width: 10,
                           ),
                           Radio(
-                            value: ClickerType.date,
+                            value: VoteType.date,
                             groupValue: selectedRadio,
                             activeColor: Colors.blue,
                             onChanged: (val) {
@@ -155,9 +154,14 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
                           shrinkWrap: true,
                           physics: ClampingScrollPhysics(),
                           itemCount: _vote.items.length,
-                          itemBuilder: (_, index) => ItemInputField(
-                                controller: _vote.items[index].controller,
-                              )),
+                          itemBuilder: (_, index) =>
+                              selectedRadio == VoteType.text
+                                  ? ItemInputText(
+                                      controller: _vote.items[index].controller,
+                                    )
+                                  : ItemInputDate(
+                                      controller: _vote.items[index].controller,
+                                    )),
                       ItemAddButton(
                         title: "항목추가",
                         press: addInputItem,
@@ -165,21 +169,21 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
                       Divider(),
                       ConditionTile(
                           iconData: Icons.done_all,
-                          type: ClickerType.multiple,
+                          type: VoteType.multiple,
                           initialValue:
-                              _vote.options.contains(ClickerType.multiple),
+                              _vote.options.contains(VoteType.multiple),
                           press: onChecked),
                       ConditionTile(
                           iconData: CustomIcon.user_secret,
-                          type: ClickerType.ananymous,
+                          type: VoteType.ananymous,
                           initialValue:
-                              _vote.options.contains(ClickerType.ananymous),
+                              _vote.options.contains(VoteType.ananymous),
                           press: onChecked),
                       ConditionTile(
                           iconData: Icons.playlist_add,
-                          type: ClickerType.addable,
+                          type: VoteType.addable,
                           initialValue:
-                              _vote.options.contains(ClickerType.addable),
+                              _vote.options.contains(VoteType.addable),
                           press: onChecked),
                       SizedBox(
                         height: 20,

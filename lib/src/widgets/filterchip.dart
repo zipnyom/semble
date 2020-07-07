@@ -1,40 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:schuul/src/data/enums/vote_type.dart';
 
 class FilterChipWidget extends StatefulWidget {
-  final String chipName;
-  final bool isSelected;
+  final VoteType voteType;
+  final List<String> filterList;
+  final Function press;
 
-  FilterChipWidget({Key key, this.chipName, this.isSelected}) : super(key: key);
+  FilterChipWidget({Key key, this.voteType, this.filterList, this.press})
+      : super(key: key);
 
   @override
   _FilterChipWidgetState createState() => _FilterChipWidgetState();
 }
 
 class _FilterChipWidgetState extends State<FilterChipWidget> {
-  var _isSelected;
-  @override
-  void initState() {
-    _isSelected = widget.isSelected;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return FilterChip(
-      label: Text(widget.chipName),
+      label: Text(widget.voteType.name),
       labelStyle: TextStyle(
           color: Color(0xff6200ee),
           fontSize: 16.0,
           fontWeight: FontWeight.bold),
-      selected: _isSelected,
+      selected: widget.filterList.contains(widget.voteType.code),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
       backgroundColor: Color(0xffededed),
       onSelected: (isSelected) {
-        setState(() {
-          _isSelected = isSelected;
-        });
+        widget.press(widget.voteType);
       },
       selectedColor: Color(0xffeadffd),
     );

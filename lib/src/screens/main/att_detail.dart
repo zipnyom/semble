@@ -227,18 +227,18 @@ class CategoryChips extends StatelessWidget {
               spacing: 5.0,
               runSpacing: 3.0,
               children: <Widget>[
-                FilterChipWidget(
-                  chipName: AttendType.attend.name,
-                  isSelected: defaultType == AttendType.attend,
-                ),
-                FilterChipWidget(
-                  chipName: AttendType.tardy.name,
-                  isSelected: defaultType == AttendType.tardy,
-                ),
-                FilterChipWidget(
-                  chipName: AttendType.cut.name,
-                  isSelected: defaultType == AttendType.cut,
-                ),
+                // FilterChipWidget(
+                //   voteType: AttendType.attend.name,
+                //   isSelected: defaultType == AttendType.attend,
+                // ),
+                // FilterChipWidget(
+                //   voteType: AttendType.tardy.name,
+                //   isSelected: defaultType == AttendType.tardy,
+                // ),
+                // FilterChipWidget(
+                //   voteType: AttendType.cut.name,
+                //   isSelected: defaultType == AttendType.cut,
+                // ),
               ],
             ),
           ),

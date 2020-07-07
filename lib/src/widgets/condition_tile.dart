@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
-import 'package:schuul/src/data/enums/clicker_type.dart';
+import 'package:schuul/src/data/enums/vote_type.dart';
 import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/screens/main/timer_bottom_sheet.dart';
 
 class ConditionTile extends StatefulWidget {
   final IconData iconData;
-  final ClickerType type;
+  final VoteType type;
   final bool initialValue;
-  final Function(bool, ClickerType) press;
+  final Function(bool, VoteType) press;
   const ConditionTile({
     Key key,
     this.iconData,
@@ -50,7 +50,7 @@ class _ConditionTileState extends State<ConditionTile> {
         child: InkWell(
           onTap: () {
             if (pMode.mode == Modes.teacher) {
-              if (widget.type == ClickerType.limited) {
+              if (widget.type == VoteType.limited) {
                 _showBottomSheet();
               } else {
                 pressed();

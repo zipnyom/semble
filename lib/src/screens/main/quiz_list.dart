@@ -190,18 +190,18 @@ class CategoryChips extends StatelessWidget {
               spacing: 5.0,
               runSpacing: 3.0,
               children: <Widget>[
-                FilterChipWidget(
-                  chipName: QuizType.complete.name,
-                  isSelected: false,
-                ),
-                FilterChipWidget(
-                  chipName: QuizType.ing.name,
-                  isSelected: false,
-                ),
-                FilterChipWidget(
-                  chipName: QuizType.canceled.name,
-                  isSelected: false,
-                ),
+                // FilterChipWidget(
+                //   voteType: QuizType.complete.name,
+                //   isSelected: false,
+                // ),
+                // FilterChipWidget(
+                //   voteType: QuizType.ing.name,
+                //   isSelected: false,
+                // ),
+                // FilterChipWidget(
+                //   voteType: QuizType.canceled.name,
+                //   isSelected: false,
+                // ),
               ],
             ),
           ),

@@ -32,6 +32,7 @@ class _AccountPageState extends State<AccountPage> {
       // Navigator.pop(context);
     }
 
+    Mode pMode = Provider.of<Mode>(context, listen: false);
     return Scaffold(
       appBar: customAppBar("설정", false, []),
       body: Container(
@@ -62,8 +63,17 @@ class _AccountPageState extends State<AccountPage> {
               onPressed: () => enableShowcase,
             ),
             FlatButton(
-              child: Text("학생모드로 변경"),
-              onPressed: () => changeMode(context),
+              child:
+                  Text(pMode.mode == Modes.teacher ? "학생모드로 변경" : "선생님모드로 변경"),
+              onPressed: () {
+                changeMode(context);
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  duration: Duration(milliseconds: 1000),
+                  content: Text(pMode.mode == Modes.student
+                      ? "학생모드로 변경되었습니다"
+                      : "선생님모드로 변경되었습니다"),
+                ));
+              },
             ),
             FlatButton(
                 child: Text("로그아웃"),
@@ -83,6 +93,6 @@ void enableShowcase() async {
 }
 
 void changeMode(BuildContext context) {
-  Mode pMode = Provider.of<Mode>(context);
+  Mode pMode = Provider.of<Mode>(context, listen: false);
   pMode.toggle();
 }
