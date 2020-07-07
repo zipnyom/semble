@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:schuul/src/constants.dart';
+import 'package:schuul/src/data/enums/respond_type.dart';
 import 'package:schuul/src/screens/welcome/welcome_screen.dart';
 
 Widget customAppBar(String title, bool centerTitle, List<Widget> actions) {
@@ -18,6 +19,33 @@ Widget customAppBar(String title, bool centerTitle, List<Widget> actions) {
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       actions: actions);
+}
+
+Future<RespondType> customShowDialog(
+    BuildContext context, String title, String subtitle) async {
+  return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(subtitle),
+          actions: [
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop(RespondType.yes);
+              },
+              child: Text(RespondType.yes.name),
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop(RespondType.no);
+              },
+              child: Text(RespondType.no.name),
+            ),
+          ],
+        );
+      });
 }
 
 Widget appBarMain(

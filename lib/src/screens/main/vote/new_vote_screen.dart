@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/clicker_type.dart';
+import 'package:schuul/src/data/enums/respond_type.dart';
 import 'package:schuul/src/obj/vote.dart';
 import 'package:schuul/src/obj/vote_item.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
@@ -25,6 +26,7 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ClickerType selectedRadio = ClickerType.text;
   Vote _vote;
+  Vote _initial_vote;
 
   setSelectedRadio(ClickerType val) {
     setState(() {
@@ -42,6 +44,7 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
   @override
   void initState() {
     _vote = Vote()..options = [ClickerType.text];
+    _initial_vote = Vote()..options = [ClickerType.text];
     _vote.items.add(VoteItem());
     _vote.items.add(VoteItem());
     super.initState();
@@ -57,6 +60,10 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
 
     void onSubmit() async {
       if (_formKey.currentState.validate()) {
+        RespondType res =
+            await customShowDialog(context, "바로 실행", "클리커를 바로 실행하시겠습니까?");
+        if (res == RespondType.yes) _vote.isRunning = true;
+
         _vote.title = _vote.titleController.text.trim();
         _vote.created = DateTime.now();
         List<VoteItem> choiceList = [];
@@ -96,30 +103,9 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
     }
 
     void onExit(BuildContext context) async {
-      int res = await showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("닫기"),
-              content: Text("변경사항이 있습니다. 저장하지 않고 나가시겠습니까?"),
-              actions: [
-                FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(1);
-                  },
-                  child: Text("예"),
-                ),
-                FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(2);
-                  },
-                  child: Text("아니오"),
-                ),
-              ],
-            );
-          });
-      print(res);
+      RespondType res =
+          await customShowDialog(context, "닫기", "저장히지 않고 나가시겠습니까?");
+      if (res == RespondType.yes) Navigator.of(context).pop();
     }
 
     return Scaffold(

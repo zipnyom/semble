@@ -34,9 +34,15 @@ class _VoteListScreenState extends State<VoteListScreen> {
     return false;
   }
 
-  bulkDeletePress() {
+  bulkDeletePress() async {
     for (Vote clicker in voteList) {
       if (clicker.checked) {
+        QuerySnapshot snapshot = await clicker.documentSnapshot.reference
+            .collection(db_col_choice)
+            .getDocuments();
+        snapshot.documents.forEach((element) {
+          element.reference.delete();
+        });
         clicker.documentSnapshot.reference.delete();
       }
     }

@@ -17,7 +17,8 @@ extension ModesExtention on Modes {
 }
 
 class Mode with ChangeNotifier {
-  Modes _mode = Modes.student;
+  // Modes _mode = Modes.student;
+  Modes _mode = Modes.teacher;
 
   Modes get mode => _mode;
 
