@@ -11,7 +11,7 @@ import 'package:schuul/src/widgets/item_add_button.dart';
 import 'package:schuul/src/widgets/item_input_date.dart';
 import 'package:schuul/src/widgets/item_input_text.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
-import 'package:schuul/src/widgets/vote_title_field.dart';
+import 'package:schuul/src/widgets/title_text_field.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
 class EditVoteScreen extends StatefulWidget {
@@ -44,7 +44,7 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
     _vote.items.clear();
     List<VoteItem> buffer = List<VoteItem>();
     doc.reference
-        .collection(db_col_choice)
+        .collection(db_col_items)
         .orderBy("order")
         .getDocuments()
         .then((value) {
@@ -107,13 +107,13 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
         DocumentReference ref = _vote.documentSnapshot.reference;
         ref.updateData(_vote.toJson());
         QuerySnapshot snapshot =
-            await ref.collection(db_col_choice).getDocuments();
+            await ref.collection(db_col_items).getDocuments();
         snapshot.documents.forEach((f) async {
           await f.reference.delete();
         });
 
         for (VoteItem choice in choiceList) {
-          ref.collection(db_col_choice).add(choice.toJson());
+          ref.collection(db_col_items).add(choice.toJson());
         }
         Navigator.pop(context);
       }
@@ -140,7 +140,10 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      VoteTitleField(controller: _vote.titleController),
+                      TitleTextField(
+                          validateMessage: "투표 제목을 입력해주세요.",
+                          hintText: "투표 제목",
+                          controller: _vote.titleController),
                       ButtonBar(
                         alignment: MainAxisAlignment.start,
                         children: <Widget>[

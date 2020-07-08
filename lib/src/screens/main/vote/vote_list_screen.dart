@@ -48,7 +48,7 @@ class _VoteListScreenState extends State<VoteListScreen> {
     for (Vote vote in deleteList) {
       if (vote.checked) {
         QuerySnapshot snapshot = await vote.documentSnapshot.reference
-            .collection(db_col_choice)
+            .collection(db_col_items)
             .getDocuments();
         snapshot.documents.forEach((element) async {
           await element.reference.delete();

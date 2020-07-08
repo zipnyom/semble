@@ -12,7 +12,7 @@ import 'package:schuul/src/widgets/item_add_button.dart';
 import 'package:schuul/src/widgets/item_input_date.dart';
 import 'package:schuul/src/widgets/item_input_text.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
-import 'package:schuul/src/widgets/vote_title_field.dart';
+import 'package:schuul/src/widgets/title_text_field.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
 class NewVoteScreen extends StatefulWidget {
@@ -84,9 +84,9 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
           return;
         }
         DocumentReference ref =
-            await databaseService.addItem("vote", _vote.toJson());
+            await databaseService.addItem(db_col_vote, _vote.toJson());
         for (VoteItem choice in choiceList) {
-          ref.collection(db_col_choice).add(choice.toJson());
+          ref.collection(db_col_items).add(choice.toJson());
         }
         Navigator.pop(context);
       }
@@ -123,7 +123,10 @@ class _NewVoteScreenState extends State<NewVoteScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      VoteTitleField(controller: _vote.titleController),
+                      TitleTextField(
+                          validateMessage: "투표 제목을 입력해주세요.",
+                          hintText: "투표 제목",
+                          controller: _vote.titleController),
                       ButtonBar(
                         alignment: MainAxisAlignment.start,
                         children: <Widget>[

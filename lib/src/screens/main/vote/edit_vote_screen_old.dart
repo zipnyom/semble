@@ -57,7 +57,7 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
       titleController.text = _clicker.title;
       //sub collection 도입
       _clicker.documentSnapshot.reference
-          .collection(db_col_choice)
+          .collection(db_col_items)
           .orderBy("order")
           .snapshots()
           .listen((QuerySnapshot snapshot) {
@@ -140,7 +140,7 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
           ref = _clicker.documentSnapshot.reference;
           ref.updateData(clicker.toJson());
           QuerySnapshot snapshot =
-              await ref.collection(db_col_choice).getDocuments();
+              await ref.collection(db_col_items).getDocuments();
           snapshot.documents.forEach((f) async {
             await f.reference.delete();
           });
@@ -148,7 +148,7 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
           ref = await databaseService.addItem("clicker", clicker.toJson());
         }
         for (VoteItem choice in choiceList) {
-          ref.collection(db_col_choice).add(choice.toJson());
+          ref.collection(db_col_items).add(choice.toJson());
         }
         Navigator.pop(context);
       }
@@ -169,7 +169,7 @@ class _EditVoteScreenState extends State<EditVoteScreen> {
         providers: [
           StreamProvider<QuerySnapshot>.value(
               value: _clicker.documentSnapshot.reference
-                  .collection(db_col_choice)
+                  .collection(db_col_items)
                   .snapshots()),
         ],
         child: Scaffold(

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:schuul/src/obj/class_model.dart';
+import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/services/database.dart';
 import 'package:schuul/src/widgets/widget.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -31,7 +31,7 @@ class _CalendarPageState extends State<CalendarPage>
   AnimationController _animationController;
   CalendarController _calendarController;
 
-  void addClass(ClassModel model) {
+  void addClass(Class model) {
     Map<String, dynamic> classData = {
       "name": "Test Class",
       "start": DateTime.now().millisecondsSinceEpoch,
@@ -41,19 +41,12 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   void addSampleClassToDatabase() {
-    List<ClassModel> list = List<ClassModel>();
+    List<Class> list = List<Class>();
     for (int i = 1; i <= 5; i++) {
       String num = i.toString();
-      list.add(new ClassModel(
-          "테스트강좌" + num,
-          "강사" + num,
-          "조교" + num,
-          "테스트강좌" + num + "의 설명",
-          "2020-06-0" + num,
-          "2020-06-" + (i + 5).toString()));
     }
 
-    for (ClassModel model in list) {
+    for (Class model in list) {
       print(model.toJson());
       DatabaseService().addItem("class", model.toJson());
     }

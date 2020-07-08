@@ -59,7 +59,7 @@ class _ViewVoteScreenState extends State<ViewVoteScreen> {
         ),
         StreamProvider<QuerySnapshot>.value(
             value: _vote.documentSnapshot.reference
-                .collection(db_col_choice)
+                .collection(db_col_items)
                 .orderBy("order")
                 .snapshots()),
       ],

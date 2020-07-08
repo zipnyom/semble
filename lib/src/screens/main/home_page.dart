@@ -7,7 +7,7 @@ import 'package:schuul/src/data/enums/attend_type.dart';
 import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/vote/vote_list_screen.dart';
-import 'package:schuul/src/obj/class_model.dart';
+import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/screens/main/quiz_list.dart';
 import 'package:schuul/src/screens/main/notice_detail.dart';
 import 'package:schuul/src/screens/main/notice_list.dart';
@@ -39,13 +39,13 @@ class _HomePageState extends State<HomePage> {
 
   static Size size;
   void getClass() async {
-    List<ClassModel> list = List<ClassModel>();
+    List<Class> list = List<Class>();
 //    list.add(ClassModel(className: "test1", startDate: 1, endDate: 3));
 //    list.add(ClassModel(className: "test2", startDate: 1, endDate: 3));
 //    list.add(ClassModel(className: "test3", startDate: 1, endDate: 3));
     QuerySnapshot snapshot = await databaseService.selectAll("class");
     snapshot.documents.forEach((element) {
-      list.add(ClassModel.fromJson(element.data));
+      list.add(Class.fromJson(element.data));
     });
     // classNotifier.classes = list;
   }

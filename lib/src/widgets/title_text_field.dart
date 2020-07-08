@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
-class VoteTitleField extends StatelessWidget {
-  const VoteTitleField({
+class TitleTextField extends StatelessWidget {
+  const TitleTextField({
     Key key,
     @required TextEditingController controller,
+    this.hintText,
+    this.validateMessage,
   })  : _controller = controller,
         super(key: key);
 
+  final hintText;
+  final validateMessage;
   final TextEditingController _controller;
 
   @override
@@ -15,12 +19,12 @@ class VoteTitleField extends StatelessWidget {
       controller: _controller,
       validator: (String value) {
         if (value.isEmpty) {
-          return "투표 제목을 입력해주세요.";
+          return validateMessage;
         }
         return null;
       },
       decoration: InputDecoration(
-        hintText: "투표 제목",
+        hintText: hintText,
       ),
     );
   }
