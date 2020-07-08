@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:schuul/src/constants.dart';
+import 'package:schuul/src/data/enums/date_type.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
 import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/services/database.dart';
+import 'package:schuul/src/widgets/date_select_field.dart';
+import 'package:schuul/src/widgets/day_select_field.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
 import 'package:schuul/src/widgets/title_text_field.dart';
 import 'package:schuul/src/widgets/widget.dart';
@@ -103,6 +106,31 @@ class _NewClassScreenState extends State<NewClassScreen> {
                           ),
                           Text("비정기 수업"),
                         ],
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            DateSelectField(
+                              type: DateType.start,
+                            ),
+                            DateSelectField(
+                              type: DateType.end,
+                            ),
+                          ]),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text("요일"),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: List.generate(
+                            7,
+                            (index) => DaySelectField(
+                                  day: index + 1,
+                                )),
                       ),
                     ],
                   ),

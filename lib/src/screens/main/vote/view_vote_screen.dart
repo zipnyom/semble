@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/vote_type.dart';
-import 'package:schuul/src/data/provider/select_provider.dart';
+import 'package:schuul/src/data/provider/vote_item_provider.dart';
 import 'package:schuul/src/obj/vote.dart';
 import 'package:schuul/src/obj/vote_item.dart';
 import 'package:schuul/src/services/database.dart';
@@ -55,7 +55,7 @@ class _ViewVoteScreenState extends State<ViewVoteScreen> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-          value: Select(),
+          value: VoteSelect(),
         ),
         StreamProvider<QuerySnapshot>.value(
             value: _vote.documentSnapshot.reference
@@ -87,7 +87,7 @@ class _ViewVoteScreenState extends State<ViewVoteScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        Consumer2<QuerySnapshot, Select>(
+                        Consumer2<QuerySnapshot, VoteSelect>(
                             builder: (context, snapshot, select, child) {
                           _vote.items.clear();
                           if (snapshot == null) return Text("loading");

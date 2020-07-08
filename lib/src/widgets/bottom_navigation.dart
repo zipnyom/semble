@@ -23,7 +23,8 @@ Map<TabItem, Widget> activeTab = {
   // TabItem.home: NewVoteScreen(),
   // TabItem.home: QuizList(),
   // TabItem.home: NewQuiz(),
-  TabItem.home: NewClassScreen(),
+  // TabItem.home: NewClassScreen(),
+  TabItem.home: ClassListScreen(),
   TabItem.dashboard: ClassListScreen(),
   TabItem.calendar: CalendarPage(),
   TabItem.setting: AccountPage()

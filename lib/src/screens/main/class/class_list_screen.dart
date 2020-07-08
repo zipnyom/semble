@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
+import 'package:schuul/src/data/provider/class_option_provider.dart';
 import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/class/new_class_screen.dart';
@@ -42,7 +44,8 @@ class _ClassListScreenState extends State<ClassListScreen> {
             icon: Icon(Icons.add),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => NewClassScreen(),
+                builder: (context) => ChangeNotifierProvider.value(
+                    value: ClassOption(), child: NewClassScreen()),
               ));
             },
           )

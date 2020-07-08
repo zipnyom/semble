@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 // const kPrimaryColor = Color(0xFF6F35A5);
 // const kPrimaryLightColor = Color(0xFFF1E6FF);
@@ -63,3 +64,11 @@ const String db_col_items = "items";
 const String db_col_vote = "vote";
 const String db_col_class = "class";
 String gEmail = "";
+
+const String monday = "월";
+const String tuesday = "화";
+const String wednesday = "수";
+const String thursday = "목";
+const String friday = "금";
+const String saturday = "토";
+const String sunday = "일";

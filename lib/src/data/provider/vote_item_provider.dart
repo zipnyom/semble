@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:schuul/src/obj/vote_item.dart';
 
-class Select with ChangeNotifier {
+class VoteSelect with ChangeNotifier {
   List<int> _orderList = List<int>();
   List<VoteItem> _itemList = List<VoteItem>();
   bool _already = false;
