@@ -23,9 +23,14 @@ Class _$ClassFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['created'] as String)
     ..type = _$enumDecodeNullable(_$ClassTypeEnumMap, json['type'])
+    ..weekDays = (json['weekDays'] as List)?.map((e) => e as int)?.toList()
+    ..days = (json['days'] as List)
+        ?.map((e) => e == null ? null : DateTime.parse(e as String))
+        ?.toList()
     ..holidays = (json['holidays'] as List)
         ?.map((e) => e == null ? null : DateTime.parse(e as String))
-        ?.toList();
+        ?.toList()
+    ..studentCount = json['studentCount'] as int;
 }
 
 Map<String, dynamic> _$ClassToJson(Class instance) => <String, dynamic>{
@@ -37,7 +42,10 @@ Map<String, dynamic> _$ClassToJson(Class instance) => <String, dynamic>{
       'startDate': instance.startDate?.toIso8601String(),
       'endDate': instance.endDate?.toIso8601String(),
       'type': _$ClassTypeEnumMap[instance.type],
+      'weekDays': instance.weekDays,
+      'days': instance.days?.map((e) => e?.toIso8601String())?.toList(),
       'holidays': instance.holidays?.map((e) => e?.toIso8601String())?.toList(),
+      'studentCount': instance.studentCount,
     };
 
 T _$enumDecode<T>(

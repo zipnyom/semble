@@ -19,8 +19,8 @@ class _DaySelectFieldState extends State<DaySelectField> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Consumer<ClassOption>(builder: (context, option, child) {
-      bool select = option.containOrder(widget.day);
+    return Consumer<ClassInfo>(builder: (context, option, child) {
+      bool select = option.containWeekDay(widget.day);
       String dayString;
       switch (widget.day) {
         case 1:
@@ -50,10 +50,10 @@ class _DaySelectFieldState extends State<DaySelectField> {
         child: Material(
           child: InkWell(
             onTap: () {
-              if (option.containOrder(widget.day)) {
-                option.removeOrder(widget.day);
+              if (option.containWeekDay(widget.day)) {
+                option.removeWeekDay(widget.day);
               } else {
-                option.addOrder(widget.day);
+                option.addWeekDay(widget.day);
               }
             },
             child: Container(

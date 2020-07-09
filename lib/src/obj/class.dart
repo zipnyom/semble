@@ -16,12 +16,15 @@ class Class {
   DateTime startDate;
   DateTime endDate;
   ClassType type;
+  List<int> weekDays = [];
+  List<DateTime> days = [];
   List<DateTime> holidays = [];
+  int studentCount = 0;
 
   @JsonKey(ignore: true)
   DocumentSnapshot documentSnapshot;
   @JsonKey(ignore: true)
-  TextEditingController titleController;
+  TextEditingController titleController = TextEditingController();
 
   Class(
       {this.title,

@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
 
-class ClassOption with ChangeNotifier {
+class ClassInfo with ChangeNotifier {
   DateTime _startDate;
 
   DateTime get startDate => _startDate;
+  List<DateTime> days = [];
+  refreshEvent() {
+    if (_startDate != null &&
+        _endDate != null &&
+        _weekDayList.isEmpty == false) {
+      days = List<DateTime>();
+      DateTime _tmpDate = _startDate;
+      while (_tmpDate != _endDate) {
+        if (_weekDayList.contains(_tmpDate.weekday)) {
+          days.add(_tmpDate);
+        }
+        _tmpDate = _tmpDate.add(Duration(days: 1));
+      }
+      addDaylistToEventmap(days);
+    }
+  }
 
   set startDate(DateTime startDate) {
     _startDate = startDate;
+    refreshEvent();
     notifyListeners();
   }
 
@@ -16,30 +33,65 @@ class ClassOption with ChangeNotifier {
 
   set endDate(DateTime endDate) {
     _endDate = endDate;
+    refreshEvent();
     notifyListeners();
   }
 
-  List<int> _dayList = List<int>();
+  List<int> _weekDayList = List<int>();
   clear() {
-    _dayList.clear();
+    _weekDayList.clear();
   }
 
-  getDayList() {
-    return _dayList;
-  }
+  List<int> get weekDays => _weekDayList;
 
-  containOrder(int order) {
-    if (_dayList.contains(order)) return true;
+  containWeekDay(int order) {
+    if (_weekDayList.contains(order)) return true;
     return false;
   }
 
-  addOrder(int order) {
-    _dayList.add(order);
+  addWeekDay(int order) {
+    _weekDayList.add(order);
+    refreshEvent();
     notifyListeners();
   }
 
-  removeOrder(int order) {
-    _dayList.remove(order);
+  removeWeekDay(int order) {
+    _weekDayList.remove(order);
+    refreshEvent();
+    notifyListeners();
+  }
+
+  Map<DateTime, List> _events = Map<DateTime, List>();
+
+  Map<DateTime, List> get event => _events;
+
+  contains(DateTime item) {
+    if (_events.containsKey(item)) return true;
+    return false;
+  }
+
+  addDaylistToEventmap(List<DateTime> items) {
+    _events.clear();
+    items.forEach((element) {
+      _events.putIfAbsent(element, () => ["AAA"]);
+    });
+    notifyListeners();
+  }
+
+  removeDaylistfromEventmap(List<DateTime> items) {
+    items.forEach((element) {
+      _events.remove(element);
+    });
+    notifyListeners();
+  }
+
+  add(DateTime date) {
+    _events.putIfAbsent(date, () => ["AAA"]);
+    notifyListeners();
+  }
+
+  delete(DateTime date) {
+    _events.remove(date);
     notifyListeners();
   }
 }
