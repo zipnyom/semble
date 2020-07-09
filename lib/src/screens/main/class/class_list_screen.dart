@@ -7,7 +7,7 @@ import 'package:schuul/src/data/provider/class_option_provider.dart';
 import 'package:schuul/src/data/provider/events_provider.dart';
 import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
-import 'package:schuul/src/screens/main/class/new_class_screen.dart';
+import 'package:schuul/src/screens/main/class/new_class_first.dart';
 import 'package:schuul/src/widgets/sub_title.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
@@ -52,9 +52,9 @@ class _ClassListScreenState extends State<ClassListScreen> {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => MultiProvider(
                   providers: [
-                    ChangeNotifierProvider.value(value: ClassInfo()),
+                    ChangeNotifierProvider.value(value: ClassDateInfo()),
                   ],
-                  child: NewClassScreen(),
+                  child: NewClassScreen1(),
                 ),
               ));
             },

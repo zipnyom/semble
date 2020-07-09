@@ -3,7 +3,7 @@ import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/account_page.dart';
 import 'package:schuul/src/screens/main/calendar_page.dart';
-import 'package:schuul/src/screens/main/class/new_class_screen.dart';
+import 'package:schuul/src/screens/main/class/new_class_first.dart';
 import 'package:schuul/src/screens/main/vote/vote_list_screen.dart';
 import 'package:schuul/src/screens/main/class/class_list_screen.dart';
 

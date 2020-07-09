@@ -22,7 +22,7 @@ class _DateSelectFieldState extends State<DateSelectField> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    ClassInfo option = Provider.of<ClassInfo>(context);
+    ClassDateInfo option = Provider.of<ClassDateInfo>(context);
     DateTime date = widget.type == DateType.start
         ? option.startDate == null ? DateTime.now() : option.startDate
         : option.endDate == null ? DateTime.now() : option.endDate;

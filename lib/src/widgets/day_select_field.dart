@@ -19,7 +19,7 @@ class _DaySelectFieldState extends State<DaySelectField> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Consumer<ClassInfo>(builder: (context, option, child) {
+    return Consumer<ClassDateInfo>(builder: (context, option, child) {
       bool select = option.containWeekDay(widget.day);
       String dayString;
       switch (widget.day) {

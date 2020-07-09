@@ -25,6 +25,8 @@ class Class {
   DocumentSnapshot documentSnapshot;
   @JsonKey(ignore: true)
   TextEditingController titleController = TextEditingController();
+  @JsonKey(ignore: true)
+  TextEditingController descriptionController = TextEditingController();
 
   Class(
       {this.title,

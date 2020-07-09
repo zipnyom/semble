@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ClassInfo with ChangeNotifier {
+class ClassDateInfo with ChangeNotifier {
   DateTime _startDate;
 
   DateTime get startDate => _startDate;

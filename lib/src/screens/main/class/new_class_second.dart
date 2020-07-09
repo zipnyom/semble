@@ -24,15 +24,15 @@ final Map<DateTime, List> _holidays = {
   DateTime(2019, 4, 22): ['Easter Monday'],
 };
 
-class NewClassScreen extends StatefulWidget {
-  const NewClassScreen({
+class NewClassScreen2 extends StatefulWidget {
+  const NewClassScreen2({
     Key key,
   }) : super(key: key);
   @override
-  _NewClassScreenState createState() => _NewClassScreenState();
+  _NewClassScreen2State createState() => _NewClassScreen2State();
 }
 
-class _NewClassScreenState extends State<NewClassScreen>
+class _NewClassScreen2State extends State<NewClassScreen2>
     with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ClassType selectedRadio = ClassType.regular;
@@ -116,7 +116,7 @@ class _NewClassScreenState extends State<NewClassScreen>
   @override
   Widget build(BuildContext context) {
     void onSubmit() async {
-      ClassInfo option = Provider.of<ClassInfo>(context, listen: false);
+      ClassDateInfo option = Provider.of<ClassDateInfo>(context, listen: false);
       if (_formKey.currentState.validate()) {
         RespondType res =
             await customShowDialog(context, "수업 생성", "수업을 생성하시겠습니까?");
@@ -244,7 +244,7 @@ class _NewClassScreenState extends State<NewClassScreen>
   }
 
   Widget _buildTableCalendarWithBuilders() {
-    return Consumer<ClassInfo>(builder: (context, pOption, child) {
+    return Consumer<ClassDateInfo>(builder: (context, pOption, child) {
       return TableCalendar(
         locale: 'ko_KR',
         calendarController: _calendarController,
