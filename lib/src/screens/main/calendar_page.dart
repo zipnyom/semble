@@ -32,7 +32,7 @@ class _CalendarPageState extends State<CalendarPage>
   AnimationController _animationController;
   CalendarController _calendarController;
 
-  void addClass(Class model) {
+  void addClass(MyClass model) {
     Map<String, dynamic> classData = {
       "name": "Test Class",
       "start": DateTime.now().millisecondsSinceEpoch,
@@ -42,12 +42,12 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   void addSampleClassToDatabase() {
-    List<Class> list = List<Class>();
+    List<MyClass> list = List<MyClass>();
     for (int i = 1; i <= 5; i++) {
       String num = i.toString();
     }
 
-    for (Class model in list) {
+    for (MyClass model in list) {
       print(model.toJson());
       DatabaseService().addItem("class", model.toJson());
     }

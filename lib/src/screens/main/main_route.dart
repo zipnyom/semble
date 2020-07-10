@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:schuul/src/data/provider/class_option_provider.dart';
 import 'package:schuul/src/widgets/bottom_navigation.dart';
 import 'package:schuul/src/widgets/tab_navigator.dart';
 
@@ -27,7 +29,6 @@ class _MainRouteState extends State<MainRoute> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -48,7 +49,9 @@ class _MainRouteState extends State<MainRoute> {
       },
       child: Scaffold(
         body: Stack(children: <Widget>[
-          _buildOffstageNavigator(TabItem.home),
+          MultiProvider(providers: [
+            ChangeNotifierProvider.value(value: ClassDateInfo()),
+          ], child: _buildOffstageNavigator(TabItem.home)),
           _buildOffstageNavigator(TabItem.dashboard),
           _buildOffstageNavigator(TabItem.calendar),
           _buildOffstageNavigator(TabItem.setting),

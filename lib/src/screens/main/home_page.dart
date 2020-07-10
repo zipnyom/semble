@@ -39,13 +39,13 @@ class _HomePageState extends State<HomePage> {
 
   static Size size;
   void getClass() async {
-    List<Class> list = List<Class>();
+    List<MyClass> list = List<MyClass>();
 //    list.add(ClassModel(className: "test1", startDate: 1, endDate: 3));
 //    list.add(ClassModel(className: "test2", startDate: 1, endDate: 3));
 //    list.add(ClassModel(className: "test3", startDate: 1, endDate: 3));
     QuerySnapshot snapshot = await databaseService.selectAll("class");
     snapshot.documents.forEach((element) {
-      list.add(Class.fromJson(element.data));
+      list.add(MyClass.fromJson(element.data));
     });
     // classNotifier.classes = list;
   }

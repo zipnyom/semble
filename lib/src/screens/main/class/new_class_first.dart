@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/data/enums/image_type.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
 import 'package:schuul/src/data/provider/class_option_provider.dart';
 import 'package:schuul/src/obj/class.dart';
+import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/class/new_class_second.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
 import 'package:schuul/src/widgets/widget.dart';
@@ -20,17 +24,33 @@ class _NewClassScreen1State extends State<NewClassScreen1>
     with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ClassType selectedRadio = ClassType.regular;
-  Class _class;
+  MyClass _class;
   ImageType imageType = ImageType.basic;
-
+  FileImage fileImage;
+  final picker = ImagePicker();
   @override
   void initState() {
-    _class = Class();
+    _class = MyClass();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    pickImage(int source) async {
+      PickedFile pickedFile;
+      if (source == 1) // camera
+        pickedFile = await picker.getImage(source: ImageSource.camera);
+      else // gallary
+        pickedFile = await picker.getImage(source: ImageSource.gallery);
+      if (pickedFile == null) return;
+
+      setState(() {
+        fileImage = FileImage(File(pickedFile.path));
+      });
+
+      _class.imageLocalPath = pickedFile.path;
+    }
+
     void onExit(BuildContext context) async {
       RespondType res =
           await customShowDialog(context, "닫기", "저장히지 않고 나가시겠습니까?");
@@ -44,7 +64,8 @@ class _NewClassScreen1State extends State<NewClassScreen1>
               title: "완료",
               press: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ChangeNotifierProvider.value(
-                        value: ClassDateInfo(), child: NewClassScreen2()),
+                        value: ClassDateInfo()..myClass = _class,
+                        child: NewClassScreen2()),
                   )))
         ]),
         body: Padding(
@@ -88,9 +109,13 @@ class _NewClassScreen1State extends State<NewClassScreen1>
                         ),
                       ),
                       SizedBox(
-                        height: 15,
+                        height: 25,
                       ),
-                      Text("대표 이미지 (썸네일)"),
+                      Row(
+                        children: [
+                          Text("대표 이미지 (썸네일)"),
+                        ],
+                      ),
                       SizedBox(
                         height: 15,
                       ),
@@ -111,18 +136,56 @@ class _NewClassScreen1State extends State<NewClassScreen1>
                       SizedBox(
                         height: 20,
                       ),
-                      Material(
-                        child: InkWell(
-                          onTap: () {
-                            print("test");
-                          },
-                          child: CircleAvatar(
-                            radius: 100,
-                            backgroundImage:
-                                AssetImage("assets/images/login_bottom.png"),
-                          ),
-                        ),
-                      )
+                      imageType == ImageType.upload
+                          ? Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      CustomIcon.camera,
+                                      size: 35,
+                                    ),
+                                    onPressed: () {
+                                      pickImage(1);
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 50,
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      CustomIcon.photo,
+                                      size: 35,
+                                    ),
+                                    onPressed: () {
+                                      pickImage(2);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            )
+                          : SizedBox.shrink(),
+                      Text("이미지 미리보기"),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      imageType == ImageType.basic
+                          ? CircleAvatar(
+                              radius: 100,
+                              backgroundImage:
+                                  AssetImage("assets/images/login_bottom.png"),
+                            )
+                          : imageType == ImageType.profile
+                              ? CircleAvatar(
+                                  radius: 100,
+                                  child: Text("등록된 프로필 사진이 없습니다."),
+                                )
+                              : CircleAvatar(
+                                  radius: 100,
+                                  backgroundImage: fileImage,
+                                )
                     ],
                   ),
                 ),

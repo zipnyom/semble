@@ -6,8 +6,8 @@ part of 'class.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Class _$ClassFromJson(Map<String, dynamic> json) {
-  return Class(
+MyClass _$MyClassFromJson(Map<String, dynamic> json) {
+  return MyClass(
     title: json['title'] as String,
     creator: json['creator'] as String,
     managers: (json['managers'] as List)?.map((e) => e as String)?.toList(),
@@ -30,10 +30,11 @@ Class _$ClassFromJson(Map<String, dynamic> json) {
     ..holidays = (json['holidays'] as List)
         ?.map((e) => e == null ? null : DateTime.parse(e as String))
         ?.toList()
-    ..studentCount = json['studentCount'] as int;
+    ..studentCount = json['studentCount'] as int
+    ..imageUrl = json['imageUrl'] as String;
 }
 
-Map<String, dynamic> _$ClassToJson(Class instance) => <String, dynamic>{
+Map<String, dynamic> _$MyClassToJson(MyClass instance) => <String, dynamic>{
       'title': instance.title,
       'creator': instance.creator,
       'created': instance.created?.toIso8601String(),
@@ -46,6 +47,7 @@ Map<String, dynamic> _$ClassToJson(Class instance) => <String, dynamic>{
       'days': instance.days?.map((e) => e?.toIso8601String())?.toList(),
       'holidays': instance.holidays?.map((e) => e?.toIso8601String())?.toList(),
       'studentCount': instance.studentCount,
+      'imageUrl': instance.imageUrl,
     };
 
 T _$enumDecode<T>(

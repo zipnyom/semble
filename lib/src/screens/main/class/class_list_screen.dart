@@ -17,17 +17,18 @@ class ClassListScreen extends StatefulWidget {
 }
 
 class _ClassListScreenState extends State<ClassListScreen> {
-  List<Class> classList = [];
+  List<MyClass> classList = [];
 
   packClassList() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    List<Class> bufferList = List<Class>();
+    List<MyClass> bufferList = List<MyClass>();
     QuerySnapshot snapshot = await Firestore.instance
         .collection(db_col_class)
         .where("creator", isEqualTo: user.uid)
         .getDocuments();
     snapshot.documents.forEach((element) {
-      bufferList.add(Class.fromJson(element.data)..documentSnapshot = element);
+      bufferList
+          .add(MyClass.fromJson(element.data)..documentSnapshot = element);
     });
     if (this.mounted) {
       setState(() {
@@ -47,18 +48,12 @@ class _ClassListScreenState extends State<ClassListScreen> {
     return Scaffold(
         appBar: customAppBar("나의 수업", false, [
           IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider.value(value: ClassDateInfo()),
-                  ],
-                  child: NewClassScreen1(),
-                ),
-              ));
-            },
-          )
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => NewClassScreen1(),
+                ));
+              })
         ]),
         body: Container(
             child: Padding(
@@ -78,7 +73,7 @@ class _ClassListScreenState extends State<ClassListScreen> {
                   physics: ClampingScrollPhysics(),
                   itemCount: classList.length,
                   itemBuilder: (_, index) {
-                    Class item = classList[index];
+                    MyClass item = classList[index];
                     return Padding(
                         padding: EdgeInsets.all(10),
                         child: Container(

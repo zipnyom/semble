@@ -6,7 +6,6 @@ import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/date_type.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
 import 'package:schuul/src/data/provider/class_option_provider.dart';
-import 'package:schuul/src/data/provider/events_provider.dart';
 import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/services/database.dart';
 import 'package:schuul/src/widgets/date_select_field.dart';
@@ -36,7 +35,7 @@ class _NewClassScreen2State extends State<NewClassScreen2>
     with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ClassType selectedRadio = ClassType.regular;
-  Class _class;
+  MyClass _class;
 
   //calendar
   bool isDispose;
@@ -56,7 +55,7 @@ class _NewClassScreen2State extends State<NewClassScreen2>
 
   @override
   void initState() {
-    _class = Class();
+    _class = MyClass();
 
     // Events events = Provider.of<Events>(context);
     // events.addList([

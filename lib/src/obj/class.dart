@@ -7,7 +7,7 @@ part 'class.g.dart';
 enum ClassType { regular, irregular }
 
 @JsonSerializable()
-class Class {
+class MyClass {
   String title;
   String creator;
   DateTime created;
@@ -20,7 +20,10 @@ class Class {
   List<DateTime> days = [];
   List<DateTime> holidays = [];
   int studentCount = 0;
+  String imageUrl;
 
+  @JsonKey(ignore: true)
+  String imageLocalPath;
   @JsonKey(ignore: true)
   DocumentSnapshot documentSnapshot;
   @JsonKey(ignore: true)
@@ -28,7 +31,7 @@ class Class {
   @JsonKey(ignore: true)
   TextEditingController descriptionController = TextEditingController();
 
-  Class(
+  MyClass(
       {this.title,
       this.creator,
       this.managers,
@@ -36,7 +39,8 @@ class Class {
       this.startDate,
       this.endDate});
 
-  factory Class.fromJson(Map<String, dynamic> json) => _$ClassFromJson(json);
+  factory MyClass.fromJson(Map<String, dynamic> json) =>
+      _$MyClassFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ClassToJson(this);
+  Map<String, dynamic> toJson() => _$MyClassToJson(this);
 }

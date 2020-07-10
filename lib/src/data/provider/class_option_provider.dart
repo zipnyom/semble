@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:schuul/src/obj/class.dart';
 
 class ClassDateInfo with ChangeNotifier {
+  MyClass _myClass;
+
+  MyClass get myClass => _myClass;
+
+  set myClass(MyClass myClass) {
+    _myClass = myClass;
+    notifyListeners();
+  }
+
   DateTime _startDate;
 
   DateTime get startDate => _startDate;
