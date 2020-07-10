@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
 import 'package:schuul/src/screens/welcome/welcome_screen.dart';
+import 'package:schuul/src/widgets/right_top_text_button.dart';
 
 Widget customAppBar(String title, bool centerTitle, List<Widget> actions) {
   return AppBar(
@@ -124,6 +125,39 @@ Widget customAppBarLeading(
         onPressed: () {
           Navigator.pop(context);
         },
+      ),
+      elevation: 0.0,
+      actions: actions
+//    centerTitle: false,
+      );
+}
+
+Widget customAppBarLeftText(
+    BuildContext context, String title, String leading, List<Widget> actions) {
+  return AppBar(
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
+      title: Text(
+        title,
+        style: TextStyle(color: kTextColor),
+      ),
+      iconTheme: IconThemeData(
+        color: kTextColor, //change your color here
+      ),
+      brightness: Brightness.light,
+      leading: Material(
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Padding(
+            padding: EdgeInsets.only(top: 20, left: 20, bottom: 20),
+            child: Text(
+              leading,
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ),
       ),
       elevation: 0.0,
       actions: actions

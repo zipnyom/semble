@@ -72,3 +72,5 @@ const String thursday = "목";
 const String friday = "금";
 const String saturday = "토";
 const String sunday = "일";
+
+const String defaultImagePath = "assets/images/login_bottom.png";

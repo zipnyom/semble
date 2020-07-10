@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -81,11 +82,45 @@ class _ClassListScreenState extends State<ClassListScreen> {
                     return Padding(
                         padding: EdgeInsets.all(10),
                         child: Container(
-                          child: Card(
-                              child: Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Text(item.title))),
-                        ));
+                            child: Card(
+                          child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Row(
+                                children: [
+                                  ExtendedImage.network(
+                                    item.imageUrl,
+                                    width: 70,
+                                    height: 70,
+                                    fit: BoxFit.fill,
+                                    cache: true,
+                                    shape: BoxShape.circle,
+                                    loadStateChanged: (state) {
+                                      switch (state.extendedImageLoadState) {
+                                        case LoadState.loading:
+                                          return Padding(
+                                              padding: EdgeInsets.all(10),
+                                              child:
+                                                  CircularProgressIndicator());
+                                          break;
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(item.title),
+                                        Text(item.description)
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )),
+                        )));
                   })
             ],
           ),

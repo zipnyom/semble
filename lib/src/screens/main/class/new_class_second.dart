@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
@@ -11,7 +14,6 @@ import 'package:schuul/src/services/database.dart';
 import 'package:schuul/src/widgets/date_select_field.dart';
 import 'package:schuul/src/widgets/day_select_field.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
-import 'package:schuul/src/widgets/title_text_field.dart';
 import 'package:schuul/src/widgets/widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -39,8 +41,6 @@ class _NewClassScreen2State extends State<NewClassScreen2>
 
   //calendar
   bool isDispose;
-  // Map<DateTime, List> _events = Map<DateTime, List>();
-  // Map<DateTime, List> _events = Map<DateTime, List>();
   List _selectedEvents;
   AnimationController _animationController;
   CalendarController _calendarController;
@@ -94,13 +94,6 @@ class _NewClassScreen2State extends State<NewClassScreen2>
     super.dispose();
   }
 
-  void _onDaySelected(DateTime day, List events) {
-    print('CALLBACK: _onDaySelected');
-    setState(() {
-      _selectedEvents = events;
-    });
-  }
-
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
     print('CALLBACK: _onVisibleDaysChanged');
@@ -128,6 +121,8 @@ class _NewClassScreen2State extends State<NewClassScreen2>
 
         classDateInfo.myClass.title =
             classDateInfo.myClass.titleController.text.trim();
+        classDateInfo.myClass.description =
+            classDateInfo.myClass.descriptionController.text.trim();
         classDateInfo.myClass.created = DateTime.now();
         classDateInfo.myClass.creator = user.uid;
         classDateInfo.myClass.startDate = option.startDate;
@@ -135,26 +130,30 @@ class _NewClassScreen2State extends State<NewClassScreen2>
         classDateInfo.myClass.weekDays = option.weekDays;
         classDateInfo.myClass.days = option.days;
 
-        await databaseService.addItem(
+        DocumentReference documentReference = await databaseService.addItem(
             db_col_class, classDateInfo.myClass.toJson());
-        // Navigator.pop(context);
+
+        StorageReference storageReference = FirebaseStorage.instance
+            .ref()
+            .child("classImage/${user.uid}/${documentReference.documentID}");
+
+        if (classDateInfo.myClass.imageLocalPath != null) {
+          StorageTaskSnapshot storageTaskSnapshot = await storageReference
+              .putFile(File(classDateInfo.myClass.imageLocalPath))
+              .onComplete;
+          if (storageTaskSnapshot.error == null) {
+            final String downloadUrl =
+                await storageTaskSnapshot.ref.getDownloadURL();
+            documentReference.updateData({"imageUrl": downloadUrl});
+          }
+        }
         Navigator.popUntil(context, (route) => route.isFirst);
         // Navigator.popUntil(context, ModalRoute.withName('/'));
       }
     }
 
-    void onExit(BuildContext context) async {
-      RespondType res =
-          await customShowDialog(context, "닫기", "저장히지 않고 나가시겠습니까?");
-      if (res == RespondType.yes) Navigator.of(context).pop();
-    }
-
     return Scaffold(
-        appBar: customAppBarLeadingWithDialog(
-            context,
-            "수업 정보 입력",
-            Icon(Icons.close),
-            onExit,
+        appBar: customAppBarLeftText(context, "수업 일정 입력", "이전",
             [RightTopTextButton(title: "완료", press: onSubmit)]),
         body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -165,10 +164,6 @@ class _NewClassScreen2State extends State<NewClassScreen2>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      // TitleTextField(
-                      //     validateMessage: "수업명을 입력해주세요",
-                      //     hintText: "수업명",
-                      //     controller: _class.titleController),
                       SizedBox(
                         height: 15,
                       ),
@@ -176,33 +171,6 @@ class _NewClassScreen2State extends State<NewClassScreen2>
                       SizedBox(
                         height: 5,
                       ),
-
-                      // ButtonBar(
-                      //   alignment: MainAxisAlignment.start,
-                      //   children: <Widget>[
-                      //     Radio(
-                      //       value: ClassType.regular,
-                      //       groupValue: selectedRadio,
-                      //       activeColor: Colors.green,
-                      //       onChanged: (val) {
-                      //         setSelectedRadio(val);
-                      //       },
-                      //     ),
-                      //     Text("정기 수업"),
-                      //     SizedBox(
-                      //       width: 10,
-                      //     ),
-                      //     Radio(
-                      //       value: ClassType.irregular,
-                      //       groupValue: selectedRadio,
-                      //       activeColor: Colors.blue,
-                      //       onChanged: (val) {
-                      //         setSelectedRadio(val);
-                      //       },
-                      //     ),
-                      //     Text("비정기 수업"),
-                      //   ],
-                      // ),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -281,22 +249,6 @@ class _NewClassScreen2State extends State<NewClassScreen2>
                 child: Text("${date.day}"),
               ),
             );
-            // return FadeTransition(
-            //     opacity:
-            //         Tween(begin: 0.0, end: 1.0).animate(_animationController),
-
-            // child: Container(
-            //   margin: const EdgeInsets.all(4.0),
-            //   padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-            //   color: Colors.deepOrange[300],
-            //   width: 100,
-            //   height: 100,
-            //   child: Text(
-            //     '${date.day}',
-            //     style: TextStyle().copyWith(fontSize: 16.0),
-            //   ),
-            // ),
-            // );
           },
           todayDayBuilder: (context, date, _) {
             return Container(
@@ -304,28 +256,10 @@ class _NewClassScreen2State extends State<NewClassScreen2>
                 child: Text("${date.day}"),
               ),
             );
-            // return Container(
-            //   margin: const EdgeInsets.all(4.0),
-            //   padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-            //   color: Colors.amber[400],
-            //   width: 100,
-            //   height: 100,
-            //   child: Text(
-            //     '${date.day}',
-            //     style: TextStyle().copyWith(fontSize: 16.0),
-            //   ),
-            // );
           },
           markersBuilder: (context, date, events, holidays) {
             final children = <Widget>[];
             if (events.isNotEmpty) {
-              // children.add(
-              //   Positioned(
-              //     right: 1,
-              //     bottom: 1,
-              //     child: _buildEventsMarker(date, events),
-              //   ),
-              // );
               children.add(_buildEventsMarker(date, events));
             }
 
@@ -362,8 +296,6 @@ class _NewClassScreen2State extends State<NewClassScreen2>
       child: Padding(
         padding: EdgeInsets.all(2),
         child: Container(
-          // margin: const EdgeInsets.all(4.0),
-          // padding: const EdgeInsets.only(top: 5.0, left: 6.0),
           decoration: BoxDecoration(
               color: Colors.deepOrange[200],
               borderRadius: BorderRadius.circular(26)),

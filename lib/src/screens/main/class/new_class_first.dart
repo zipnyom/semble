@@ -11,6 +11,7 @@ import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/class/new_class_second.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
 import 'package:schuul/src/widgets/widget.dart';
+import 'package:schuul/src/constants.dart';
 
 class NewClassScreen1 extends StatefulWidget {
   const NewClassScreen1({
@@ -57,7 +58,7 @@ class _NewClassScreen1State extends State<NewClassScreen1>
         appBar: customAppBarLeadingWithDialog(
             context, "기본 정보 입력", Icon(Icons.close), onExit, [
           RightTopTextButton(
-              title: "완료",
+              title: "다음",
               press: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => NewClassScreen2(),
                   )))
@@ -168,8 +169,7 @@ class _NewClassScreen1State extends State<NewClassScreen1>
                       imageType == ImageType.basic
                           ? CircleAvatar(
                               radius: 100,
-                              backgroundImage:
-                                  AssetImage("assets/images/login_bottom.png"),
+                              backgroundImage: AssetImage(defaultImagePath),
                             )
                           : imageType == ImageType.profile
                               ? CircleAvatar(
