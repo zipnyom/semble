@@ -24,18 +24,14 @@ class _NewClassScreen1State extends State<NewClassScreen1>
     with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ClassType selectedRadio = ClassType.regular;
-  MyClass _class;
+  // MyClass _class;
   ImageType imageType = ImageType.basic;
   FileImage fileImage;
   final picker = ImagePicker();
-  @override
-  void initState() {
-    _class = MyClass();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    ClassDateInfo classDateInfo = Provider.of<ClassDateInfo>(context);
     pickImage(int source) async {
       PickedFile pickedFile;
       if (source == 1) // camera
@@ -48,7 +44,7 @@ class _NewClassScreen1State extends State<NewClassScreen1>
         fileImage = FileImage(File(pickedFile.path));
       });
 
-      _class.imageLocalPath = pickedFile.path;
+      classDateInfo.myClass.imageLocalPath = pickedFile.path;
     }
 
     void onExit(BuildContext context) async {
@@ -63,9 +59,7 @@ class _NewClassScreen1State extends State<NewClassScreen1>
           RightTopTextButton(
               title: "완료",
               press: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ChangeNotifierProvider.value(
-                        value: ClassDateInfo()..myClass = _class,
-                        child: NewClassScreen2()),
+                    builder: (context) => NewClassScreen2(),
                   )))
         ]),
         body: Padding(
@@ -78,7 +72,7 @@ class _NewClassScreen1State extends State<NewClassScreen1>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       TextFormField(
-                        controller: _class.titleController,
+                        controller: classDateInfo.myClass.titleController,
                         minLines: 2,
                         maxLines: 2,
                         validator: (String value) {
@@ -95,7 +89,7 @@ class _NewClassScreen1State extends State<NewClassScreen1>
                         height: 15,
                       ),
                       TextFormField(
-                        controller: _class.descriptionController,
+                        controller: classDateInfo.myClass.descriptionController,
                         minLines: 3,
                         maxLines: 10,
                         validator: (String value) {

@@ -35,7 +35,7 @@ class _NewClassScreen2State extends State<NewClassScreen2>
     with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ClassType selectedRadio = ClassType.regular;
-  MyClass _class;
+  // MyClass _class;
 
   //calendar
   bool isDispose;
@@ -46,17 +46,16 @@ class _NewClassScreen2State extends State<NewClassScreen2>
   CalendarController _calendarController;
 
   setSelectedRadio(ClassType val) {
+    ClassDateInfo classDateInfo = Provider.of<ClassDateInfo>(context);
     setState(() {
       selectedRadio = val;
     });
-    _class.type = val;
-    print("setSelectedRadio => ${_class.type}");
+    classDateInfo.myClass.type = val;
+    print("setSelectedRadio => ${classDateInfo.myClass.type}");
   }
 
   @override
   void initState() {
-    _class = MyClass();
-
     // Events events = Provider.of<Events>(context);
     // events.addList([
     //   DateTime.now().add(Duration(days: 1)),
@@ -124,17 +123,23 @@ class _NewClassScreen2State extends State<NewClassScreen2>
         }
 
         FirebaseUser user = await FirebaseAuth.instance.currentUser();
-        _class.title = _class.titleController.text.trim();
-        _class.created = DateTime.now();
-        _class.creator = user.uid;
-        _class.startDate = option.startDate;
-        _class.endDate = option.endDate;
-        _class.weekDays = option.weekDays;
-        _class.days = option.days;
 
-        DocumentReference ref =
-            await databaseService.addItem(db_col_class, _class.toJson());
-        Navigator.pop(context);
+        ClassDateInfo classDateInfo = Provider.of<ClassDateInfo>(context);
+
+        classDateInfo.myClass.title =
+            classDateInfo.myClass.titleController.text.trim();
+        classDateInfo.myClass.created = DateTime.now();
+        classDateInfo.myClass.creator = user.uid;
+        classDateInfo.myClass.startDate = option.startDate;
+        classDateInfo.myClass.endDate = option.endDate;
+        classDateInfo.myClass.weekDays = option.weekDays;
+        classDateInfo.myClass.days = option.days;
+
+        await databaseService.addItem(
+            db_col_class, classDateInfo.myClass.toJson());
+        // Navigator.pop(context);
+        Navigator.popUntil(context, (route) => route.isFirst);
+        // Navigator.popUntil(context, ModalRoute.withName('/'));
       }
     }
 
@@ -160,10 +165,10 @@ class _NewClassScreen2State extends State<NewClassScreen2>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      TitleTextField(
-                          validateMessage: "수업명을 입력해주세요",
-                          hintText: "수업명",
-                          controller: _class.titleController),
+                      // TitleTextField(
+                      //     validateMessage: "수업명을 입력해주세요",
+                      //     hintText: "수업명",
+                      //     controller: _class.titleController),
                       SizedBox(
                         height: 15,
                       ),

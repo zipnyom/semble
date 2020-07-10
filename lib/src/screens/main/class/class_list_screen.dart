@@ -49,10 +49,14 @@ class _ClassListScreenState extends State<ClassListScreen> {
         appBar: customAppBar("나의 수업", false, [
           IconButton(
               icon: Icon(Icons.add),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
+              onPressed: () async {
+                ClassDateInfo classDateInfo =
+                    Provider.of<ClassDateInfo>(context, listen: false);
+                classDateInfo.myClass = MyClass();
+                await Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => NewClassScreen1(),
                 ));
+                packClassList();
               })
         ]),
         body: Container(
