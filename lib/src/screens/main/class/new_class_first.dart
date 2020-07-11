@@ -32,7 +32,7 @@ class _NewClassScreen1State extends State<NewClassScreen1>
 
   @override
   Widget build(BuildContext context) {
-    ClassDateInfo classDateInfo = Provider.of<ClassDateInfo>(context);
+    ClassProvider classProvider = Provider.of<ClassProvider>(context);
     pickImage(int source) async {
       PickedFile pickedFile;
       if (source == 1) // camera
@@ -45,7 +45,7 @@ class _NewClassScreen1State extends State<NewClassScreen1>
         fileImage = FileImage(File(pickedFile.path));
       });
 
-      classDateInfo.myClass.imageLocalPath = pickedFile.path;
+      classProvider.myClass.imageLocalPath = pickedFile.path;
     }
 
     void onExit(BuildContext context) async {
@@ -73,7 +73,7 @@ class _NewClassScreen1State extends State<NewClassScreen1>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       TextFormField(
-                        controller: classDateInfo.myClass.titleController,
+                        controller: classProvider.myClass.titleController,
                         minLines: 2,
                         maxLines: 2,
                         validator: (String value) {
@@ -90,7 +90,7 @@ class _NewClassScreen1State extends State<NewClassScreen1>
                         height: 15,
                       ),
                       TextFormField(
-                        controller: classDateInfo.myClass.descriptionController,
+                        controller: classProvider.myClass.descriptionController,
                         minLines: 3,
                         maxLines: 10,
                         validator: (String value) {

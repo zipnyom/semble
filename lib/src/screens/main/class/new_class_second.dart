@@ -46,12 +46,12 @@ class _NewClassScreen2State extends State<NewClassScreen2>
   CalendarController _calendarController;
 
   setSelectedRadio(ClassType val) {
-    ClassDateInfo classDateInfo = Provider.of<ClassDateInfo>(context);
+    ClassProvider classProvider = Provider.of<ClassProvider>(context);
     setState(() {
       selectedRadio = val;
     });
-    classDateInfo.myClass.type = val;
-    print("setSelectedRadio => ${classDateInfo.myClass.type}");
+    classProvider.myClass.type = val;
+    print("setSelectedRadio => ${classProvider.myClass.type}");
   }
 
   @override
@@ -107,7 +107,7 @@ class _NewClassScreen2State extends State<NewClassScreen2>
   @override
   Widget build(BuildContext context) {
     void onSubmit() async {
-      ClassDateInfo option = Provider.of<ClassDateInfo>(context, listen: false);
+      ClassProvider option = Provider.of<ClassProvider>(context, listen: false);
       if (_formKey.currentState.validate()) {
         RespondType res =
             await customShowDialog(context, "수업 생성", "수업을 생성하시겠습니까?");
@@ -117,29 +117,29 @@ class _NewClassScreen2State extends State<NewClassScreen2>
 
         FirebaseUser user = await FirebaseAuth.instance.currentUser();
 
-        ClassDateInfo classDateInfo = Provider.of<ClassDateInfo>(context);
+        ClassProvider classProvider = Provider.of<ClassProvider>(context);
 
-        classDateInfo.myClass.title =
-            classDateInfo.myClass.titleController.text.trim();
-        classDateInfo.myClass.description =
-            classDateInfo.myClass.descriptionController.text.trim();
-        classDateInfo.myClass.created = DateTime.now();
-        classDateInfo.myClass.creator = user.uid;
-        classDateInfo.myClass.startDate = option.startDate;
-        classDateInfo.myClass.endDate = option.endDate;
-        classDateInfo.myClass.weekDays = option.weekDays;
-        classDateInfo.myClass.days = option.days;
+        classProvider.myClass.title =
+            classProvider.myClass.titleController.text.trim();
+        classProvider.myClass.description =
+            classProvider.myClass.descriptionController.text.trim();
+        classProvider.myClass.created = DateTime.now();
+        classProvider.myClass.creator = user.uid;
+        classProvider.myClass.startDate = option.startDate;
+        classProvider.myClass.endDate = option.endDate;
+        classProvider.myClass.weekDays = option.weekDays;
+        classProvider.myClass.days = option.days;
 
         DocumentReference documentReference = await databaseService.addItem(
-            db_col_class, classDateInfo.myClass.toJson());
+            db_col_class, classProvider.myClass.toJson());
 
         StorageReference storageReference = FirebaseStorage.instance
             .ref()
             .child("classImage/${user.uid}/${documentReference.documentID}");
 
-        if (classDateInfo.myClass.imageLocalPath != null) {
+        if (classProvider.myClass.imageLocalPath != null) {
           StorageTaskSnapshot storageTaskSnapshot = await storageReference
-              .putFile(File(classDateInfo.myClass.imageLocalPath))
+              .putFile(File(classProvider.myClass.imageLocalPath))
               .onComplete;
           if (storageTaskSnapshot.error == null) {
             final String downloadUrl =
@@ -216,7 +216,7 @@ class _NewClassScreen2State extends State<NewClassScreen2>
   }
 
   Widget _buildTableCalendarWithBuilders() {
-    return Consumer<ClassDateInfo>(builder: (context, pOption, child) {
+    return Consumer<ClassProvider>(builder: (context, pOption, child) {
       return TableCalendar(
         locale: 'ko_KR',
         calendarController: _calendarController,

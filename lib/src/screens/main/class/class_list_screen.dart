@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/provider/class_option_provider.dart';
-import 'package:schuul/src/data/provider/events_provider.dart';
 import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
+import 'package:schuul/src/screens/main/class/class_detail_screen.dart';
 import 'package:schuul/src/screens/main/class/new_class_first.dart';
 import 'package:schuul/src/widgets/sub_title.dart';
 import 'package:schuul/src/widgets/widget.dart';
@@ -51,9 +52,9 @@ class _ClassListScreenState extends State<ClassListScreen> {
           IconButton(
               icon: Icon(Icons.add),
               onPressed: () async {
-                ClassDateInfo classDateInfo =
-                    Provider.of<ClassDateInfo>(context, listen: false);
-                classDateInfo.myClass = MyClass();
+                ClassProvider classProvider =
+                    Provider.of<ClassProvider>(context, listen: false);
+                classProvider.myClass = MyClass();
                 await Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => NewClassScreen1(),
                 ));
@@ -79,48 +80,88 @@ class _ClassListScreenState extends State<ClassListScreen> {
                   itemCount: classList.length,
                   itemBuilder: (_, index) {
                     MyClass item = classList[index];
+                    String dateString =
+                        DateFormat("yy.MM.dd").format(item.startDate) +
+                            " ~ " +
+                            DateFormat("yy.MM.dd").format(item.endDate);
                     return Padding(
                         padding: EdgeInsets.all(10),
-                        child: Container(
-                            child: Card(
-                          child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Row(
-                                children: [
-                                  ExtendedImage.network(
-                                    item.imageUrl,
-                                    width: 70,
-                                    height: 70,
-                                    fit: BoxFit.fill,
-                                    cache: true,
-                                    shape: BoxShape.circle,
-                                    loadStateChanged: (state) {
-                                      switch (state.extendedImageLoadState) {
-                                        case LoadState.loading:
-                                          return Padding(
-                                              padding: EdgeInsets.all(10),
-                                              child:
-                                                  CircularProgressIndicator());
-                                          break;
-                                      }
-                                    },
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(item.title),
-                                        Text(item.description)
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              )),
-                        )));
+                        child: Material(
+                          child: InkWell(
+                            onTap: () =>
+                                Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ClassDetailScreen(),
+                            )),
+                            child: Container(
+                                child: Card(
+                              child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ExtendedImage.network(
+                                        item.imageUrl,
+                                        width: 70,
+                                        height: 70,
+                                        fit: BoxFit.fill,
+                                        cache: true,
+                                        shape: BoxShape.circle,
+                                        loadStateChanged: (state) {
+                                          switch (
+                                              state.extendedImageLoadState) {
+                                            case LoadState.loading:
+                                              return Padding(
+                                                  padding: EdgeInsets.all(10),
+                                                  child:
+                                                      CircularProgressIndicator());
+                                              break;
+                                          }
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              item.title,
+                                              style: kListTitleStyle,
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              item.description,
+                                              style: kListSubTitleStyle,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              "${item.studentCount}명의 학생",
+                                              style: kListSubTitleStyle,
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              dateString,
+                                              style: kListSubTitleStyle,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                            )),
+                          ),
+                        ));
                   })
             ],
           ),

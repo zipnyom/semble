@@ -50,7 +50,7 @@ class _MainRouteState extends State<MainRoute> {
       child: Scaffold(
         body: Stack(children: <Widget>[
           MultiProvider(providers: [
-            ChangeNotifierProvider.value(value: ClassDateInfo()),
+            ChangeNotifierProvider.value(value: ClassProvider()),
           ], child: _buildOffstageNavigator(TabItem.home)),
           _buildOffstageNavigator(TabItem.dashboard),
           _buildOffstageNavigator(TabItem.calendar),

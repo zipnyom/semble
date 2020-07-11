@@ -45,6 +45,17 @@ const kSubtitleTextSyule = TextStyle(
   // fontWeight: FontWeight.bold,
 );
 
+const kListTitleStyle = TextStyle(
+  fontSize: 18,
+  color: kTextColor,
+  fontWeight: FontWeight.bold,
+);
+const kListSubTitleStyle = TextStyle(
+  fontSize: 12,
+  color: kTextLightColor,
+  fontWeight: FontWeight.bold,
+);
+
 const kAttendColor = kPrimaryColor;
 const kTardyColor = Colors.amber;
 const kCutColor = Colors.redAccent;

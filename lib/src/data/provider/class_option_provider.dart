@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:schuul/src/obj/class.dart';
 
-class ClassDateInfo with ChangeNotifier {
+class ClassProvider with ChangeNotifier {
   MyClass _myClass;
 
   MyClass get myClass => _myClass;
