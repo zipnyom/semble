@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -5,6 +6,15 @@ import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
 import 'package:schuul/src/screens/welcome/welcome_screen.dart';
 import 'package:schuul/src/widgets/right_top_text_button.dart';
+
+Widget myloadStateChanged(ExtendedImageState state) {
+  switch (state.extendedImageLoadState) {
+    case LoadState.loading:
+      return Padding(
+          padding: EdgeInsets.all(10), child: CircularProgressIndicator());
+      break;
+  }
+}
 
 Widget customAppBar(String title, bool centerTitle, List<Widget> actions) {
   return AppBar(

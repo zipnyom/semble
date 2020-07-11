@@ -6,6 +6,12 @@ var customBoxShadow = BoxShadow(
   color: Color(0xFF6DAED9).withOpacity(0.21),
 );
 
+var customBoxShadowReverse = BoxShadow(
+  offset: Offset(0, -7),
+  blurRadius: 2,
+  color: Color(0xFF6DAED9).withOpacity(0.21),
+);
+
 // var customBoxShadow = CustomBoxShadow();
 
 class CustomBoxShadow extends BoxShadow {
@@ -24,8 +30,7 @@ class CustomBoxShadow extends BoxShadow {
       ..color = color
       ..maskFilter = MaskFilter.blur(this.blurStyle, blurSigma);
     assert(() {
-      if (debugDisableShadows)
-        result.maskFilter = null;
+      if (debugDisableShadows) result.maskFilter = null;
       return true;
     }());
     return result;

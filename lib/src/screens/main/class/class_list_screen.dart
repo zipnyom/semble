@@ -88,10 +88,16 @@ class _ClassListScreenState extends State<ClassListScreen> {
                         padding: EdgeInsets.all(10),
                         child: Material(
                           child: InkWell(
-                            onTap: () =>
-                                Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ClassDetailScreen(),
-                            )),
+                            onTap: () {
+                              double height =
+                                  MediaQuery.of(context).size.height;
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ClassDetailScreen(
+                                  myClass: item,
+                                  height: height,
+                                ),
+                              ));
+                            },
                             child: Container(
                                 child: Card(
                               child: Padding(
@@ -100,25 +106,13 @@ class _ClassListScreenState extends State<ClassListScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      ExtendedImage.network(
-                                        item.imageUrl,
-                                        width: 70,
-                                        height: 70,
-                                        fit: BoxFit.fill,
-                                        cache: true,
-                                        shape: BoxShape.circle,
-                                        loadStateChanged: (state) {
-                                          switch (
-                                              state.extendedImageLoadState) {
-                                            case LoadState.loading:
-                                              return Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child:
-                                                      CircularProgressIndicator());
-                                              break;
-                                          }
-                                        },
-                                      ),
+                                      ExtendedImage.network(item.imageUrl,
+                                          width: 70,
+                                          height: 70,
+                                          fit: BoxFit.fill,
+                                          cache: true,
+                                          shape: BoxShape.circle,
+                                          loadStateChanged: myloadStateChanged),
                                       SizedBox(
                                         width: 20,
                                       ),
