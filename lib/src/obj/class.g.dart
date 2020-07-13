@@ -31,7 +31,8 @@ MyClass _$MyClassFromJson(Map<String, dynamic> json) {
         ?.map((e) => e == null ? null : DateTime.parse(e as String))
         ?.toList()
     ..studentCount = json['studentCount'] as int
-    ..imageUrl = json['imageUrl'] as String;
+    ..imageUrl = json['imageUrl'] as String
+    ..creatorImageUrl = json['creatorImageUrl'] as String;
 }
 
 Map<String, dynamic> _$MyClassToJson(MyClass instance) => <String, dynamic>{
@@ -48,6 +49,7 @@ Map<String, dynamic> _$MyClassToJson(MyClass instance) => <String, dynamic>{
       'holidays': instance.holidays?.map((e) => e?.toIso8601String())?.toList(),
       'studentCount': instance.studentCount,
       'imageUrl': instance.imageUrl,
+      'creatorImageUrl': instance.creatorImageUrl,
     };
 
 T _$enumDecode<T>(

@@ -21,6 +21,7 @@ class MyClass {
   List<DateTime> holidays = [];
   int studentCount = 0;
   String imageUrl;
+  String creatorImageUrl;
 
   @JsonKey(ignore: true)
   String imageLocalPath;

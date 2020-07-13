@@ -133,11 +133,10 @@ class _NewClassScreen2State extends State<NewClassScreen2>
         DocumentReference documentReference = await databaseService.addItem(
             db_col_class, classProvider.myClass.toJson());
 
-        StorageReference storageReference = FirebaseStorage.instance
-            .ref()
-            .child("classImage/${user.uid}/${documentReference.documentID}");
-
         if (classProvider.myClass.imageLocalPath != null) {
+          StorageReference storageReference = FirebaseStorage.instance
+              .ref()
+              .child("classImage/${user.uid}/${documentReference.documentID}");
           StorageTaskSnapshot storageTaskSnapshot = await storageReference
               .putFile(File(classProvider.myClass.imageLocalPath))
               .onComplete;

@@ -112,13 +112,21 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                       ),
                       Row(
                         children: [
-                          ExtendedImage.network(_myClass.imageUrl,
-                              width: 35,
-                              height: 35,
-                              fit: BoxFit.fill,
-                              cache: true,
-                              shape: BoxShape.circle,
-                              loadStateChanged: myloadStateChanged),
+                          _myClass.creatorImageUrl == null
+                              ? ExtendedImage.asset(
+                                  "assets/images/login_bottom.png",
+                                  width: 35,
+                                  height: 35,
+                                  fit: BoxFit.fill,
+                                  shape: BoxShape.circle,
+                                  loadStateChanged: myloadStateChanged)
+                              : ExtendedImage.network(_myClass.creatorImageUrl,
+                                  width: 35,
+                                  height: 35,
+                                  fit: BoxFit.fill,
+                                  cache: true,
+                                  shape: BoxShape.circle,
+                                  loadStateChanged: myloadStateChanged),
                           SizedBox(
                             width: 20,
                           ),
