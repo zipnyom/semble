@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,11 +9,6 @@ import 'package:schuul/src/widgets/auth_stream.dart';
 void main() => runApp(MyApp());
 // void main() =>  runApp(ZefyrApp());
 // void main() =>  runApp(ShowCaseApp());
-
-Future<FirebaseUser> getCurrentUser() async {
-  FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  return user;
-}
 
 class MyApp extends StatelessWidget {
   @override

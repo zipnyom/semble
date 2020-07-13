@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:schuul/src/data/provider/user_provider.dart';
+import 'package:schuul/src/obj/user.dart';
 import 'package:schuul/src/screens/main/main_route.dart';
 import 'package:schuul/src/screens/welcome/welcome_screen.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -30,9 +33,17 @@ class _AuthStreamState extends State<AuthStream> {
             final isLoggedIn = snapshot.hasData;
             print("isLoggedIn : $isLoggedIn");
             if (isLoggedIn) {
-              print("${snapshot.data.email} has logged in..!");
-              screenHodler = ShowCaseWidget(
-                builder: Builder(builder: (context) => MainRoute(email: "고정")),
+              FirebaseUser user = snapshot.data;
+              print("${user.displayName} (${user.email}) has logged in..!");
+              screenHodler = MultiProvider(
+                providers: [
+                  ChangeNotifierProvider.value(
+                      value: UserProvider()..user = user)
+                ],
+                child: ShowCaseWidget(
+                  builder:
+                      Builder(builder: (context) => MainRoute(email: "고정")),
+                ),
               );
             } else {
               screenHodler = WelcomeScreen();

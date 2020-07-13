@@ -16,9 +16,7 @@ class ClassProvider with ChangeNotifier {
   DateTime get startDate => _startDate;
   List<DateTime> days = [];
   refreshEvent() {
-    if (_startDate != null &&
-        _endDate != null &&
-        _weekDayList.isEmpty == false) {
+    if (_startDate != null && _endDate != null) {
       days = List<DateTime>();
       DateTime _tmpDate = _startDate;
       while (_tmpDate != _endDate) {

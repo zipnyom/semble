@@ -18,6 +18,13 @@
             "deviceId": "AA94CAA4-6A81-4F70-B843-9C7FAF398562"
         },
         {
+            "name": "AndroidSim",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "deviceId": "emulator-5554"
+        },
+        {
             "name": "IOS",
             "type": "dart",
             "request": "launch",
@@ -26,6 +33,13 @@
         }
     ],
     "compounds": [
+        {
+            "name": "Simulators",
+            "configurations": [
+                "AndroidSim",
+                "IOSsim"
+            ]
+        },
         {
             "name": "All Devices",
             "configurations": [

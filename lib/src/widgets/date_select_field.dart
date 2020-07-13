@@ -22,10 +22,23 @@ class _DateSelectFieldState extends State<DateSelectField> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    ClassProvider option = Provider.of<ClassProvider>(context);
-    DateTime date = widget.type == DateType.start
-        ? option.startDate == null ? DateTime.now() : option.startDate
-        : option.endDate == null ? DateTime.now() : option.endDate;
+    ClassProvider pClass = Provider.of<ClassProvider>(context);
+    DateTime date;
+    if (widget.type == DateType.start) {
+      if (pClass.startDate == null) {
+        date = DateTime.now();
+      } else {
+        date = pClass.startDate;
+        controller.text = DateFormat("yy년 MM월 dd일").format(date);
+      }
+    } else {
+      if (pClass.endDate == null) {
+        date = DateTime.now();
+      } else {
+        date = pClass.endDate;
+        controller.text = DateFormat("yy년 MM월 dd일").format(date);
+      }
+    }
     return Padding(
       padding: EdgeInsets.only(bottom: 10),
       child: Material(
@@ -39,25 +52,25 @@ class _DateSelectFieldState extends State<DateSelectField> {
                 lastDate: date.add(Duration(days: 365)));
             if (selected == null) return;
             if (widget.type == DateType.start) {
-              if (option.endDate != null) {
-                if (selected.isAfter(option.endDate)) {
+              if (pClass.endDate != null) {
+                if (selected.isAfter(pClass.endDate)) {
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text("마감일보다 늦게 시작할 수 없습니다"),
                   ));
                   return;
                 }
               }
-              option.startDate = selected;
+              pClass.startDate = selected;
             } else if (widget.type == DateType.end) {
-              if (option.startDate != null) {
-                if (selected.isBefore(option.startDate)) {
+              if (pClass.startDate != null) {
+                if (selected.isBefore(pClass.startDate)) {
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text("시작일보다 일찍 종료할 수 없습니다"),
                   ));
                   return;
                 }
               }
-              option.endDate = selected;
+              pClass.endDate = selected;
             }
             controller.text = DateFormat("yy년 MM월 dd일").format(selected);
           },

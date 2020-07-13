@@ -1,7 +1,11 @@
 import 'package:extended_image/extended_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
+import 'package:schuul/src/data/provider/user_provider.dart';
 import 'package:schuul/src/obj/class.dart';
+import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/widgets/custom_box_shadow.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
@@ -19,10 +23,12 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
   ScrollController _scrollController;
   double topPadding;
   MyClass _myClass;
+  FirebaseUser user;
 
   @override
   void initState() {
     super.initState();
+
     topPadding = 100;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
@@ -85,15 +91,24 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            _myClass.title,
-                            style: kHeadingextStyle,
+                          Expanded(
+                            child: Text(
+                              _myClass.title,
+                              style: kHeadingextStyle,
+                              maxLines: 3,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
                           ),
                           IconButton(
-                            icon: Icon(Icons.more_vert),
+                            icon: Icon(CustomIcon.cog),
                             onPressed: () {},
                           )
                         ],
+                      ),
+                      SizedBox(
+                        height: 10,
                       ),
                       Row(
                         children: [
@@ -107,6 +122,10 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                           SizedBox(
                             width: 20,
                           ),
+                          Consumer<UserProvider>(
+                              builder: (context, pUser, child) {
+                            return Text(pUser.user.displayName);
+                          })
                         ],
                       )
                     ],
@@ -114,12 +133,19 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
           Positioned(
             top: 10,
             left: 10,
-            child: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              color: Colors.white,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [customBoxShadow]),
+              child: Center(
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back_ios),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
             ),
           )
         ],
