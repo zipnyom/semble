@@ -2,34 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/widgets/text_field_container.dart';
 
-class RoundedInputField extends StatelessWidget {
+class InputFieldNormal extends StatefulWidget {
   final String hintText;
-  final IconData icon;
+  final IconData iconData;
   final TextEditingController emailController;
-  RoundedInputField({
+  final Function(String) validator;
+  final GlobalKey<FormState> formKey;
+  InputFieldNormal({
     Key key,
     this.hintText,
-    this.icon = Icons.person,
+    this.iconData = Icons.person,
     this.emailController,
+    this.validator,
+    this.formKey,
   }) : super(key: key);
 
+  @override
+  _InputFieldNormalState createState() => _InputFieldNormalState();
+}
+
+class _InputFieldNormalState extends State<InputFieldNormal> {
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextFormField(
-        controller: emailController,
-        validator: (String value) {
-          if (value.isEmpty) {
-            return "유효한 이메일 주소를 입력해주세요.";
-          }
-          return null;
-        },
+        controller: widget.emailController,
+        validator: widget.validator,
         decoration: InputDecoration(
           icon: Icon(
-            icon,
+            widget.iconData,
             color: kPrimaryColor,
           ),
-          hintText: hintText,
+          hintText: widget.hintText,
           border: InputBorder.none,
         ),
       ),

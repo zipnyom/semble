@@ -1,5 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/widgets/custom_box_shadow.dart';
 import 'package:schuul/src/widgets/widget.dart';
@@ -56,15 +57,6 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // AnimatedContainer(
-          //   height: height,
-          //   decoration: BoxDecoration(color: Colors.brown[100]),
-          //   duration: Duration(milliseconds: 100),
-          // child: ExtendedImage.network(_myClass.imageUrl,
-          //     fit: BoxFit.fitWidth,
-          //     cache: true,
-          //     loadStateChanged: myloadStateChanged),
-          // )
           SizedBox(
             height: 300,
             child: ExtendedImage.network(_myClass.imageUrl,
@@ -72,28 +64,63 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                 cache: true,
                 loadStateChanged: myloadStateChanged),
           ),
-          Positioned(
-            child: AnimatedContainer(
-                duration: Duration(milliseconds: 500),
-                curve: Curves.ease,
-                padding: EdgeInsets.only(top: topPadding),
-                width: double.infinity,
-                height: double.infinity,
-                child: Container(
+          AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              curve: Curves.ease,
+              padding: EdgeInsets.only(top: topPadding),
+              width: double.infinity,
+              height: double.infinity,
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                   decoration: BoxDecoration(
                       boxShadow: [customBoxShadowReverse],
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(40),
                           topRight: Radius.circular(40)),
                       color: Colors.white),
-                  child: ListView.builder(
-                      controller: _scrollController,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: 15,
-                      itemBuilder: (context, index) => ListTile(
-                            title: Text("$index"),
-                          )),
-                )),
+                  child: ListView(
+                    controller: _scrollController,
+                    physics: ClampingScrollPhysics(),
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _myClass.title,
+                            style: kHeadingextStyle,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.more_vert),
+                            onPressed: () {},
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          ExtendedImage.network(_myClass.imageUrl,
+                              width: 35,
+                              height: 35,
+                              fit: BoxFit.fill,
+                              cache: true,
+                              shape: BoxShape.circle,
+                              loadStateChanged: myloadStateChanged),
+                          SizedBox(
+                            width: 20,
+                          ),
+                        ],
+                      )
+                    ],
+                  ))),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              color: Colors.white,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           )
         ],
       ),

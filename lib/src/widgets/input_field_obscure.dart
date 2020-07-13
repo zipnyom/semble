@@ -2,15 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/widgets/text_field_container.dart';
 
-class RoundedPasswordField extends StatefulWidget {
+class InputFieldObscure extends StatefulWidget {
+  final GlobalKey<FormState> formKey;
   final TextEditingController passwordController;
-  RoundedPasswordField({Key key, this.passwordController}) : super(key: key);
+  final String hintText;
+  final Function(String) validator;
+  InputFieldObscure(
+      {Key key,
+      this.passwordController,
+      this.hintText,
+      this.validator,
+      this.formKey})
+      : super(key: key);
 
   @override
-  _RoundedPasswordFieldState createState() => _RoundedPasswordFieldState();
+  _InputFieldObscureState createState() => _InputFieldObscureState();
 }
 
-class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
+class _InputFieldObscureState extends State<InputFieldObscure> {
   bool isObscure = true;
   @override
   Widget build(BuildContext context) {
@@ -18,15 +27,10 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
       child: TextFormField(
         obscureText: isObscure,
         controller: widget.passwordController,
-        validator: (String value) {
-          if (value.isEmpty || value.length < 6) {
-            return "최소 6자 이상의 비밀번호를 입력해주세요";
-          }
-          return null;
-        },
+        validator: widget.validator,
         cursorColor: kPrimaryColor,
         decoration: InputDecoration(
-          hintText: "비밀번호",
+          hintText: widget.hintText,
           icon: Icon(
             Icons.lock,
             color: kPrimaryColor,
