@@ -48,7 +48,7 @@ class _AccountPageState extends State<AccountPage> {
     showPickModal() async {
       bool isCamera = await showDialog(
           context: context,
-          barrierDismissible: false,
+          // barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
               shape: RoundedRectangleBorder(
@@ -67,26 +67,34 @@ class _AccountPageState extends State<AccountPage> {
             );
           });
 
+      // barrierDismissible를 false로 줄 때에는 항상 null 을 조심
+      if (isCamera == null) return;
       if (isCamera) // camera
         pickedFile = await picker.getImage(source: ImageSource.camera);
       else // gallary
         pickedFile = await picker.getImage(source: ImageSource.gallery);
       if (pickedFile == null) return;
 
-      setState(() {
-        imageFile = File(pickedFile.path);
-      });
-
+      // 프로필 이미지를 FireStorage에 업로드
+      File uploadImage = File(pickedFile.path);
       UserProvider pUser = Provider.of<UserProvider>(context);
       StorageReference storageReference =
           FirebaseStorage.instance.ref().child("profile/${pUser.user.uid}");
       StorageTaskSnapshot storageTaskSnapshot =
-          await storageReference.putFile(imageFile).onComplete;
-      if (storageTaskSnapshot.error == null) {
+          await storageReference.putFile(uploadImage).onComplete;
+
+      if (storageTaskSnapshot.error != null) {
+        // 업로드중 문제 발생
+
+      } else {
+        // 업로드를 정상적으로 마쳤다면
         final String downloadUrl =
             await storageTaskSnapshot.ref.getDownloadURL();
-        await pUser.user
-            .updateProfile(UserUpdateInfo()..photoUrl = downloadUrl);
+
+        //해당 유저의 photoUrl 업데이트
+        pUser.user.updateProfile(UserUpdateInfo()..photoUrl = downloadUrl);
+
+        //해당 유저가 생성한 수업상의 선생님 이미지 url을 갱신
         WriteBatch batch = Firestore.instance.batch();
         QuerySnapshot snapshot = await Firestore.instance
             .collection(db_col_class)
@@ -98,23 +106,12 @@ class _AccountPageState extends State<AccountPage> {
               .updateData(document.reference, {"creatorImageUrl": downloadUrl});
         });
         batch.commit();
-      }
-    }
 
-    Widget _localImage() {
-      return imageFile == null
-          ? ExtendedImage.asset("assets/images/login_bottom.png",
-              width: 90,
-              height: 90,
-              fit: BoxFit.fill,
-              shape: BoxShape.circle,
-              loadStateChanged: myloadStateChanged)
-          : ExtendedImage.file(imageFile,
-              width: 90,
-              height: 90,
-              fit: BoxFit.fill,
-              shape: BoxShape.circle,
-              loadStateChanged: myloadStateChanged);
+        // 화면상의 프로필 이미지 갱신
+        setState(() {
+          imageFile = File(pickedFile.path);
+        });
+      }
     }
 
     return Scaffold(
@@ -131,13 +128,26 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   Stack(
                     children: [
-                      pUser.user.photoUrl == null
-                          ? _localImage()
-                          : ExtendedImage.network(pUser.user.photoUrl,
-                              width: 70,
-                              height: 70,
+                      imageFile == null
+                          ? pUser.user.photoUrl == null
+                              ? ExtendedImage.asset(
+                                  "assets/images/login_bottom.png",
+                                  width: 90,
+                                  height: 90,
+                                  fit: BoxFit.fill,
+                                  shape: BoxShape.circle,
+                                  loadStateChanged: myloadStateChanged)
+                              : ExtendedImage.network(pUser.user.photoUrl,
+                                  width: 90,
+                                  height: 90,
+                                  fit: BoxFit.fill,
+                                  cache: true,
+                                  shape: BoxShape.circle,
+                                  loadStateChanged: myloadStateChanged)
+                          : ExtendedImage.file(imageFile,
+                              width: 90,
+                              height: 90,
                               fit: BoxFit.fill,
-                              cache: true,
                               shape: BoxShape.circle,
                               loadStateChanged: myloadStateChanged),
                       Positioned(
@@ -201,7 +211,7 @@ class _AccountPageState extends State<AccountPage> {
                       Scaffold.of(context).showSnackBar(SnackBar(
                         duration: Duration(milliseconds: 1000),
                         content: Text(pMode.mode == Modes.student
-                            ? "학생모드로 변경되었습니다"
+                            ? "학생모��로 변경되었습니다"
                             : "선생님모드로 변경되었습니다"),
                       ));
                     },
