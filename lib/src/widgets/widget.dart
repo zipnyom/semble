@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
 import 'package:schuul/src/screens/welcome/welcome_screen.dart';
-import 'package:schuul/src/widgets/right_top_text_button.dart';
 
 Widget myloadStateChanged(ExtendedImageState state) {
   switch (state.extendedImageLoadState) {
@@ -32,15 +31,35 @@ Widget customAppBar(String title, bool centerTitle, List<Widget> actions) {
       actions: actions);
 }
 
+showSimpleDialog(BuildContext context, String title, String content) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop(RespondType.ok);
+              },
+              child: Text(RespondType.ok.name),
+            ),
+          ],
+        );
+      });
+}
+
 Future<RespondType> customShowDialog(
-    BuildContext context, String title, String subtitle) async {
+    BuildContext context, String title, String content) async {
   return await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(title),
-          content: Text(subtitle),
+          content: Text(content),
           actions: [
             FlatButton(
               onPressed: () {

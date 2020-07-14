@@ -23,20 +23,23 @@ class _ClassListScreenState extends State<ClassListScreen> {
 
   packClassList() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    List<MyClass> bufferList = List<MyClass>();
-    QuerySnapshot snapshot = await Firestore.instance
+    List<MyClass> bufferList;
+    Firestore.instance
         .collection(db_col_class)
         .where("creator", isEqualTo: user.uid)
-        .getDocuments();
-    snapshot.documents.forEach((element) {
-      bufferList
-          .add(MyClass.fromJson(element.data)..documentSnapshot = element);
-    });
-    if (this.mounted) {
-      setState(() {
-        classList = bufferList;
+        .snapshots()
+        .listen((QuerySnapshot snapshot) {
+      bufferList = List<MyClass>();
+      snapshot.documents.forEach((element) {
+        bufferList
+            .add(MyClass.fromJson(element.data)..documentSnapshot = element);
       });
-    }
+      if (this.mounted) {
+        setState(() {
+          classList = bufferList;
+        });
+      }
+    });
   }
 
   @override
@@ -58,7 +61,7 @@ class _ClassListScreenState extends State<ClassListScreen> {
                 await Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => NewClassScreen1(),
                 ));
-                packClassList();
+                // packClassList();
               })
         ]),
         body: Container(
@@ -74,89 +77,93 @@ class _ClassListScreenState extends State<ClassListScreen> {
               SizedBox(
                 height: 20,
               ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  itemCount: classList.length,
-                  itemBuilder: (_, index) {
-                    MyClass item = classList[index];
-                    String dateString =
-                        DateFormat("yy.MM.dd").format(item.startDate) +
-                            " ~ " +
-                            DateFormat("yy.MM.dd").format(item.endDate);
-                    return Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Material(
-                          child: InkWell(
-                            onTap: () {
-                              double height =
-                                  MediaQuery.of(context).size.height;
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ClassDetailScreen(
-                                  myClass: item,
-                                  height: height,
-                                ),
-                              ));
-                            },
-                            child: Container(
-                                child: Card(
-                              child: Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ExtendedImage.network(item.imageUrl,
-                                          width: 70,
-                                          height: 70,
-                                          fit: BoxFit.fill,
-                                          cache: true,
-                                          shape: BoxShape.circle,
-                                          loadStateChanged: myloadStateChanged),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              item.title,
-                                              style: kListTitleStyle,
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              item.description,
-                                              style: kListSubTitleStyle,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              "${item.studentCount}명의 학생",
-                                              style: kListSubTitleStyle,
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              dateString,
-                                              style: kListSubTitleStyle,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
+              Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    itemCount: classList.length,
+                    itemBuilder: (_, index) {
+                      MyClass item = classList[index];
+                      String dateString =
+                          DateFormat("yy.MM.dd").format(item.startDate) +
+                              " ~ " +
+                              DateFormat("yy.MM.dd").format(item.endDate);
+                      return Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Material(
+                            child: InkWell(
+                              onTap: () {
+                                double height =
+                                    MediaQuery.of(context).size.height;
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ClassDetailScreen(
+                                    myClass: item,
+                                    height: height,
+                                  ),
+                                ));
+                              },
+                              child: Container(
+                                  child: Card(
+                                child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 20),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ExtendedImage.network(item.imageUrl,
+                                            width: 70,
+                                            height: 70,
+                                            fit: BoxFit.fill,
+                                            cache: true,
+                                            shape: BoxShape.circle,
+                                            loadStateChanged:
+                                                myloadStateChanged),
+                                        SizedBox(
+                                          width: 20,
                                         ),
-                                      )
-                                    ],
-                                  )),
-                            )),
-                          ),
-                        ));
-                  })
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                item.title,
+                                                style: kListTitleStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                item.description,
+                                                style: kListSubTitleStyle,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                "${item.studentCount}명의 학생",
+                                                style: kListSubTitleStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                dateString,
+                                                style: kListSubTitleStyle,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    )),
+                              )),
+                            ),
+                          ));
+                    }),
+              )
             ],
           ),
         )));

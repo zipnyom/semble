@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/provider/mode_provider.dart';
@@ -45,7 +46,7 @@ class _AccountPageState extends State<AccountPage> {
       );
     }
 
-    showPickModal() async {
+    updateProfilePhoto() async {
       bool isCamera = await showDialog(
           context: context,
           // barrierDismissible: false,
@@ -69,49 +70,93 @@ class _AccountPageState extends State<AccountPage> {
 
       // barrierDismissible를 false로 줄 때에는 항상 null 을 조심
       if (isCamera == null) return;
+
+      // loading dialog 표출
+      ProgressDialog pr = ProgressDialog(context,
+          type: ProgressDialogType.Normal,
+          isDismissible: false,
+          showLogs: true);
+      await pr.show();
+
       if (isCamera) // camera
         pickedFile = await picker.getImage(source: ImageSource.camera);
       else // gallary
         pickedFile = await picker.getImage(source: ImageSource.gallery);
-      if (pickedFile == null) return;
+      if (pickedFile == null) {
+        await pr.hide();
+        return;
+      }
 
       // 프로필 이미지를 FireStorage에 업로드
       File uploadImage = File(pickedFile.path);
       UserProvider pUser = Provider.of<UserProvider>(context);
-      StorageReference storageReference =
-          FirebaseStorage.instance.ref().child("profile/${pUser.user.uid}");
+      StorageReference storageReference = FirebaseStorage.instance.ref().child(
+          "profile/${pUser.user.uid}/${DateTime.now().toIso8601String()}");
       StorageTaskSnapshot storageTaskSnapshot =
           await storageReference.putFile(uploadImage).onComplete;
 
       if (storageTaskSnapshot.error != null) {
-        // 업로드중 문제 발생
-
-      } else {
-        // 업로드를 정상적으로 마쳤다면
-        final String downloadUrl =
-            await storageTaskSnapshot.ref.getDownloadURL();
-
-        //해당 유저의 photoUrl 업데이트
-        pUser.user.updateProfile(UserUpdateInfo()..photoUrl = downloadUrl);
-
-        //해당 유저가 생성한 수업상의 선생님 이미지 url을 갱신
-        WriteBatch batch = Firestore.instance.batch();
-        QuerySnapshot snapshot = await Firestore.instance
-            .collection(db_col_class)
-            .where("creator", isEqualTo: pUser.user.uid)
-            .getDocuments();
-
-        snapshot.documents.forEach((document) {
-          batch
-              .updateData(document.reference, {"creatorImageUrl": downloadUrl});
-        });
-        batch.commit();
-
-        // 화면상의 프로필 이미지 갱신
-        setState(() {
-          imageFile = File(pickedFile.path);
-        });
+        // 업로드중 문제 발생한 경우
+        showSimpleDialog(context, "업로드 에러", "업로드 중 문제가 발생했습니다.");
+        await pr.hide();
+        return;
       }
+
+      // 업로드를 정상적으로 마쳤다면
+      final String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+      String name = await storageTaskSnapshot.ref.getName();
+      StorageMetadata metadata = await storageTaskSnapshot.ref.getMetadata();
+      print(downloadUrl);
+      //해당 유저의 photoUrl 갱신
+      pUser.user.updateProfile(UserUpdateInfo()..photoUrl = downloadUrl);
+
+      // 해당 유저 프로필 path를 갱신하기 위해 해당 유저의 extra data를 가져옴
+      // 프로필이 업데이트 될 때마다 이전 사진은 FireStorage에서 삭제하기 위함.
+      // 용량절약
+      QuerySnapshot userSnap = await Firestore.instance
+          .collection(db_col_user)
+          .where("uid", isEqualTo: pUser.user.uid)
+          .getDocuments();
+
+      if (userSnap.documents.isEmpty) {
+        // 해당 유저의 Snapshot이 발견되지 않는다면
+        Firestore.instance
+            .collection(db_col_user)
+            .add({"uid": pUser.user.uid, "profilePath": metadata.path});
+      } else {
+        // 기존 데이터가 있다면
+        // 이전 프로필 경로를 변수에 저장
+        String oldPath = userSnap.documents.first.data["profilePath"];
+
+        //프로필 경로 갱신
+        userSnap.documents.forEach((DocumentSnapshot doc) {
+          doc.reference.updateData({"profilePath": metadata.path});
+        });
+        //이전 프로필 삭제
+        StorageReference storageReference =
+            FirebaseStorage.instance.ref().child(oldPath);
+        storageReference.delete();
+      }
+
+      //해당 유저가 생성한 수업상의 선생님 이미지 url을 갱신
+      WriteBatch batch = Firestore.instance.batch();
+      QuerySnapshot snapshot = await Firestore.instance
+          .collection(db_col_class)
+          .where("creator", isEqualTo: pUser.user.uid)
+          .getDocuments();
+
+      snapshot.documents.forEach((document) {
+        batch.updateData(document.reference, {"creatorImageUrl": downloadUrl});
+      });
+      batch.commit();
+
+      // 화면상의 프로필 이미지 갱신
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+
+      // loading dialog dismiss
+      await pr.hide();
     }
 
     return Scaffold(
@@ -164,7 +209,7 @@ class _AccountPageState extends State<AccountPage> {
                                   ]),
                               child: Material(
                                   child: InkWell(
-                                      onTap: showPickModal,
+                                      onTap: updateProfilePhoto,
                                       child: Icon(Icons.edit)))))
                     ],
                   ),
@@ -217,7 +262,7 @@ class _AccountPageState extends State<AccountPage> {
                     },
                   ),
                   FlatButton(
-                      child: Text("���그아웃"),
+                      child: Text("로그아웃"),
                       onPressed: () {
                         FirebaseAuth.instance.signOut();
                       })

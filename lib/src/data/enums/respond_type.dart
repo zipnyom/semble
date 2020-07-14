@@ -1,5 +1,4 @@
-enum RespondType { yes, no }
-// attend : 출석함, tardy : 지각, cut : 결석
+enum RespondType { yes, no, ok, cancel }
 
 extension ActionTypeExtention on RespondType {
   String get name {
@@ -8,6 +7,10 @@ extension ActionTypeExtention on RespondType {
         return '예';
       case RespondType.no:
         return '아니오';
+      case RespondType.ok:
+        return '확인';
+      case RespondType.cancel:
+        return '취소';
       default:
         return null;
     }
