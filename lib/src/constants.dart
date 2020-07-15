@@ -75,6 +75,7 @@ const Color modalBackgroundColor = Color.fromRGBO(241, 241, 241, 1);
 const String db_col_items = "items";
 const String db_col_vote = "vote";
 const String db_col_class = "class";
+const String db_col_event = "event";
 const String db_col_user = "user";
 String gEmail = "";
 

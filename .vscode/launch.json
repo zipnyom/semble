@@ -18,6 +18,13 @@
             "deviceId": "AA94CAA4-6A81-4F70-B843-9C7FAF398562"
         },
         {
+            "name": "IpadSim",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "deviceId": "364E5BE0-92C4-4172-BFBB-74CBB22A9F96"
+        },
+        {
             "name": "AndroidSim",
             "type": "dart",
             "request": "launch",
@@ -53,6 +60,13 @@
                 "Android",
                 "IOS"
             ]
-        }
+        },
+        {
+            "name": "iOS Devices",
+            "configurations": [
+                "IpadSim",
+                "IOSsim"
+            ]
+        },
     ]
 }

@@ -221,7 +221,7 @@ class _AccountPageState extends State<AccountPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          pUser.user.displayName,
+                          pUser.user.displayName ?? "temp name",
                           style: kListTitleStyle,
                         ),
                         SizedBox(

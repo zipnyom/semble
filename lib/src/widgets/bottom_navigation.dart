@@ -3,13 +3,15 @@ import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/account_page.dart';
 import 'package:schuul/src/screens/main/calendar_page.dart';
+import 'package:schuul/src/screens/main/class/class_detail_screen.dart';
 import 'package:schuul/src/screens/main/class/class_list_screen.dart';
+import 'package:schuul/src/screens/main/landing_screen.dart';
 
-enum TabItem { home, dashboard, calendar, setting }
+enum TabItem { home, myclass, calendar, setting }
 
 Map<TabItem, String> tabName = {
   TabItem.home: 'Today',
-  TabItem.dashboard: '수업관리',
+  TabItem.myclass: '수업관리',
   TabItem.calendar: '캘린더',
   TabItem.setting: '설정',
 };
@@ -22,15 +24,17 @@ Map<TabItem, Widget> activeTab = {
   // TabItem.home: QuizList(),
   // TabItem.home: NewQuiz(),
   // TabItem.home: NewClassScreen(),
-  TabItem.home: ClassListScreen(),
-  TabItem.dashboard: ClassListScreen(),
+  // TabItem.home: ClassListScreen(),
+  // TabItem.home: ClassDetailScreen(),
+  TabItem.home: LandingScreen(),
+  TabItem.myclass: ClassListScreen(),
   TabItem.calendar: CalendarPage(),
   TabItem.setting: AccountPage()
 };
 
 Map<TabItem, IconData> tabIcon = {
   TabItem.home: CustomIcon.heart,
-  TabItem.dashboard: CustomIcon.params,
+  TabItem.myclass: CustomIcon.params,
   TabItem.calendar: CustomIcon.calendar,
   TabItem.setting: CustomIcon.cog
 };
@@ -46,7 +50,7 @@ class BottomNavigation extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       items: [
         _buildItem(tabItem: TabItem.home),
-        _buildItem(tabItem: TabItem.dashboard),
+        _buildItem(tabItem: TabItem.myclass),
         _buildItem(tabItem: TabItem.calendar),
         _buildItem(tabItem: TabItem.setting),
       ],

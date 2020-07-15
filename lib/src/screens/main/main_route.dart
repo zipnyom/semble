@@ -15,7 +15,7 @@ class _MainRouteState extends State<MainRoute> {
   TabItem _currentTab = TabItem.home;
   Map<TabItem, GlobalKey<NavigatorState>> _navigatorKeys = {
     TabItem.home: GlobalKey<NavigatorState>(),
-    TabItem.dashboard: GlobalKey<NavigatorState>(),
+    TabItem.myclass: GlobalKey<NavigatorState>(),
     TabItem.calendar: GlobalKey<NavigatorState>(),
     TabItem.setting: GlobalKey<NavigatorState>(),
   };
@@ -52,7 +52,9 @@ class _MainRouteState extends State<MainRoute> {
           MultiProvider(providers: [
             ChangeNotifierProvider.value(value: ClassProvider()),
           ], child: _buildOffstageNavigator(TabItem.home)),
-          _buildOffstageNavigator(TabItem.dashboard),
+          MultiProvider(providers: [
+            ChangeNotifierProvider.value(value: ClassProvider()),
+          ], child: _buildOffstageNavigator(TabItem.myclass)),
           _buildOffstageNavigator(TabItem.calendar),
           _buildOffstageNavigator(TabItem.setting),
         ]),
