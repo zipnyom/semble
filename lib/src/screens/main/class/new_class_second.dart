@@ -136,11 +136,10 @@ class _NewClassScreen2State extends State<NewClassScreen2>
           DocumentReference metaDocument =
               Firestore.instance.collection('metadata').document('classList');
           DocumentSnapshot freshSnap = await transaction.get(metaDocument);
-          await transaction.update(freshSnap.reference, {
-            'items': FieldValue.arrayUnion([
-              {classProvider.myClass.title: documentReference.documentID}
-            ])
-          });
+          Map titleMap = freshSnap.data["items"];
+          titleMap.putIfAbsent(
+              classProvider.myClass.title, () => documentReference.documentID);
+          await transaction.update(freshSnap.reference, {'items': titleMap});
         });
 
         if (classProvider.myClass.imageLocalPath != null) {

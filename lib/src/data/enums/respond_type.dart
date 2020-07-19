@@ -1,4 +1,4 @@
-enum RespondType { yes, no, ok, cancel }
+enum RespondType { yes, no, ok, cancel, delete }
 
 extension ActionTypeExtention on RespondType {
   String get name {
@@ -11,6 +11,8 @@ extension ActionTypeExtention on RespondType {
         return '확인';
       case RespondType.cancel:
         return '취소';
+      case RespondType.delete:
+        return '삭제';
       default:
         return null;
     }

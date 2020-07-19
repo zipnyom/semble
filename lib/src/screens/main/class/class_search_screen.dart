@@ -85,10 +85,7 @@ class _ClassSearchScreenState extends State<ClassSearchScreen> {
                                   double height =
                                       MediaQuery.of(context).size.height;
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => ClassDetailScreen(
-                                      myClass: item,
-                                      height: height,
-                                    ),
+                                    builder: (context) => ClassDetailScreen(),
                                   ));
                                 },
                                 child: Container(

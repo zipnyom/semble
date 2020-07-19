@@ -78,6 +78,27 @@ Future<RespondType> customShowDialog(
       });
 }
 
+Future<RespondType> okDialog(
+    BuildContext context, String title, String content) async {
+  return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop(RespondType.ok);
+              },
+              child: Text(RespondType.ok.name),
+            ),
+          ],
+        );
+      });
+}
+
 Widget appBarMain(
     BuildContext context, GlobalKey<ScaffoldState> key, String title) {
   return AppBar(

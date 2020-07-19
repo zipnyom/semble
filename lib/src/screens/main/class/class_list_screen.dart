@@ -270,6 +270,8 @@ class _ClassListScreenState extends State<ClassListScreen> {
                                 itemBuilder: (_, index) {
                                   MyClass item = MyClass.fromJson(
                                       snapshot.data.documents[index].data);
+                                  item.documentSnapshot =
+                                      snapshot.data.documents[index];
                                   String dateString = DateFormat("yy.MM.dd")
                                           .format(item.startDate) +
                                       " ~ " +
@@ -280,17 +282,15 @@ class _ClassListScreenState extends State<ClassListScreen> {
                                       child: Material(
                                         child: InkWell(
                                           onTap: () {
-                                            double height =
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .height;
+                                            ClassProvider classProvider =
+                                                Provider.of<ClassProvider>(
+                                                    context,
+                                                    listen: false);
+                                            classProvider.myClass = item;
                                             Navigator.of(context)
                                                 .push(MaterialPageRoute(
                                               builder: (context) =>
-                                                  ClassDetailScreen(
-                                                myClass: item,
-                                                height: height,
-                                              ),
+                                                  ClassDetailScreen(),
                                             ));
                                           },
                                           child: Container(

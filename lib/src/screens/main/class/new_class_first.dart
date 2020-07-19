@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,6 +31,29 @@ class _NewClassScreen1State extends State<NewClassScreen1>
   ImageType imageType = ImageType.basic;
   FileImage fileImage;
   final picker = ImagePicker();
+  bool _autoValidate = false;
+
+  Map titleMap;
+
+  packTitle() async {
+    Firestore.instance
+        .document("metadata/classList")
+        .snapshots()
+        .listen((event) {
+      if (event.data.isEmpty)
+        titleMap = Map();
+      else {
+        titleMap = event.data["items"];
+        print(event.data);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    packTitle();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +84,17 @@ class _NewClassScreen1State extends State<NewClassScreen1>
             context, "기본 정보 입력", Icon(Icons.close), onExit, [
           RightTopTextButton(
               title: "다음",
-              press: () => Navigator.of(context).push(MaterialPageRoute(
+              press: () {
+                if (_formKey.currentState.validate()) {
+                  Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => NewClassScreen2(),
-                  )))
+                  ));
+                } else {
+                  setState(() {
+                    _autoValidate = true;
+                  });
+                }
+              })
         ]),
         body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -70,6 +102,7 @@ class _NewClassScreen1State extends State<NewClassScreen1>
               child: Column(children: [
                 Form(
                   key: _formKey,
+                  autovalidate: _autoValidate,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -80,6 +113,9 @@ class _NewClassScreen1State extends State<NewClassScreen1>
                         validator: (String value) {
                           if (value.isEmpty) {
                             return "수업명을 입력해주세요";
+                          }
+                          if (titleMap.containsKey(value)) {
+                            return "해당 이름을 가진 수업이 이미 존재합니다";
                           }
                           return null;
                         },

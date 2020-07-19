@@ -12,6 +12,22 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
+  myTest() async {
+    Firestore.instance.runTransaction((transaction) async {
+      DocumentReference metaDocument =
+          Firestore.instance.collection('metadata').document('classList');
+      DocumentSnapshot freshSnap = await transaction.get(metaDocument);
+      var titleMap = freshSnap.data["items"];
+      print(titleMap);
+    });
+  }
+
+  @override
+  void initState() {
+    // myTest();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
