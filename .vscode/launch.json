@@ -15,7 +15,7 @@
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
-            "deviceId": "AA94CAA4-6A81-4F70-B843-9C7FAF398562"
+            "deviceId": "F7383498-76E2-4CBF-9771-5BCDA817A4F0"
         },
         {
             "name": "IpadSim",

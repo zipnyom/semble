@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/action_type.dart';
 import 'package:schuul/src/data/enums/attend_type.dart';
@@ -8,7 +7,6 @@ import 'package:schuul/src/obj/action_model.dart';
 import 'package:schuul/src/obj/attendance.dart';
 import 'package:schuul/src/widgets/choicecip.dart';
 import 'package:schuul/src/widgets/custom_popup_menu.dart';
-import 'package:schuul/src/widgets/filterchip.dart';
 import 'package:schuul/src/widgets/sub_tab_item.dart';
 import 'package:schuul/src/widgets/widget.dart';
 

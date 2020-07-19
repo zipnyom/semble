@@ -6,6 +6,7 @@ import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/provider/user_provider.dart';
 import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
+import 'package:schuul/src/screens/main/attend/attend_screen.dart';
 import 'package:schuul/src/widgets/custom_box_shadow.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
@@ -60,6 +61,36 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Widget _buildCardButton(
+        String title, IconData iconData, Color color, Function press,
+        {double width}) {
+      return Expanded(
+        child: Material(
+          child: InkWell(
+            onTap: press,
+            child: Card(
+              child: Center(
+                child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        Icon(
+                          iconData,
+                          color: color,
+                        ),
+                        SizedBox(
+                          width: width ?? 30,
+                        ),
+                        Text(title)
+                      ],
+                    )),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -69,6 +100,27 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                 fit: BoxFit.fill,
                 cache: true,
                 loadStateChanged: myloadStateChanged),
+          ),
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.ease,
+            right: 20,
+            top: topPadding - 50,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [customBoxShadow, customBoxShadowReverse]),
+              child: SizedBox(
+                height: 35,
+                width: 35,
+                child: IconButton(
+                    padding: EdgeInsets.all(0),
+                    iconSize: 20,
+                    icon: Icon(Icons.edit),
+                    onPressed: () {}),
+              ),
+            ),
           ),
           AnimatedContainer(
               duration: Duration(milliseconds: 500),
@@ -98,13 +150,13 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                               maxLines: 3,
                             ),
                           ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          IconButton(
-                            icon: Icon(CustomIcon.cog),
-                            onPressed: () {},
-                          )
+                          // SizedBox(
+                          //   width: 10,
+                          // ),
+                          // IconButton(
+                          //   icon: Icon(CustomIcon.cog),
+                          //   onPressed: () {},
+                          // )
                         ],
                       ),
                       SizedBox(
@@ -135,7 +187,65 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                             return Text(pUser.user.displayName);
                           })
                         ],
-                      )
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                _buildCardButton("출결", CustomIcon.check_double,
+                                    kPrimaryColor, () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => AttendScreen(),
+                                  ));
+                                }),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                _buildCardButton("투표", CustomIcon.thumbs_up,
+                                    Colors.blueAccent[100], () {}),
+                                //mj
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                _buildCardButton(
+                                  "학생",
+                                  Icons.people,
+                                  kPrimaryColor,
+                                  () {},
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                _buildCardButton("게시판", Icons.note,
+                                    Colors.blueAccent[100], () {}),
+                                //mj
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                _buildCardButton(
+                                  "일정",
+                                  CustomIcon.calendar,
+                                  Colors.grey[500],
+                                  () {},
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                _buildCardButton("설정", CustomIcon.cog,
+                                    Colors.grey[500], () {}),
+                                //mj
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ))),
           Positioned(

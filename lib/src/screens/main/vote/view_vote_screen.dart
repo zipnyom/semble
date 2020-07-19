@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/vote_type.dart';
+import 'package:schuul/src/data/provider/user_provider.dart';
 import 'package:schuul/src/data/provider/vote_item_provider.dart';
 import 'package:schuul/src/obj/vote.dart';
 import 'package:schuul/src/obj/vote_item.dart';
@@ -36,13 +37,15 @@ class _ViewVoteScreenState extends State<ViewVoteScreen> {
   Widget build(BuildContext context) {
     print("build...");
     void pick(List<VoteItem> items) {
+      UserProvider pUser = Provider.of<UserProvider>(context);
+
       items.forEach((item) {
         Firestore.instance.runTransaction((transaction) async {
           DocumentSnapshot freshSnap =
               await transaction.get(item.doc.reference);
           await transaction.update(freshSnap.reference, {
             'count': FieldValue.increment(1),
-            'voters': FieldValue.arrayUnion([gEmail])
+            'voters': FieldValue.arrayUnion([pUser.user.uid])
           });
         });
       });
@@ -87,8 +90,8 @@ class _ViewVoteScreenState extends State<ViewVoteScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        Consumer2<QuerySnapshot, VoteSelect>(
-                            builder: (context, snapshot, select, child) {
+                        Consumer3<QuerySnapshot, VoteSelect, UserProvider>(
+                            builder: (context, snapshot, select, pUser, child) {
                           _vote.items.clear();
                           if (snapshot == null) return Text("loading");
                           int total = 0;
@@ -98,7 +101,7 @@ class _ViewVoteScreenState extends State<ViewVoteScreen> {
                             item.controller.text = item.title;
                             _vote.items.add(item);
                             total += item.count;
-                            if (item.voters.contains(gEmail)) {
+                            if (item.voters.contains(pUser.user.uid)) {
                               WidgetsBinding.instance.addPostFrameCallback((_) {
                                 select.addOrder(item.order);
                                 select.already = true;

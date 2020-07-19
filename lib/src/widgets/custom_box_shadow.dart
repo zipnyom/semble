@@ -6,6 +6,12 @@ var customBoxShadow = BoxShadow(
   color: Color(0xFF6DAED9).withOpacity(0.21),
 );
 
+var customBoxShadowThin = BoxShadow(
+  offset: Offset(0, 3),
+  blurRadius: 1,
+  color: Color(0xFF6DAED9).withOpacity(0.21),
+);
+
 var customBoxShadowReverse = BoxShadow(
   offset: Offset(0, -7),
   blurRadius: 2,

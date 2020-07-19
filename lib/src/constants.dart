@@ -77,7 +77,6 @@ const String db_col_vote = "vote";
 const String db_col_class = "class";
 const String db_col_event = "event";
 const String db_col_user = "user";
-String gEmail = "";
 
 const String monday = "월";
 const String tuesday = "화";

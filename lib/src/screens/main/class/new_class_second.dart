@@ -41,7 +41,6 @@ class _NewClassScreen2State extends State<NewClassScreen2>
 
   //calendar
   bool isDispose;
-  List _selectedEvents;
   AnimationController _animationController;
   CalendarController _calendarController;
 
@@ -132,6 +131,17 @@ class _NewClassScreen2State extends State<NewClassScreen2>
 
         DocumentReference documentReference = await databaseService.addItem(
             db_col_class, classProvider.myClass.toJson());
+
+        Firestore.instance.runTransaction((transaction) async {
+          DocumentReference metaDocument =
+              Firestore.instance.collection('metadata').document('classList');
+          DocumentSnapshot freshSnap = await transaction.get(metaDocument);
+          await transaction.update(freshSnap.reference, {
+            'items': FieldValue.arrayUnion([
+              {classProvider.myClass.title: documentReference.documentID}
+            ])
+          });
+        });
 
         if (classProvider.myClass.imageLocalPath != null) {
           StorageReference storageReference = FirebaseStorage.instance
