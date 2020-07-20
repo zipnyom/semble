@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/widgets/already_have_an_account_acheck.dart';
+import 'package:schuul/src/widgets/auth_stream.dart';
 import 'package:schuul/src/widgets/rounded_button.dart';
 import 'package:schuul/src/widgets/input_field_normal.dart';
 import 'package:schuul/src/widgets/input_field_obscure.dart';
@@ -45,20 +47,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
           user.updateProfile(
               UserUpdateInfo()..displayName = _displayNameController.text);
 
-          // Firestore.instance.collection('users').document().setData({
-          //   "email": user.email, // 사용자 이메일
-          //   "UUID": user.uid, // 사용자 기기 고유 아이디
-          //   "Device": "tmp", // 사용자 기기 종류 (iOS, Android)
-          //   "role": "tmp" // manager, visitor
-          // });
+          Firestore.instance
+              .document("user/${user.uid}")
+              .setData({"profilePath": "", "classList": []});
 
           setState(() {
             isLoading = false;
           });
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => MainRoute(email: user.email)));
+              context, MaterialPageRoute(builder: (context) => AuthStream()));
         }
       } catch (e) {
         setState(() {

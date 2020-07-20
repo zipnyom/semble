@@ -193,6 +193,8 @@ class _ClassListScreenState extends State<ClassListScreen> {
               ]),
           body: Consumer2<UserProvider, Mode>(
             builder: (context, pUser, pMode, child) {
+              print("pUser.userDetail");
+              print(pUser.userDetail.toJson());
               return Container(
                   child: Padding(
                 padding:
@@ -212,9 +214,10 @@ class _ClassListScreenState extends State<ClassListScreen> {
                                       arrayContains: pUser.user.uid)
                                   .snapshots(),
                           builder: (context, snapshot) {
-                            if (!snapshot.hasData)
-                              return LinearProgressIndicator();
-                            else if (snapshot.data.documents.length == 0) {
+                            if (!snapshot.hasData) {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                            if (snapshot.data.documents.length == 0) {
                               return Center(
                                 child: Text("등록된 수업이 없습니다"),
                               );

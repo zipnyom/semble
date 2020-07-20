@@ -5,7 +5,6 @@ part 'user_detail.g.dart';
 
 @JsonSerializable()
 class UserDetail extends ChangeNotifier {
-  String uid;
   String profilePath;
   List<String> classList = [];
 

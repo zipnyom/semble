@@ -90,6 +90,9 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen> {
 
     return Consumer2<ClassProvider, UserProvider>(
       builder: (context, pClass, pUser, child) {
+        print("pClass.myClass");
+        print(pClass.myClass);
+
         return Scaffold(
           body: Stack(
             children: [
@@ -162,10 +165,7 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen> {
                               SizedBox(
                                 width: 20,
                               ),
-                              Consumer<UserProvider>(
-                                  builder: (context, pUser, child) {
-                                return Text(pUser.user.displayName);
-                              })
+                              Text(pClass.myClass.title)
                             ],
                           ),
                           SizedBox(
