@@ -3,9 +3,7 @@ import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/account_page.dart';
 import 'package:schuul/src/screens/main/calendar_page.dart';
-import 'package:schuul/src/screens/main/class/class_detail_screen.dart';
 import 'package:schuul/src/screens/main/class/class_list_screen.dart';
-import 'package:schuul/src/screens/main/landing_screen.dart';
 
 enum TabItem { home, myclass, calendar, setting }
 
@@ -26,7 +24,8 @@ Map<TabItem, Widget> activeTab = {
   // TabItem.home: NewClassScreen(),
   // TabItem.home: ClassListScreen(),
   // TabItem.home: ClassDetailScreen(),
-  TabItem.home: LandingScreen(),
+  // TabItem.home: LandingScreen(),
+  TabItem.home: ClassListScreen(),
   TabItem.myclass: ClassListScreen(),
   TabItem.calendar: CalendarPage(),
   TabItem.setting: AccountPage()

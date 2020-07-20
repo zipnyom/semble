@@ -138,7 +138,7 @@ class _AccountPageState extends State<AccountPage> {
         storageReference.delete();
       }
 
-      //해당 유저가 생성한 수업상의 선생님 이미지 url을 갱신
+      //해당 유저가 선생님인 수업의 프로필 url을 갱신
       WriteBatch batch = Firestore.instance.batch();
       QuerySnapshot snapshot = await Firestore.instance
           .collection(db_col_class)

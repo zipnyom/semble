@@ -23,47 +23,8 @@ class ClassListScreen extends StatefulWidget {
 
 class _ClassListScreenState extends State<ClassListScreen> {
   List<MyClass> classList = [];
-  TextEditingController classCodeTextEditingController;
-
-  collectionGroup() async {
-    Firestore.instance
-        .collectionGroup("attend")
-        .snapshots()
-        .listen((QuerySnapshot snapshot) {
-      snapshot.documents.forEach((element) {
-        print(element.data);
-      });
-    });
-  }
-
-  packClassList() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    List<MyClass> bufferList;
-    Firestore.instance
-        .collection(db_col_class)
-        .where("creator", isEqualTo: user.uid)
-        .snapshots()
-        .listen((QuerySnapshot snapshot) {
-      bufferList = List<MyClass>();
-      snapshot.documents.forEach((element) {
-        bufferList
-            .add(MyClass.fromJson(element.data)..documentSnapshot = element);
-      });
-      if (this.mounted) {
-        setState(() {
-          classList = bufferList;
-        });
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    // packClassList();
-    // collectionGroup();
-    classCodeTextEditingController = TextEditingController();
-    super.initState();
-  }
+  TextEditingController classCodeTextEditingController =
+      TextEditingController();
 
   Widget _radiusButton(BuildContext context, bool isNameSearch) {
     return Expanded(
@@ -238,11 +199,6 @@ class _ClassListScreenState extends State<ClassListScreen> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2),
                 child: Column(
                   children: [
-                    // SubTitle(
-                    //   title: "내가 개설한 수업",
-                    //   icon: CustomIcon.graduation_cap,
-                    //   actions: [],
-                    // ),
                     Expanded(
                       child: StreamBuilder<QuerySnapshot>(
                           stream: pMode.mode == Modes.teacher
@@ -252,8 +208,8 @@ class _ClassListScreenState extends State<ClassListScreen> {
                                   .snapshots()
                               : Firestore.instance
                                   .collection(db_col_class)
-                                  .where("creator",
-                                      isEqualTo: pUser.user.uid + "s")
+                                  .where("member",
+                                      arrayContains: pUser.user.uid)
                                   .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData)
@@ -304,12 +260,15 @@ class _ClassListScreenState extends State<ClassListScreen> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     item.imageUrl == null
-                                                        ? Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                            child:
-                                                                CircularProgressIndicator())
+                                                        ? ExtendedImage.asset(
+                                                            "assets/images/login_bottom.png",
+                                                            width: 70,
+                                                            height: 70,
+                                                            fit: BoxFit.fill,
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            loadStateChanged:
+                                                                myloadStateChanged)
                                                         : ExtendedImage.network(
                                                             item.imageUrl,
                                                             width: 70,

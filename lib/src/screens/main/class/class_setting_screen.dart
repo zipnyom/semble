@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
 import 'package:schuul/src/data/provider/class_option_provider.dart';
-import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
 class ClassSettingScreen extends StatefulWidget {
@@ -11,8 +10,6 @@ class ClassSettingScreen extends StatefulWidget {
 }
 
 class _ClassSettingScreenState extends State<ClassSettingScreen> {
-  String searchText = "";
-
   @override
   Widget build(BuildContext context) {
     ClassProvider classProvider = Provider.of<ClassProvider>(context);

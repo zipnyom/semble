@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
+import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/screens/welcome/welcome_screen.dart';
 
 Widget myloadStateChanged(ExtendedImageState state) {
@@ -45,6 +46,90 @@ showSimpleDialog(BuildContext context, String title, String content) {
                 Navigator.of(context).pop(RespondType.ok);
               },
               child: Text(RespondType.ok.name),
+            ),
+          ],
+        );
+      });
+}
+
+showClassDialog(BuildContext context, MyClass item) async {
+  await showDialog(
+      context: context,
+      // barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("수업 등록"),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(32.0))),
+          content: Container(
+              child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("선택하신 수업에 등록하시겠습니까?"),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Container(
+                      child: Card(
+                    child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            item.imageUrl == null
+                                ? ExtendedImage.asset(
+                                    "assets/images/login_bottom.png",
+                                    width: 35,
+                                    height: 35,
+                                    fit: BoxFit.fill,
+                                    shape: BoxShape.circle,
+                                    loadStateChanged: myloadStateChanged)
+                                : ExtendedImage.network(item.imageUrl,
+                                    width: 35,
+                                    height: 35,
+                                    fit: BoxFit.fill,
+                                    cache: true,
+                                    shape: BoxShape.circle,
+                                    loadStateChanged: myloadStateChanged),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.title,
+                                    style: kListTitleStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    item.description,
+                                    style: kListSubTitleStyle,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        )),
+                  ))),
+            ],
+          )),
+          actions: [
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop(RespondType.yes);
+              },
+              child: Text(RespondType.yes.name),
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop(RespondType.no);
+              },
+              child: Text(RespondType.no.name),
             ),
           ],
         );

@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/data/provider/class_option_provider.dart';
+import 'package:schuul/src/data/provider/user_provider.dart';
+import 'package:schuul/src/obj/user_detail.dart';
 import 'package:schuul/src/widgets/bottom_navigation.dart';
 import 'package:schuul/src/widgets/tab_navigator.dart';
 
