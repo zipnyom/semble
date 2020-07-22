@@ -1,9 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/data/provider/class_option_provider.dart';
-import 'package:schuul/src/data/provider/user_provider.dart';
-import 'package:schuul/src/obj/user_detail.dart';
 import 'package:schuul/src/widgets/bottom_navigation.dart';
 import 'package:schuul/src/widgets/tab_navigator.dart';
 
@@ -16,12 +13,18 @@ class MainRoute extends StatefulWidget {
 
 class _MainRouteState extends State<MainRoute> {
   TabItem _currentTab = TabItem.home;
+  ClassProvider _classProvider;
   Map<TabItem, GlobalKey<NavigatorState>> _navigatorKeys = {
     TabItem.home: GlobalKey<NavigatorState>(),
     TabItem.myclass: GlobalKey<NavigatorState>(),
     TabItem.calendar: GlobalKey<NavigatorState>(),
     TabItem.setting: GlobalKey<NavigatorState>(),
   };
+  @override
+  void initState() {
+    super.initState();
+    _classProvider = ClassProvider();
+  }
 
   void _selectTab(TabItem tabItem) {
     if (tabItem == _currentTab) {
@@ -51,16 +54,17 @@ class _MainRouteState extends State<MainRoute> {
         return isFirstRouteInCurrentTab;
       },
       child: Scaffold(
-        body: Stack(children: <Widget>[
-          MultiProvider(providers: [
-            ChangeNotifierProvider.value(value: ClassProvider()),
-          ], child: _buildOffstageNavigator(TabItem.home)),
-          MultiProvider(providers: [
-            ChangeNotifierProvider.value(value: ClassProvider()),
-          ], child: _buildOffstageNavigator(TabItem.myclass)),
-          _buildOffstageNavigator(TabItem.calendar),
-          _buildOffstageNavigator(TabItem.setting),
-        ]),
+        body: MultiProvider(
+          providers: [
+            ChangeNotifierProvider.value(value: _classProvider),
+          ],
+          child: Stack(children: <Widget>[
+            _buildOffstageNavigator(TabItem.home),
+            _buildOffstageNavigator(TabItem.myclass),
+            _buildOffstageNavigator(TabItem.calendar),
+            _buildOffstageNavigator(TabItem.setting),
+          ]),
+        ),
         bottomNavigationBar: BottomNavigation(
           currentTab: _currentTab,
           onSelectTab: _selectTab,

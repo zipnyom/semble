@@ -5,6 +5,9 @@ import 'package:table_calendar/table_calendar.dart';
 // const kPrimaryColor = Color(0xFF6F35A5);
 // const kPrimaryLightColor = Color(0xFFF1E6FF);
 
+const kRedColor = Colors.redAccent;
+
+////////////////////////////////////////////
 const kPrimaryColor = Color(0xFF54BF86);
 const kPrimaryLightColor = Color(0xFFC2FBDB);
 
@@ -77,6 +80,11 @@ const String db_col_vote = "vote";
 const String db_col_class = "class";
 const String db_col_event = "event";
 const String db_col_user = "user";
+const String db_col_member = "member";
+const String db_col_request = "request";
+
+const String db_field_requestList = "requestList";
+const String db_field_member = "member";
 
 const String monday = "월";
 const String tuesday = "화";

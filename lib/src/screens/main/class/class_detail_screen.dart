@@ -5,10 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/provider/class_option_provider.dart';
 import 'package:schuul/src/data/provider/user_provider.dart';
-import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/attend/attend_screen.dart';
 import 'package:schuul/src/screens/main/class/class_setting_screen.dart';
+import 'package:schuul/src/screens/main/member/member_screen.dart';
 import 'package:schuul/src/widgets/custom_box_shadow.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
@@ -95,7 +95,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
               SizedBox(
                 height: 300,
                 child: pClass.myClass.imageUrl == null
-                    ? AssetImage(defaultImagePath)
+                    ? ExtendedImage.asset(defaultImagePath)
                     : ExtendedImage.network(pClass.myClass.imageUrl,
                         fit: BoxFit.fill,
                         cache: true,
@@ -222,7 +222,12 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                       "학생",
                                       Icons.people,
                                       kPrimaryColor,
-                                      () {},
+                                      () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) => MemberScreen(),
+                                        ));
+                                      },
                                     ),
                                     SizedBox(
                                       width: 20,

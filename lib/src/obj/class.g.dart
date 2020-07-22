@@ -32,7 +32,8 @@ MyClass _$MyClassFromJson(Map<String, dynamic> json) {
         ?.toList()
     ..studentCount = json['studentCount'] as int
     ..imageUrl = json['imageUrl'] as String
-    ..creatorImageUrl = json['creatorImageUrl'] as String;
+    ..creatorImageUrl = json['creatorImageUrl'] as String
+    ..members = (json['members'] as List)?.map((e) => e as String)?.toList();
 }
 
 Map<String, dynamic> _$MyClassToJson(MyClass instance) => <String, dynamic>{
@@ -50,6 +51,7 @@ Map<String, dynamic> _$MyClassToJson(MyClass instance) => <String, dynamic>{
       'studentCount': instance.studentCount,
       'imageUrl': instance.imageUrl,
       'creatorImageUrl': instance.creatorImageUrl,
+      'members': instance.members,
     };
 
 T _$enumDecode<T>(

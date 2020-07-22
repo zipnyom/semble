@@ -53,6 +53,7 @@ class _AuthStreamState extends State<AuthStream> {
                         snapshot2.hasData) {
                       UserDetail userDetail =
                           UserDetail.fromJSON(snapshot2.data.data);
+                      userDetail..documentSnapshot = snapshot2.data;
                       screenHodler2 = MultiProvider(
                         providers: [
                           ChangeNotifierProvider.value(

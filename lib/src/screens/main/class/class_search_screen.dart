@@ -83,28 +83,29 @@ class _ClassSearchScreenState extends State<ClassSearchScreen> {
             SizedBox(
               height: 15,
             ),
-            ListView.builder(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                itemCount: matchedTitleList.length,
-                itemBuilder: (_, index) {
-                  return ListTile(
-                    onTap: () async {
-                      String documentId = titleMap[matchedTitleList[index]];
-                      DocumentSnapshot doc = await Firestore.instance
-                          .document("class/$documentId")
-                          .get();
-                      MyClass item = MyClass.fromJson(doc.data);
-                      ClassProvider classProvider =
-                          Provider.of<ClassProvider>(context, listen: false);
-                      classProvider.myClass = item;
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ClassIntroduceScreen(),
-                      ));
-                    },
-                    title: Text(matchedTitleList[index]),
-                  );
-                })
+            Consumer<ClassProvider>(
+              builder: (context, pClass, child) => ListView.builder(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemCount: matchedTitleList.length,
+                  itemBuilder: (_, index) {
+                    return ListTile(
+                      onTap: () async {
+                        String documentId = titleMap[matchedTitleList[index]];
+                        DocumentSnapshot doc = await Firestore.instance
+                            .document("class/$documentId")
+                            .get();
+                        MyClass item = MyClass.fromJson(doc.data);
+                        item.documentSnapshot = doc;
+                        pClass.myClass = item;
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ClassIntroduceScreen(),
+                        ));
+                      },
+                      title: Text(matchedTitleList[index]),
+                    );
+                  }),
+            )
           ],
         ),
       ),

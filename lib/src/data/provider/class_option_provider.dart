@@ -5,8 +5,16 @@ class ClassProvider with ChangeNotifier {
   MyClass _myClass;
 
   MyClass get myClass => _myClass;
+  ClassProvider() {
+    print("ClassProvider made..");
+  }
 
   set myClass(MyClass myClass) {
+    print("set myClass....");
+    if (myClass == null) {
+      print("null myClass input... ");
+      return;
+    }
     _myClass = myClass;
     notifyListeners();
   }

@@ -27,7 +27,9 @@ class _AccountPageState extends State<AccountPage> {
   PickedFile pickedFile;
   @override
   Widget build(BuildContext context) {
-    Mode pMode = Provider.of<Mode>(context, listen: false);
+    Mode pMode = Provider.of<Mode>(
+      context,
+    );
 
     Widget _radiusButton(BuildContext context, bool isCamera) {
       return Material(
@@ -282,6 +284,8 @@ void enableShowcase() async {
 }
 
 void changeMode(BuildContext context) {
-  Mode pMode = Provider.of<Mode>(context, listen: false);
+  Mode pMode = Provider.of<Mode>(
+    context,
+  );
   pMode.toggle();
 }

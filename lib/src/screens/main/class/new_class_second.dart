@@ -106,7 +106,9 @@ class _NewClassScreen2State extends State<NewClassScreen2>
   @override
   Widget build(BuildContext context) {
     void onSubmit() async {
-      ClassProvider option = Provider.of<ClassProvider>(context, listen: false);
+      ClassProvider option = Provider.of<ClassProvider>(
+        context,
+      );
       if (_formKey.currentState.validate()) {
         RespondType res =
             await customShowDialog(context, "수업 생성", "수업을 생성하시겠습니까?");

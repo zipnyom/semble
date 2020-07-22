@@ -22,6 +22,7 @@ class MyClass {
   int studentCount = 0;
   String imageUrl;
   String creatorImageUrl;
+  List<String> members = [];
 
   @JsonKey(ignore: true)
   String imageLocalPath;

@@ -11,6 +11,7 @@ import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/data/provider/user_provider.dart';
 import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/screens/main/class/class_detail_screen.dart';
+import 'package:schuul/src/screens/main/class/class_introduce_screen.dart';
 import 'package:schuul/src/screens/main/class/class_search_screen.dart';
 import 'package:schuul/src/screens/main/class/new_class_first.dart';
 import 'package:schuul/src/widgets/custom_box_shadow.dart';
@@ -93,10 +94,10 @@ class _ClassListScreenState extends State<ClassListScreen> {
                     ? IconButton(
                         icon: Icon(Icons.add),
                         onPressed: () async {
-                          ClassProvider classProvider =
-                              Provider.of<ClassProvider>(context,
-                                  listen: false);
-                          classProvider.myClass = MyClass();
+                          ClassProvider pClass = Provider.of<ClassProvider>(
+                            context,
+                          );
+                          pClass.myClass = MyClass();
                           await Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => NewClassScreen1(),
                           ));
@@ -210,7 +211,7 @@ class _ClassListScreenState extends State<ClassListScreen> {
                                   .snapshots()
                               : Firestore.instance
                                   .collection(db_col_class)
-                                  .where("member",
+                                  .where("members",
                                       arrayContains: pUser.user.uid)
                                   .snapshots(),
                           builder: (context, snapshot) {
@@ -241,15 +242,17 @@ class _ClassListScreenState extends State<ClassListScreen> {
                                       child: Material(
                                         child: InkWell(
                                           onTap: () {
-                                            ClassProvider classProvider =
+                                            ClassProvider pClass =
                                                 Provider.of<ClassProvider>(
                                                     context,
                                                     listen: false);
-                                            classProvider.myClass = item;
+                                            pClass.myClass = item;
                                             Navigator.of(context)
                                                 .push(MaterialPageRoute(
                                               builder: (context) =>
-                                                  ClassDetailScreen(),
+                                                  pMode.mode == Modes.teacher
+                                                      ? ClassDetailScreen()
+                                                      : ClassIntroduceScreen(),
                                             ));
                                           },
                                           child: Container(
