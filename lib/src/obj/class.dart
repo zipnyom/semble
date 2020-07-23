@@ -9,7 +9,8 @@ enum ClassType { regular, irregular }
 @JsonSerializable()
 class MyClass {
   String title;
-  String creator;
+  String creatorName;
+  String creatorUid;
   DateTime created;
   List<String> managers = [];
   String description;
@@ -35,7 +36,7 @@ class MyClass {
 
   MyClass(
       {this.title,
-      this.creator,
+      this.creatorUid,
       this.managers,
       this.description,
       this.startDate,

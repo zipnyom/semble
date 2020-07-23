@@ -125,7 +125,7 @@ class _NewClassScreen2State extends State<NewClassScreen2>
         classProvider.myClass.description =
             classProvider.myClass.descriptionController.text.trim();
         classProvider.myClass.created = DateTime.now();
-        classProvider.myClass.creator = user.uid;
+        classProvider.myClass.creatorUid = user.uid;
         classProvider.myClass.startDate = option.startDate;
         classProvider.myClass.endDate = option.endDate;
         classProvider.myClass.weekDays = option.weekDays;

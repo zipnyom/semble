@@ -144,6 +144,7 @@ Widget buildCardButton(
       child: InkWell(
         onTap: press,
         child: Card(
+          elevation: 3,
           child: Center(
             child: Padding(
                 padding: EdgeInsets.all(20),

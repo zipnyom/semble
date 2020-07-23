@@ -9,7 +9,7 @@ part of 'class.dart';
 MyClass _$MyClassFromJson(Map<String, dynamic> json) {
   return MyClass(
     title: json['title'] as String,
-    creator: json['creator'] as String,
+    creatorUid: json['creatorUid'] as String,
     managers: (json['managers'] as List)?.map((e) => e as String)?.toList(),
     description: json['description'] as String,
     startDate: json['startDate'] == null
@@ -19,6 +19,7 @@ MyClass _$MyClassFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['endDate'] as String),
   )
+    ..creatorName = json['creatorName'] as String
     ..created = json['created'] == null
         ? null
         : DateTime.parse(json['created'] as String)
@@ -38,7 +39,8 @@ MyClass _$MyClassFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$MyClassToJson(MyClass instance) => <String, dynamic>{
       'title': instance.title,
-      'creator': instance.creator,
+      'creatorName': instance.creatorName,
+      'creatorUid': instance.creatorUid,
       'created': instance.created?.toIso8601String(),
       'managers': instance.managers,
       'description': instance.description,

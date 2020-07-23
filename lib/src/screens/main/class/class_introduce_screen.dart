@@ -19,20 +19,36 @@ class ClassIntroduceScreen extends StatefulWidget {
   _ClassIntroduceScreenState createState() => _ClassIntroduceScreenState();
 }
 
-class _ClassIntroduceScreenState extends State<ClassIntroduceScreen> {
+class _ClassIntroduceScreenState extends State<ClassIntroduceScreen>
+    with SingleTickerProviderStateMixin {
   ScrollController _scrollController;
   double topPadding;
   FirebaseUser user;
-
+  Animation<double> _animation;
+  AnimationController _controller;
+  bool isDone = false;
   @override
   void initState() {
     super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeIn,
+    );
+    _animation.addListener(() {
+      setState(() {});
+    });
 
     topPadding = 100;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         topPadding = 225;
       });
+      _controller.repeat(reverse: true);
     });
     _scrollController = ScrollController()
       ..addListener(() {
@@ -51,58 +67,111 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen> {
 
   @override
   void dispose() {
+    _controller.dispose();
     _scrollController
         .dispose(); // it is a good practice to dispose the controller
     super.dispose();
   }
 
   Widget _buildRegistered(ClassProvider pClass, UserProvider pUser) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              buildCardButton("출결", CustomIcon.check_double, kPrimaryColor, () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AttendScreen(),
-                ));
-              }),
-              SizedBox(
-                width: 20,
-              ),
-              buildCardButton(
-                  "투표", CustomIcon.thumbs_up, Colors.blueAccent[100], () {}),
-              //mj
-            ],
-          ),
-          Row(
-            children: [
-              buildCardButton(
-                "일정",
-                CustomIcon.calendar,
-                Colors.grey[500],
-                () {},
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              buildCardButton("게시판", Icons.note, Colors.blueAccent[100], () {}),
-              //mj
-            ],
-          ),
-          Row(
-            children: [
-              buildCardButton("설정", CustomIcon.cog, Colors.grey[500], () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ClassSettingScreen(),
-                ));
-              }),
-              //mj
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 15),
+          child: isDone
+              ? SizedBox.shrink()
+              : Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.priority_high,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "7월 23일의 출석 체크를 지금 할 수 있습니다.",
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Dismissible(
+                      key: Key("mycard"),
+                      onDismissed: (value) {
+                        _controller.dispose();
+                        setState(() {
+                          isDone = true;
+                        });
+                      },
+                      background: Container(),
+                      child: Container(
+                        transform: Matrix4.translationValues(
+                            _animation.value * 20 - 10, 0, 0),
+                        height: 80,
+                        width: 300,
+                        decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(26))),
+                        child: Center(
+                          child: Text(
+                            "밀어서 출석체크",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+        ),
+        Row(
+          children: [
+            buildCardButton("출결", CustomIcon.check_double, kPrimaryColor, () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AttendScreen(),
+              ));
+            }),
+            SizedBox(
+              width: 20,
+            ),
+            buildCardButton(
+                "투표", CustomIcon.thumbs_up, Colors.blueAccent[100], () {}),
+            //mj
+          ],
+        ),
+        Row(
+          children: [
+            buildCardButton(
+              "일정",
+              CustomIcon.calendar,
+              Colors.grey[500],
+              () {},
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            buildCardButton("게시판", Icons.note, Colors.blueAccent[100], () {}),
+            //mj
+          ],
+        ),
+        Row(
+          children: [
+            buildCardButton("설정", CustomIcon.cog, Colors.grey[500], () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ClassSettingScreen(),
+              ));
+            }),
+            //mj
+          ],
+        ),
+      ],
     );
   }
 
@@ -225,8 +294,9 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen> {
                           topLeft: Radius.circular(40),
                           topRight: Radius.circular(40)),
                       color: Colors.white),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: ListView(
+                    controller: _scrollController,
+                    physics: ClampingScrollPhysics(),
                     children: [
                       SizedBox(
                         height: 15,
@@ -241,13 +311,6 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen> {
                               maxLines: 3,
                             ),
                           ),
-                          // SizedBox(
-                          //   width: 10,
-                          // ),
-                          // IconButton(
-                          //   icon: Icon(CustomIcon.cog),
-                          //   onPressed: () {},
-                          // )
                         ],
                       ),
                       SizedBox(
@@ -274,20 +337,18 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen> {
                           SizedBox(
                             width: 20,
                           ),
-                          Text(pClass.myClass.title)
+                          Text(pClass.myClass.creatorName)
                         ],
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                      Expanded(
-                        child: pClass.myClass.members.contains(pUser.user.uid)
-                            ? _buildRegistered(pClass, pUser)
-                            : pUser.userDetail.requestList.contains(
-                                    pClass.myClass.documentSnapshot.documentID)
-                                ? _buildProcessing(pClass, pUser)
-                                : _buildRequest(pClass, pUser),
-                      )
+                      pClass.myClass.members.contains(pUser.user.uid)
+                          ? _buildRegistered(pClass, pUser)
+                          : pUser.userDetail.requestList.contains(
+                                  pClass.myClass.documentSnapshot.documentID)
+                              ? _buildProcessing(pClass, pUser)
+                              : _buildRequest(pClass, pUser)
                     ],
                   ))),
           Positioned(
