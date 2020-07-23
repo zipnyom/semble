@@ -37,9 +37,10 @@ dependencies:
   shared_preferences: ^0.5.7+3
   table_calendar: ^2.2.3
   intl: ^0.16.1
-  flutter_beacon: ^0.3.0
-  nfc_in_flutter: ^2.0.4
-  flutter_svg: ^0.17.4
+  flutter_beacon: ^0.3.0  
+  nfc_in_flutter: ^2.0.5
+  # flutter_svg: ^0.17.4
+  flutter_svg: ^0.18.0
   fl_chart: ^0.9.3
   flutter_speed_dial: ^1.2.5
   image_picker: ^0.6.7+2

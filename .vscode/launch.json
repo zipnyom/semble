@@ -22,7 +22,7 @@
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
-            "deviceId": "5735CCA1-8923-4AC8-BBE4-10E3BC642BDD"
+            "deviceId": "47C3F80D-2EB3-49DD-A03C-E8C84FCAD0A8"
         },
         {
             "name": "AndroidSim",
