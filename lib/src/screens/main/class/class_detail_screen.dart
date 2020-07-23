@@ -57,36 +57,6 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget _buildCardButton(
-        String title, IconData iconData, Color color, Function press,
-        {double width}) {
-      return Expanded(
-        child: Material(
-          child: InkWell(
-            onTap: press,
-            child: Card(
-              child: Center(
-                child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Row(
-                      children: [
-                        Icon(
-                          iconData,
-                          color: color,
-                        ),
-                        SizedBox(
-                          width: width ?? 30,
-                        ),
-                        Text(title)
-                      ],
-                    )),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
     return Consumer<ClassProvider>(
       builder: (context, pClass, child) {
         return Scaffold(
@@ -199,7 +169,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    _buildCardButton(
+                                    buildCardButton(
                                         "출결",
                                         CustomIcon.check_double,
                                         kPrimaryColor, () {
@@ -211,14 +181,14 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                     SizedBox(
                                       width: 20,
                                     ),
-                                    _buildCardButton("투표", CustomIcon.thumbs_up,
+                                    buildCardButton("투표", CustomIcon.thumbs_up,
                                         Colors.blueAccent[100], () {}),
                                     //mj
                                   ],
                                 ),
                                 Row(
                                   children: [
-                                    _buildCardButton(
+                                    buildCardButton(
                                       "학생",
                                       Icons.people,
                                       kPrimaryColor,
@@ -232,14 +202,14 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                     SizedBox(
                                       width: 20,
                                     ),
-                                    _buildCardButton("게시판", Icons.note,
+                                    buildCardButton("게시판", Icons.note,
                                         Colors.blueAccent[100], () {}),
                                     //mj
                                   ],
                                 ),
                                 Row(
                                   children: [
-                                    _buildCardButton(
+                                    buildCardButton(
                                       "일정",
                                       CustomIcon.calendar,
                                       Colors.grey[500],
@@ -248,7 +218,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                     SizedBox(
                                       width: 20,
                                     ),
-                                    _buildCardButton(
+                                    buildCardButton(
                                         "설정", CustomIcon.cog, Colors.grey[500],
                                         () {
                                       Navigator.of(context)

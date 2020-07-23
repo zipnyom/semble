@@ -53,6 +53,53 @@ class _AttendScreenState extends State<AttendScreen> {
           children: [
             Container(child: Text("전체")),
             Icon(Icons.directions_transit),
+
+            // return Expanded(
+            //             child: StickyHeadersTable(
+            //               columnsLength: keys.length,
+            //               rowsLength: snapshot.data.documents.length,
+            //               columnsTitleBuilder: (i) => Text(keys[i]),
+            //               rowsTitleBuilder: (i) {
+            //                 Map doc = docList[i].data;
+            //                 bool hasPhoto = false;
+            //                 if (doc.containsKey("photoUrl") &&
+            //                     doc["photoUrl"] != null &&
+            //                     doc["photoUrl"].length > 0) {
+            //                   hasPhoto = true;
+            //                 }
+            //                 return Row(
+            //                   children: [
+            //                     hasPhoto
+            //                         ? ExtendedImage.network(doc["photoUrl"],
+            //                             width: 30,
+            //                             height: 30,
+            //                             fit: BoxFit.fill,
+            //                             cache: true,
+            //                             shape: BoxShape.circle,
+            //                             loadStateChanged: myloadStateChanged)
+            //                         : ExtendedImage.asset(
+            //                             "assets/images/login_bottom.png",
+            //                             width: 30,
+            //                             height: 30,
+            //                             fit: BoxFit.fill,
+            //                             shape: BoxShape.circle,
+            //                             loadStateChanged: myloadStateChanged),
+            //                     SizedBox(
+            //                       width: 15,
+            //                     ),
+            //                     Text(docList[i].data["name"])
+            //                   ],
+            //                 );
+            //               },
+            //               contentCellBuilder: (i, j) => Material(
+            //                   child: InkWell(
+            //                       onTap: () {
+            //                         print("$i, $j");
+            //                       },
+            //                       child: Text(data[i][j]))),
+            //               legendCell: Text('학생 명단'),
+            //             ),
+            //           );
           ],
         ),
       ),

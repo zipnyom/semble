@@ -136,6 +136,36 @@ showClassDialog(BuildContext context, MyClass item) async {
       });
 }
 
+Widget buildCardButton(
+    String title, IconData iconData, Color color, Function press,
+    {double width}) {
+  return Expanded(
+    child: Material(
+      child: InkWell(
+        onTap: press,
+        child: Card(
+          child: Center(
+            child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    Icon(
+                      iconData,
+                      color: color,
+                    ),
+                    SizedBox(
+                      width: width ?? 30,
+                    ),
+                    Text(title)
+                  ],
+                )),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 Future<RespondType> customShowDialog(
     BuildContext context, String title, String content) async {
   return await showDialog(

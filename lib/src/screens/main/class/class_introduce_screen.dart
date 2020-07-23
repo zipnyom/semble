@@ -6,8 +6,12 @@ import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/provider/class_option_provider.dart';
 import 'package:schuul/src/data/provider/user_provider.dart';
+import 'package:schuul/src/presentation/custom_icon_icons.dart';
+import 'package:schuul/src/screens/main/attend/attend_screen.dart';
 import 'package:schuul/src/widgets/custom_box_shadow.dart';
 import 'package:schuul/src/widgets/widget.dart';
+
+import 'class_setting_screen.dart';
 
 class ClassIntroduceScreen extends StatefulWidget {
   const ClassIntroduceScreen({Key key}) : super(key: key);
@@ -52,8 +56,54 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen> {
     super.dispose();
   }
 
-  Widget _buildRegistered() {
-    return Container();
+  Widget _buildRegistered(ClassProvider pClass, UserProvider pUser) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              buildCardButton("출결", CustomIcon.check_double, kPrimaryColor, () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AttendScreen(),
+                ));
+              }),
+              SizedBox(
+                width: 20,
+              ),
+              buildCardButton(
+                  "투표", CustomIcon.thumbs_up, Colors.blueAccent[100], () {}),
+              //mj
+            ],
+          ),
+          Row(
+            children: [
+              buildCardButton(
+                "일정",
+                CustomIcon.calendar,
+                Colors.grey[500],
+                () {},
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              buildCardButton("게시판", Icons.note, Colors.blueAccent[100], () {}),
+              //mj
+            ],
+          ),
+          Row(
+            children: [
+              buildCardButton("설정", CustomIcon.cog, Colors.grey[500], () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ClassSettingScreen(),
+                ));
+              }),
+              //mj
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildProcessing(ClassProvider pClass, UserProvider pUser) {
@@ -99,6 +149,13 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen> {
   Widget _buildRequest(ClassProvider pClass, UserProvider pUser) {
     return Row(
       children: [
+        Text(
+          "[수업 소개]",
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        Text(pClass.myClass.description),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -223,19 +280,9 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen> {
                       SizedBox(
                         height: 10,
                       ),
-                      Text(
-                        "[수업 소개]",
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(pClass.myClass.description),
-                      SizedBox(
-                        height: 20,
-                      ),
                       Expanded(
                         child: pClass.myClass.members.contains(pUser.user.uid)
-                            ? _buildRegistered()
+                            ? _buildRegistered(pClass, pUser)
                             : pUser.userDetail.requestList.contains(
                                     pClass.myClass.documentSnapshot.documentID)
                                 ? _buildProcessing(pClass, pUser)

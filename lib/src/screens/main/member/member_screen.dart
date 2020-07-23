@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/provider/class_option_provider.dart';
 import 'package:schuul/src/screens/main/member/member_accept_screen.dart';
+import 'package:schuul/src/widgets/custom_box_shadow.dart';
 import 'package:schuul/src/widgets/widget.dart';
 import 'package:table_sticky_headers/table_sticky_headers.dart';
 
@@ -89,6 +90,14 @@ class _MemberScreenState extends State<MemberScreen> {
                   ));
                 },
               ),
+              Divider(),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Text(
+                  "등록된 학생",
+                  style: kHeadingextStyle,
+                ),
+              ),
               Consumer<ClassProvider>(
                 builder: (context, pClass, child) => StreamBuilder(
                     stream: pClass.myClass.documentSnapshot.reference
@@ -115,61 +124,57 @@ class _MemberScreenState extends State<MemberScreen> {
                       List<String> keys = docList.first.data.keys.toList();
 
                       return Expanded(
-                        child: StickyHeadersTable(
-                          columnsLength: keys.length,
-                          rowsLength: snapshot.data.documents.length,
-                          columnsTitleBuilder: (i) => Text(keys[i]),
-                          rowsTitleBuilder: (i) {
-                            Map doc = docList[i].data;
-                            bool hasPhoto = false;
-                            if (doc.containsKey("photoUrl") &&
-                                doc["photoUrl"] != null &&
-                                doc["photoUrl"].length > 0) {
-                              hasPhoto = true;
-                            }
-                            return Row(
+                          child: GridView.count(
+                        crossAxisCount: 3,
+                        padding: EdgeInsets.all(10),
+                        mainAxisSpacing: 20,
+                        crossAxisSpacing: 20,
+                        childAspectRatio: 2,
+                        children: docList.map((DocumentSnapshot item) {
+                          Map doc = item.data;
+                          bool hasPhoto = false;
+                          if (doc.containsKey("photoUrl") &&
+                              doc["photoUrl"] != null &&
+                              doc["photoUrl"].length > 0) {
+                            hasPhoto = true;
+                          }
+                          return Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.grey[200], width: 1),
+                                boxShadow: [customBoxShadow],
+                                borderRadius: BorderRadius.circular(26),
+                                color: Colors.white),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 hasPhoto
                                     ? ExtendedImage.network(doc["photoUrl"],
-                                        width: 30,
-                                        height: 30,
+                                        width: 45,
+                                        height: 45,
                                         fit: BoxFit.fill,
                                         cache: true,
                                         shape: BoxShape.circle,
                                         loadStateChanged: myloadStateChanged)
                                     : ExtendedImage.asset(
                                         "assets/images/login_bottom.png",
-                                        width: 30,
-                                        height: 30,
+                                        width: 45,
+                                        height: 45,
                                         fit: BoxFit.fill,
                                         shape: BoxShape.circle,
                                         loadStateChanged: myloadStateChanged),
                                 SizedBox(
                                   width: 15,
                                 ),
-                                Text(docList[i].data["name"])
+                                Text(
+                                  item.data["name"],
+                                  style: TextStyle(fontSize: 18),
+                                )
                               ],
-                            );
-                          },
-                          contentCellBuilder: (i, j) => Material(
-                              child: InkWell(
-                                  onTap: () {
-                                    print("$i, $j");
-                                  },
-                                  child: Text(data[i][j]))),
-                          legendCell: Text('학생 명단'),
-                        ),
-                      );
-                      // return ListView.builder(
-                      //     shrinkWrap: true,
-                      //     physics: ClampingScrollPhysics(),
-                      //     itemCount: snapshot.data.documents.length,
-                      //     itemBuilder: (_, index) {
-                      //       return ListTile(
-                      //         title: snapshot.data.documents[index]
-                      //             ["displayName"],
-                      //       );
-                      //     });
+                            ),
+                          );
+                        }).toList(),
+                      ));
                     }),
               )
             ],
