@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              NoticeListPage())),
+                                              NoticeListScreen())),
                                   child: Icon(Icons.more_horiz)))
                           // IconButton(
                           //   icon: Icon(Icons.more_horiz),

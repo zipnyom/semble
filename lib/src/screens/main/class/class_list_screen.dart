@@ -206,7 +206,8 @@ class _ClassListScreenState extends State<ClassListScreen> {
                           stream: pMode.mode == Modes.teacher
                               ? Firestore.instance
                                   .collection(db_col_class)
-                                  .where("creator", isEqualTo: pUser.user.uid)
+                                  .where("creatorUid",
+                                      isEqualTo: pUser.user.uid)
                                   .snapshots()
                               : Firestore.instance
                                   .collection(db_col_class)

@@ -144,7 +144,7 @@ class _AccountPageState extends State<AccountPage> {
       WriteBatch batch = Firestore.instance.batch();
       QuerySnapshot snapshot = await Firestore.instance
           .collection(db_col_class)
-          .where("creator", isEqualTo: pUser.user.uid)
+          .where("creatorUid", isEqualTo: pUser.user.uid)
           .getDocuments();
 
       snapshot.documents.forEach((document) {

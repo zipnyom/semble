@@ -7,11 +7,11 @@ part of 'user_detail.dart';
 // **************************************************************************
 
 UserDetail _$UserDetailFromJson(Map<String, dynamic> json) {
-  return UserDetail()
-    ..profilePath = json['profilePath'] as String
-    ..classList = (json['classList'] as List)?.map((e) => e as String)?.toList()
-    ..requestList =
-        (json['requestList'] as List)?.map((e) => e as String)?.toList();
+  return UserDetail(
+    profilePath: json['profilePath'] as String,
+    classList: json['classList'],
+    requestList: json['requestList'],
+  );
 }
 
 Map<String, dynamic> _$UserDetailToJson(UserDetail instance) =>

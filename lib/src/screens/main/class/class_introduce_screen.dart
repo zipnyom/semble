@@ -2,12 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/provider/class_option_provider.dart';
 import 'package:schuul/src/data/provider/user_provider.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/attend/attend_screen.dart';
+import 'package:schuul/src/screens/main/attend/attend_student_screen.dart';
+import 'package:schuul/src/screens/main/calendar_page.dart';
+import 'package:schuul/src/screens/main/home_page.dart';
+import 'package:schuul/src/screens/main/notice_list.dart';
 import 'package:schuul/src/widgets/custom_box_shadow.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
@@ -27,6 +32,25 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen>
   Animation<double> _animation;
   AnimationController _controller;
   bool isDone = false;
+
+  Future<bool> _doAttend(
+      BuildContext context, ClassProvider pClass, UserProvider pUser) async {
+    ProgressDialog pr = ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: false, showLogs: true)
+      ..style(message: "로딩중..");
+    await pr.show();
+    String uid = pUser.user.uid;
+    DocumentReference doc = pClass.myClass.documentSnapshot.reference
+        .collection(db_col_member)
+        .document("$uid");
+
+    doc.updateData({
+      "attend": FieldValue.arrayUnion([DateTime.now()])
+    });
+    await pr.hide();
+    return true;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -73,7 +97,8 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen>
     super.dispose();
   }
 
-  Widget _buildRegistered(ClassProvider pClass, UserProvider pUser) {
+  Widget _buildRegistered(
+      BuildContext context, ClassProvider pClass, UserProvider pUser) {
     return Column(
       children: [
         Padding(
@@ -101,8 +126,11 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen>
                     ),
                     Dismissible(
                       key: Key("mycard"),
+                      confirmDismiss: (value) async {
+                        return _doAttend(context, pClass, pUser);
+                      },
                       onDismissed: (value) {
-                        _controller.dispose();
+                        _controller.stop();
                         setState(() {
                           isDone = true;
                         });
@@ -135,7 +163,7 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen>
           children: [
             buildCardButton("출결", CustomIcon.check_double, kPrimaryColor, () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => AttendScreen(),
+                builder: (context) => AttendStudentScreen(),
               ));
             }),
             SizedBox(
@@ -152,12 +180,18 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen>
               "일정",
               CustomIcon.calendar,
               Colors.grey[500],
-              () {},
+              () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => CalendarPage()));
+              },
             ),
             SizedBox(
               width: 20,
             ),
-            buildCardButton("게시판", Icons.note, Colors.blueAccent[100], () {}),
+            buildCardButton("게시판", Icons.note, Colors.blueAccent[100], () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => NoticeListScreen()));
+            }),
             //mj
           ],
         ),
@@ -205,7 +239,7 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen>
                     db_field_requestList: FieldValue.arrayRemove(
                         [pClass.myClass.documentSnapshot.documentID])
                   });
-                  showSimpleDialog(context, "수업 등록", "수업등록 요청이 취소되었습니다.");
+                  showSimpleDialog(context, "수업 등록", "수업등록 요청이 취소되었습니��.");
                 },
               )
             ],
@@ -344,7 +378,7 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen>
                         height: 10,
                       ),
                       pClass.myClass.members.contains(pUser.user.uid)
-                          ? _buildRegistered(pClass, pUser)
+                          ? _buildRegistered(context, pClass, pUser)
                           : pUser.userDetail.requestList.contains(
                                   pClass.myClass.documentSnapshot.documentID)
                               ? _buildProcessing(pClass, pUser)

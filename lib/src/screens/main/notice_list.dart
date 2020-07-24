@@ -4,8 +4,8 @@ import 'package:schuul/src/screens/main/new_notice.dart';
 import 'package:schuul/src/screens/main/notice_detail.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
-class NoticeListPage extends StatelessWidget {
-  const NoticeListPage({Key key}) : super(key: key);
+class NoticeListScreen extends StatelessWidget {
+  const NoticeListScreen({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,8 +39,8 @@ class NoticeListItem extends StatelessWidget {
     return Material(
       child: InkWell(
         onTap: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => NoticeDetailPage()));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => NoticeDetailPage()));
         },
         child: Padding(
           padding: EdgeInsets.only(left: 16, right: 30, bottom: 16),
@@ -90,7 +90,11 @@ class Entry {
   final List<Entry> children;
 }
 
-final List<String> noticeList = <String>[sampleTitle1, sampleTitle2, sampleTitle3];
+final List<String> noticeList = <String>[
+  sampleTitle1,
+  sampleTitle2,
+  sampleTitle3
+];
 
 // The entire multilevel list displayed by this app.
 final List<Entry> data = <Entry>[
@@ -124,7 +128,7 @@ final List<Entry> data = <Entry>[
 // with an ExpansionTile.
 class EntryItem extends StatelessWidget {
   const EntryItem(this.entry);
-  
+
   final Entry entry;
 
   Widget _buildTiles(Entry root) {

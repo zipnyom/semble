@@ -10,7 +10,7 @@ enum TabItem { home, myclass, calendar, setting }
 Map<TabItem, String> tabName = {
   TabItem.home: 'Today',
   TabItem.myclass: '수업관리',
-  TabItem.calendar: '캘린더',
+  // TabItem.calendar: '캘린더',
   TabItem.setting: '설정',
 };
 Map<TabItem, Widget> activeTab = {
@@ -27,14 +27,14 @@ Map<TabItem, Widget> activeTab = {
   // TabItem.home: LandingScreen(),
   TabItem.home: ClassListScreen(),
   TabItem.myclass: ClassListScreen(),
-  TabItem.calendar: CalendarPage(),
+  // TabItem.calendar: CalendarPage(),
   TabItem.setting: AccountPage()
 };
 
 Map<TabItem, IconData> tabIcon = {
   TabItem.home: CustomIcon.heart,
   TabItem.myclass: CustomIcon.params,
-  TabItem.calendar: CustomIcon.calendar,
+  // TabItem.calendar: CustomIcon.calendar,
   TabItem.setting: CustomIcon.cog
 };
 
@@ -50,7 +50,7 @@ class BottomNavigation extends StatelessWidget {
       items: [
         _buildItem(tabItem: TabItem.home),
         _buildItem(tabItem: TabItem.myclass),
-        _buildItem(tabItem: TabItem.calendar),
+        // _buildItem(tabItem: TabItem.calendar),
         _buildItem(tabItem: TabItem.setting),
       ],
       onTap: (index) => onSelectTab(

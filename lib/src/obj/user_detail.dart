@@ -6,13 +6,15 @@ part 'user_detail.g.dart';
 
 @JsonSerializable()
 class UserDetail extends ChangeNotifier {
-  String profilePath;
-  List<String> classList = [];
-  List<String> requestList = [];
+  final String profilePath;
+  final List<dynamic> classList;
+  final List<dynamic> requestList;
   @JsonKey(ignore: true)
   DocumentSnapshot documentSnapshot;
 
-  UserDetail();
+  UserDetail({this.profilePath, classList, requestList})
+      : classList = classList ?? [],
+        requestList = requestList ?? [];
 
   factory UserDetail.fromJSON(Map<String, dynamic> json) =>
       _$UserDetailFromJson(json);
