@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/date_type.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
-import 'package:schuul/src/data/provider/class_option_provider.dart';
+import 'package:schuul/src/data/provider/class_provider.dart';
 import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/services/database.dart';
 import 'package:schuul/src/widgets/date_select_field.dart';
@@ -126,6 +126,7 @@ class _NewClassScreen2State extends State<NewClassScreen2>
             classProvider.myClass.descriptionController.text.trim();
         classProvider.myClass.created = DateTime.now();
         classProvider.myClass.creatorUid = user.uid;
+        classProvider.myClass.creatorImageUrl = user.photoUrl;
         classProvider.myClass.startDate = option.startDate;
         classProvider.myClass.endDate = option.endDate;
         classProvider.myClass.weekDays = option.weekDays;
@@ -288,9 +289,9 @@ class _NewClassScreen2State extends State<NewClassScreen2>
         ),
         onDaySelected: (date, events) {
           if (pOption.contains(date))
-            pOption.delete(date);
+            pOption.deleteDate(date);
           else
-            pOption.add(date);
+            pOption.addDate(date);
           // _onDaySelected(date, events);
           // _animationController.forward(from: 0.0);
         },

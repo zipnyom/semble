@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/data/enums/image_type.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
-import 'package:schuul/src/data/provider/class_option_provider.dart';
+import 'package:schuul/src/data/provider/class_provider.dart';
 import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/class/new_class_second.dart';

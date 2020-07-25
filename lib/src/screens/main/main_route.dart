@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:schuul/src/data/provider/class_option_provider.dart';
+import 'package:schuul/src/data/provider/class_provider.dart';
 import 'package:schuul/src/widgets/bottom_navigation.dart';
 import 'package:schuul/src/widgets/tab_navigator.dart';
 
@@ -17,7 +17,7 @@ class _MainRouteState extends State<MainRoute> {
   Map<TabItem, GlobalKey<NavigatorState>> _navigatorKeys = {
     TabItem.home: GlobalKey<NavigatorState>(),
     TabItem.myclass: GlobalKey<NavigatorState>(),
-    TabItem.calendar: GlobalKey<NavigatorState>(),
+    // TabItem.calendar: GlobalKey<NavigatorState>(),
     TabItem.setting: GlobalKey<NavigatorState>(),
   };
   @override
@@ -61,7 +61,7 @@ class _MainRouteState extends State<MainRoute> {
           child: Stack(children: <Widget>[
             _buildOffstageNavigator(TabItem.home),
             _buildOffstageNavigator(TabItem.myclass),
-            _buildOffstageNavigator(TabItem.calendar),
+            // _buildOffstageNavigator(TabItem.calendar),
             _buildOffstageNavigator(TabItem.setting),
           ]),
         ),

@@ -43,6 +43,8 @@ class TabNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final routeBuilders = _routeBuilders(context);
+    print("routeBuilders");
+    print(routeBuilders);
     return Navigator(
       key: navigatorKey,
       initialRoute: TabNavigatorRoutes.root,

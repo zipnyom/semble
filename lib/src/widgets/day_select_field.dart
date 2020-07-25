@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
-import 'package:schuul/src/data/provider/class_option_provider.dart';
+import 'package:schuul/src/data/provider/class_provider.dart';
 
 class DaySelectField extends StatefulWidget {
   const DaySelectField({

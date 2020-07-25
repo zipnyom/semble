@@ -5,10 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
-import 'package:schuul/src/data/provider/class_option_provider.dart';
+import 'package:schuul/src/data/provider/class_provider.dart';
 import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
-import 'package:schuul/src/screens/main/class/class_introduce_screen.dart';
+import 'package:schuul/src/screens/main/class/class_student_screen.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
 import 'class_detail_screen.dart';
@@ -99,7 +99,7 @@ class _ClassSearchScreenState extends State<ClassSearchScreen> {
                         item.documentSnapshot = doc;
                         pClass.myClass = item;
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ClassIntroduceScreen(),
+                          builder: (context) => ClassStudentScreen(),
                         ));
                       },
                       title: Text(matchedTitleList[index]),

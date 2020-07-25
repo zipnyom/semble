@@ -5,12 +5,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/enums/respond_type.dart';
-import 'package:schuul/src/data/provider/class_option_provider.dart';
+import 'package:schuul/src/data/provider/class_provider.dart';
 import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/data/provider/user_provider.dart';
 import 'package:schuul/src/obj/class.dart';
 import 'package:schuul/src/screens/main/class/class_detail_screen.dart';
-import 'package:schuul/src/screens/main/class/class_introduce_screen.dart';
+import 'package:schuul/src/screens/main/class/class_student_screen.dart';
 import 'package:schuul/src/screens/main/class/class_search_screen.dart';
 import 'package:schuul/src/screens/main/class/new_class_first.dart';
 import 'package:schuul/src/widgets/custom_box_shadow.dart';
@@ -252,7 +252,7 @@ class _ClassListScreenState extends State<ClassListScreen> {
                                               builder: (context) =>
                                                   pMode.mode == Modes.teacher
                                                       ? ClassDetailScreen()
-                                                      : ClassIntroduceScreen(),
+                                                      : ClassStudentScreen(),
                                             ));
                                           },
                                           child: Container(

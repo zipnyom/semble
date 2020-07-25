@@ -101,12 +101,12 @@ class ClassProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  add(DateTime date) {
+  addDate(DateTime date) {
     _events.putIfAbsent(date, () => ["AAA"]);
     notifyListeners();
   }
 
-  delete(DateTime date) {
+  deleteDate(DateTime date) {
     _events.remove(date);
     notifyListeners();
   }

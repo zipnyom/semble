@@ -2,29 +2,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:schuul/src/constants.dart';
-import 'package:schuul/src/data/provider/class_option_provider.dart';
+import 'package:schuul/src/data/provider/class_provider.dart';
 import 'package:schuul/src/data/provider/user_provider.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
-import 'package:schuul/src/screens/main/attend/attend_screen.dart';
 import 'package:schuul/src/screens/main/attend/attend_student_screen.dart';
 import 'package:schuul/src/screens/main/calendar_page.dart';
-import 'package:schuul/src/screens/main/home_page.dart';
 import 'package:schuul/src/screens/main/notice_list.dart';
+import 'package:schuul/src/screens/main/vote/vote_list_screen.dart';
 import 'package:schuul/src/widgets/custom_box_shadow.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
 import 'class_setting_screen.dart';
 
-class ClassIntroduceScreen extends StatefulWidget {
-  const ClassIntroduceScreen({Key key}) : super(key: key);
+class ClassStudentScreen extends StatefulWidget {
+  const ClassStudentScreen({Key key}) : super(key: key);
   @override
-  _ClassIntroduceScreenState createState() => _ClassIntroduceScreenState();
+  _ClassStudentScreenState createState() => _ClassStudentScreenState();
 }
 
-class _ClassIntroduceScreenState extends State<ClassIntroduceScreen>
+class _ClassStudentScreenState extends State<ClassStudentScreen>
     with SingleTickerProviderStateMixin {
   ScrollController _scrollController;
   double topPadding;
@@ -107,55 +107,99 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen>
               ? SizedBox.shrink()
               : Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.priority_high,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "7월 23일의 출석 체크를 지금 할 수 있습니다.",
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Dismissible(
-                      key: Key("mycard"),
-                      confirmDismiss: (value) async {
-                        return _doAttend(context, pClass, pUser);
-                      },
-                      onDismissed: (value) {
-                        _controller.stop();
-                        setState(() {
-                          isDone = true;
-                        });
-                      },
-                      background: Container(),
-                      child: Container(
-                        transform: Matrix4.translationValues(
-                            _animation.value * 20 - 10, 0, 0),
-                        height: 80,
-                        width: 300,
-                        decoration: BoxDecoration(
-                            color: kPrimaryColor,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(26))),
-                        child: Center(
-                          child: Text(
-                            "밀어서 출석체크",
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
+                    StreamBuilder<DocumentSnapshot>(
+                        stream: pClass.myClass.documentSnapshot.reference
+                            .collection(db_col_member)
+                            .document(pUser.user.uid)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          DateFormat dateFormat =
+                              DateFormat('M월 d일 (E)', "ko_KO");
+                          List<dynamic> attendList =
+                              snapshot.data["attend"] ?? [];
+                          List<String> dayStrList = [];
+
+                          pClass.myClass.days.forEach((element) {
+                            dayStrList.add(dateFormat.format(element));
+                          });
+
+                          String todayStr = dateFormat.format(DateTime.now());
+
+                          //오늘이 수업 날짜가 아니라면 출석 버튼을 보여주지 않아도 됨.
+                          if (dayStrList.contains(todayStr) == false) {
+                            return SizedBox.shrink();
+                          }
+
+                          //오늘이 수업 날짜라면
+                          List<String> attendStrList = [];
+                          attendList.forEach((element) {
+                            attendStrList.add(dateFormat
+                                .format((element as Timestamp).toDate()));
+                          });
+
+                          //이미 출석 체크를 했다면
+                          if (attendList.contains(todayStr) == true) {
+                            Text("출석 체크가 완료됐습니다");
+                          }
+
+                          // 출석을 하지 않앗다면
+                          return Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.priority_high,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "7월 23일의 출석 체크를 지금 할 수 있습니다.",
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Dismissible(
+                                key: Key("mycard"),
+                                confirmDismiss: (value) async {
+                                  return _doAttend(context, pClass, pUser);
+                                },
+                                onDismissed: (value) {
+                                  _controller.stop();
+                                  setState(() {
+                                    isDone = true;
+                                  });
+                                },
+                                background: Container(),
+                                child: Container(
+                                  transform: Matrix4.translationValues(
+                                      _animation.value * 20 - 10, 0, 0),
+                                  height: 80,
+                                  width: 300,
+                                  decoration: BoxDecoration(
+                                      color: kPrimaryColor,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(26))),
+                                  child: Center(
+                                    child: Text(
+                                      "밀어서 출석체크",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          );
+                        }),
                   ],
                 ),
         ),
@@ -169,8 +213,12 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen>
             SizedBox(
               width: 20,
             ),
-            buildCardButton(
-                "투표", CustomIcon.thumbs_up, Colors.blueAccent[100], () {}),
+            buildCardButton("투표", CustomIcon.thumbs_up, Colors.blueAccent[100],
+                () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => VoteListScreen(),
+              ));
+            }),
             //mj
           ],
         ),
@@ -374,9 +422,9 @@ class _ClassIntroduceScreenState extends State<ClassIntroduceScreen>
                           Text(pClass.myClass.creatorName)
                         ],
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
                       pClass.myClass.members.contains(pUser.user.uid)
                           ? _buildRegistered(context, pClass, pUser)
                           : pUser.userDetail.requestList.contains(

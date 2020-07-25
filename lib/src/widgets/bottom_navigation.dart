@@ -5,7 +5,12 @@ import 'package:schuul/src/screens/main/account_page.dart';
 import 'package:schuul/src/screens/main/calendar_page.dart';
 import 'package:schuul/src/screens/main/class/class_list_screen.dart';
 
-enum TabItem { home, myclass, calendar, setting }
+enum TabItem {
+  home,
+  myclass,
+// calendar,
+  setting
+}
 
 Map<TabItem, String> tabName = {
   TabItem.home: 'Today',
