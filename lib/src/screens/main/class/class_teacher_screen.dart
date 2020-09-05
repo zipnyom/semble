@@ -6,19 +6,19 @@ import 'package:schuul/src/constants.dart';
 import 'package:schuul/src/data/provider/class_provider.dart';
 import 'package:schuul/src/data/provider/user_provider.dart';
 import 'package:schuul/src/presentation/custom_icon_icons.dart';
-import 'package:schuul/src/screens/main/attend/attend_screen.dart';
+import 'package:schuul/src/screens/main/attend/attend_teacher_screen.dart';
 import 'package:schuul/src/screens/main/class/class_setting_screen.dart';
 import 'package:schuul/src/screens/main/member/member_screen.dart';
 import 'package:schuul/src/widgets/custom_box_shadow.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
-class ClassDetailScreen extends StatefulWidget {
-  const ClassDetailScreen({Key key}) : super(key: key);
+class ClassTeacherScreen extends StatefulWidget {
+  const ClassTeacherScreen({Key key}) : super(key: key);
   @override
-  _ClassDetailScreenState createState() => _ClassDetailScreenState();
+  _ClassTeacherScreenState createState() => _ClassTeacherScreenState();
 }
 
-class _ClassDetailScreenState extends State<ClassDetailScreen> {
+class _ClassTeacherScreenState extends State<ClassTeacherScreen> {
   ScrollController _scrollController;
   double topPadding;
   FirebaseUser user;
@@ -175,7 +175,8 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                         kPrimaryColor, () {
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(
-                                        builder: (context) => AttendScreen(),
+                                        builder: (context) =>
+                                            AttendTeacherScreen(),
                                       ));
                                     }),
                                     SizedBox(

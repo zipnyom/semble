@@ -11,7 +11,7 @@ import 'package:schuul/src/presentation/custom_icon_icons.dart';
 import 'package:schuul/src/screens/main/class/class_student_screen.dart';
 import 'package:schuul/src/widgets/widget.dart';
 
-import 'class_detail_screen.dart';
+import 'class_teacher_screen.dart';
 
 class ClassSearchScreen extends StatefulWidget {
   @override

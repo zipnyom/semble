@@ -125,7 +125,7 @@ class _MemberScreenState extends State<MemberScreen> {
 
                       return Expanded(
                           child: GridView.count(
-                        crossAxisCount: 3,
+                        crossAxisCount: 2,
                         padding: EdgeInsets.all(10),
                         mainAxisSpacing: 20,
                         crossAxisSpacing: 20,
@@ -145,32 +145,37 @@ class _MemberScreenState extends State<MemberScreen> {
                                 boxShadow: [customBoxShadow],
                                 borderRadius: BorderRadius.circular(26),
                                 color: Colors.white),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                hasPhoto
-                                    ? ExtendedImage.network(doc["photoUrl"],
-                                        width: 45,
-                                        height: 45,
-                                        fit: BoxFit.fill,
-                                        cache: true,
-                                        shape: BoxShape.circle,
-                                        loadStateChanged: myloadStateChanged)
-                                    : ExtendedImage.asset(
-                                        "assets/images/login_bottom.png",
-                                        width: 45,
-                                        height: 45,
-                                        fit: BoxFit.fill,
-                                        shape: BoxShape.circle,
-                                        loadStateChanged: myloadStateChanged),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text(
-                                  item.data["name"],
-                                  style: TextStyle(fontSize: 18),
-                                )
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  hasPhoto
+                                      ? ExtendedImage.network(doc["photoUrl"],
+                                          width: 45,
+                                          height: 45,
+                                          fit: BoxFit.fill,
+                                          cache: true,
+                                          shape: BoxShape.circle,
+                                          loadStateChanged: myloadStateChanged)
+                                      : ExtendedImage.asset(
+                                          "assets/images/login_bottom.png",
+                                          width: 45,
+                                          height: 45,
+                                          fit: BoxFit.fill,
+                                          shape: BoxShape.circle,
+                                          loadStateChanged: myloadStateChanged),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      item.data["name"],
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           );
                         }).toList(),

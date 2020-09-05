@@ -265,6 +265,9 @@ class _ClassStudentScreenState extends State<ClassStudentScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(
+                height: 70,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [Icon(Icons.check), Text("요청되었습니다. 관리자 승인 대기중입니다")],
@@ -298,8 +301,12 @@ class _ClassStudentScreenState extends State<ClassStudentScreen>
   }
 
   Widget _buildRequest(ClassProvider pClass, UserProvider pUser) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(
+          height: 10,
+        ),
         Text(
           "[수업 소개]",
         ),
@@ -307,41 +314,49 @@ class _ClassStudentScreenState extends State<ClassStudentScreen>
           width: 5,
         ),
         Text(pClass.myClass.description),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text("수강중인 수업이 아닙니다. 등록 요청하시겠습니까?"),
-              SizedBox(
-                height: 10,
+        SizedBox(
+          height: 50,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("수강중인 수업이 아닙니다. 등록 요청하시겠습니까?"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
+                    color: kPrimaryColor,
+                    child: Text("등록 요청하기"),
+                    onPressed: () async {
+                      await pClass.myClass.documentSnapshot.reference
+                          .collection(db_col_request)
+                          .document(pUser.user.uid)
+                          .setData({
+                        "uid": pUser.user.uid,
+                        "name": pUser.user.displayName,
+                        "photoUrl": pUser.user.photoUrl,
+                        "time": FieldValue.serverTimestamp()
+                      });
+                      await pUser.userDetail.documentSnapshot.reference
+                          .updateData({
+                        db_field_requestList: FieldValue.arrayUnion(
+                            [pClass.myClass.documentSnapshot.documentID])
+                      });
+                      showSimpleDialog(context, "수업 등록",
+                          "수업 등록이 요청되었습니다. 관리자의 승인이 완료되면 해당 수업을 조회하실 수 있습니다.");
+                    },
+                  )
+                ],
               ),
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                ),
-                color: kPrimaryColor,
-                child: Text("등록 요청하기"),
-                onPressed: () async {
-                  await pClass.myClass.documentSnapshot.reference
-                      .collection(db_col_request)
-                      .document(pUser.user.uid)
-                      .setData({
-                    "uid": pUser.user.uid,
-                    "name": pUser.user.displayName,
-                    "photoUrl": pUser.user.photoUrl,
-                    "time": FieldValue.serverTimestamp()
-                  });
-                  await pUser.userDetail.documentSnapshot.reference.updateData({
-                    db_field_requestList: FieldValue.arrayUnion(
-                        [pClass.myClass.documentSnapshot.documentID])
-                  });
-                  showSimpleDialog(context, "수업 등록",
-                      "수업 등록이 요청되었습니다. 관리자의 승인이 완료되면 해당 수업을 조회하실 수 있습니다.");
-                },
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );

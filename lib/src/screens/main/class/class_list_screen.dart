@@ -9,7 +9,7 @@ import 'package:schuul/src/data/provider/class_provider.dart';
 import 'package:schuul/src/data/provider/mode_provider.dart';
 import 'package:schuul/src/data/provider/user_provider.dart';
 import 'package:schuul/src/obj/class.dart';
-import 'package:schuul/src/screens/main/class/class_detail_screen.dart';
+import 'package:schuul/src/screens/main/class/class_teacher_screen.dart';
 import 'package:schuul/src/screens/main/class/class_student_screen.dart';
 import 'package:schuul/src/screens/main/class/class_search_screen.dart';
 import 'package:schuul/src/screens/main/class/new_class_first.dart';
@@ -251,7 +251,7 @@ class _ClassListScreenState extends State<ClassListScreen> {
                                                 .push(MaterialPageRoute(
                                               builder: (context) =>
                                                   pMode.mode == Modes.teacher
-                                                      ? ClassDetailScreen()
+                                                      ? ClassTeacherScreen()
                                                       : ClassStudentScreen(),
                                             ));
                                           },

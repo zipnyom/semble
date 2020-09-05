@@ -11,11 +11,17 @@
             "deviceId": "ce051605230f971401"
         },
         {
+            "name": "Chrome",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "chrome"
+        },
+        {
             "name": "IOSsim",
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
-            "deviceId": "F7383498-76E2-4CBF-9771-5BCDA817A4F0"
+            "deviceId": "474227A8-22B8-407D-8B49-B06588BE7BD8"
         },
         {
             "name": "IpadSim",
@@ -68,5 +74,6 @@
                 "IOSsim"
             ]
         },
+        
     ]
 }
